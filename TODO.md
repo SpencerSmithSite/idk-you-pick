@@ -2,17 +2,18 @@
 
 ## Current Phase: 1 — Data Overhaul
 
-### In Progress
-- [-] 1.3 Update `main.dart` loader/parser
-
 ### Done
 - [x] 1.1 Recreate `restaurants.json` with rich metadata
 - [x] 1.2 Add new fields: cuisine, type, priceTier, tags[]
 - [x] 1.3 Update `main.dart` loader/parser
+- [x] 1.4 Wire metadata into UI (random choice, head-to-head, winner views)
+- [x] 1.5 Commit Phase 1 work
 
 ### Next Up
-- [ ] 1.4 Test data loads correctly
-- [ ] 1.5 Commit Phase 1 work
+- [ ] 1.6 Update PR #7 with latest changes
+
+### Blocked
+- None
 
 ### Blocked
 - None
