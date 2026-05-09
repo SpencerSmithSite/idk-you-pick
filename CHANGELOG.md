@@ -59,4 +59,17 @@
 
 ---
 
+## [0.1.5] — 2026-05-09
+### Phase 4: Action Links
+- **feat:** Added `url_launcher` dependency and import to `lib/main.dart`
+- **feat:** Added `phone` and `website` fields to `assets/restaurants.json` (scaffold for future enrichment)
+- **feat:** Implemented URL helpers: `_openMaps`, `_openDoorDash`, `_callRestaurant`, `_openWebsite`
+- **feat:** Added `_buildActionButtons` widget — conditionally shows Maps, DoorDash, Call, Website buttons
+- **feat:** Wired action buttons into `_buildRandomChoiceView` and winner section of `_buildHelpMeDecideView`
+- **feat:** Colors match existing palette: teal (Maps), orange (DoorDash), dark gray (Call / Website)
+- Verified: `flutter analyze` — no NEW issues introduced (11 total, same pre-existing)
+- Branch: `data/phase-4-action-links`
+
+---
+
 *End of changelog.*

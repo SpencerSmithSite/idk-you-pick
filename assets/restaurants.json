@@ -11,7 +11,9 @@
       "open-late"
     ],
     "lat": 40.6849,
-    "lng": -74.0389
+    "lng": -74.0389,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Arby's",
@@ -25,7 +27,9 @@
       "open-late"
     ],
     "lat": 40.761,
-    "lng": -73.9686
+    "lng": -73.9686,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Big Chicken",
@@ -39,7 +43,9 @@
       "comfort-food"
     ],
     "lat": 40.7775,
-    "lng": -73.9655
+    "lng": -73.9655,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Bojangles",
@@ -54,7 +60,9 @@
       "southern"
     ],
     "lat": 40.7961,
-    "lng": -74.0589
+    "lng": -74.0589,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Burger King",
@@ -69,7 +77,9 @@
       "flame-grilled"
     ],
     "lat": 40.8095,
-    "lng": -74.0268
+    "lng": -74.0268,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Cane's",
@@ -83,7 +93,9 @@
       "sauce"
     ],
     "lat": 40.7588,
-    "lng": -73.9053
+    "lng": -73.9053,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Carl's Jr.",
@@ -98,7 +110,9 @@
       "west-coast"
     ],
     "lat": 40.6956,
-    "lng": -74.0495
+    "lng": -74.0495,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Cava",
@@ -113,7 +127,9 @@
       "fresh"
     ],
     "lat": 40.7878,
-    "lng": -73.957
+    "lng": -73.957,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Checkers",
@@ -128,7 +144,9 @@
       "fries"
     ],
     "lat": 40.715,
-    "lng": -73.9535
+    "lng": -73.9535,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Chick-fil-A",
@@ -144,7 +162,9 @@
       "waffle-fries"
     ],
     "lat": 40.8219,
-    "lng": -73.9435
+    "lng": -73.9435,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Chipotle",
@@ -160,7 +180,9 @@
       "fresh"
     ],
     "lat": 40.8261,
-    "lng": -73.9351
+    "lng": -73.9351,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Church's Chicken",
@@ -175,7 +197,9 @@
       "biscuits"
     ],
     "lat": 40.7114,
-    "lng": -73.9932
+    "lng": -73.9932,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Culver's",
@@ -190,7 +214,9 @@
       "family-friendly"
     ],
     "lat": 40.8168,
-    "lng": -73.9937
+    "lng": -73.9937,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Del Taco",
@@ -206,7 +232,9 @@
       "budget-friendly"
     ],
     "lat": 40.6825,
-    "lng": -73.9698
+    "lng": -73.9698,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Denny's",
@@ -222,7 +250,9 @@
       "comfort-food"
     ],
     "lat": 40.6835,
-    "lng": -74.0034
+    "lng": -74.0034,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Domino's Pizza",
@@ -237,7 +267,9 @@
       "tracker"
     ],
     "lat": 40.7129,
-    "lng": -74.0494
+    "lng": -74.0494,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Dunkin'",
@@ -252,7 +284,9 @@
       "open-early"
     ],
     "lat": 40.7414,
-    "lng": -73.9061
+    "lng": -73.9061,
+    "website": null,
+    "phone": null
   },
   {
     "name": "El Pollo Loco",
@@ -267,7 +301,9 @@
       "salsa-bar"
     ],
     "lat": 40.6889,
-    "lng": -73.9296
+    "lng": -73.9296,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Firehouse Subs",
@@ -282,7 +318,9 @@
       "catering"
     ],
     "lat": 40.7397,
-    "lng": -73.9163
+    "lng": -73.9163,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Five Guys",
@@ -297,7 +335,9 @@
       "made-to-order"
     ],
     "lat": 40.7753,
-    "lng": -73.962
+    "lng": -73.962,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Freddy's Frozen Custard & Steakburgers",
@@ -312,7 +352,9 @@
       "thin-patties"
     ],
     "lat": 40.6937,
-    "lng": -73.9695
+    "lng": -73.9695,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Hardee's",
@@ -327,7 +369,9 @@
       "thick-burgers"
     ],
     "lat": 40.8045,
-    "lng": -73.976
+    "lng": -73.976,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Habit Burger & Grill",
@@ -342,7 +386,9 @@
       "california"
     ],
     "lat": 40.7234,
-    "lng": -73.9578
+    "lng": -73.9578,
+    "website": null,
+    "phone": null
   },
   {
     "name": "In-N-Out Burger",
@@ -358,7 +404,9 @@
       "simple-menu"
     ],
     "lat": 40.8117,
-    "lng": -73.9373
+    "lng": -73.9373,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Jack in the Box",
@@ -374,7 +422,9 @@
       "munchies"
     ],
     "lat": 40.7095,
-    "lng": -74.0103
+    "lng": -74.0103,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Jersey Mike's",
@@ -389,7 +439,9 @@
       "east-coast"
     ],
     "lat": 40.7652,
-    "lng": -73.9778
+    "lng": -73.9778,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Jimmy John's",
@@ -404,7 +456,9 @@
       "simple-menu"
     ],
     "lat": 40.6925,
-    "lng": -73.9412
+    "lng": -73.9412,
+    "website": null,
+    "phone": null
   },
   {
     "name": "KFC",
@@ -420,7 +474,9 @@
       "mashed-potatoes"
     ],
     "lat": 40.8306,
-    "lng": -74.0277
+    "lng": -74.0277,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Little Caesars",
@@ -435,7 +491,9 @@
       "crazy-bread"
     ],
     "lat": 40.8207,
-    "lng": -74.0284
+    "lng": -74.0284,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Marco's Pizza",
@@ -450,7 +508,9 @@
       "family-size"
     ],
     "lat": 40.7269,
-    "lng": -73.9661
+    "lng": -73.9661,
+    "website": null,
+    "phone": null
   },
   {
     "name": "McAlister's Deli",
@@ -466,7 +526,9 @@
       "catering"
     ],
     "lat": 40.7185,
-    "lng": -74.0144
+    "lng": -74.0144,
+    "website": null,
+    "phone": null
   },
   {
     "name": "McDonald's",
@@ -483,7 +545,9 @@
       "coffee"
     ],
     "lat": 40.7089,
-    "lng": -74.0344
+    "lng": -74.0344,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Moe's Southwest Grill",
@@ -499,7 +563,9 @@
       "vegetarian-friendly"
     ],
     "lat": 40.8259,
-    "lng": -73.9285
+    "lng": -73.9285,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Mooyah Burgers, Fries & Shakes",
@@ -515,7 +581,9 @@
       "made-to-order"
     ],
     "lat": 40.7156,
-    "lng": -73.9069
+    "lng": -73.9069,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Panda Express",
@@ -531,7 +599,9 @@
       "fortune-cookies"
     ],
     "lat": 40.6803,
-    "lng": -73.9969
+    "lng": -73.9969,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Panera Bread",
@@ -549,7 +619,9 @@
       "cafe"
     ],
     "lat": 40.7069,
-    "lng": -73.959
+    "lng": -73.959,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Papa John's",
@@ -564,7 +636,9 @@
       "dipping-sauces"
     ],
     "lat": 40.7237,
-    "lng": -73.9538
+    "lng": -73.9538,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Papa Murphy's",
@@ -579,7 +653,9 @@
       "fresh-dough"
     ],
     "lat": 40.7067,
-    "lng": -74.0012
+    "lng": -74.0012,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Pizza Hut",
@@ -595,7 +671,9 @@
       "family-friendly"
     ],
     "lat": 40.7923,
-    "lng": -73.9909
+    "lng": -73.9909,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Popeyes",
@@ -611,7 +689,9 @@
       "drive-thru"
     ],
     "lat": 40.7264,
-    "lng": -74.0357
+    "lng": -74.0357,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Qdoba",
@@ -627,7 +707,9 @@
       "catering"
     ],
     "lat": 40.6826,
-    "lng": -74.0412
+    "lng": -74.0412,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Raising Cane's",
@@ -642,7 +724,9 @@
       "fresh"
     ],
     "lat": 40.8346,
-    "lng": -74.0361
+    "lng": -74.0361,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Shake Shack",
@@ -658,7 +742,9 @@
       "quality-ingredients"
     ],
     "lat": 40.6816,
-    "lng": -73.9676
+    "lng": -73.9676,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Sonic Drive-In",
@@ -675,7 +761,9 @@
       "breakfast"
     ],
     "lat": 40.7845,
-    "lng": -73.9549
+    "lng": -73.9549,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Starbucks",
@@ -692,7 +780,9 @@
       "seasonal-drinks"
     ],
     "lat": 40.8207,
-    "lng": -73.9176
+    "lng": -73.9176,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Steak 'n Shake",
@@ -708,7 +798,9 @@
       "open-late"
     ],
     "lat": 40.8356,
-    "lng": -73.9437
+    "lng": -73.9437,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Subway",
@@ -724,7 +816,9 @@
       "global"
     ],
     "lat": 40.7937,
-    "lng": -73.9372
+    "lng": -73.9372,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Taco Bell",
@@ -741,7 +835,9 @@
       "vegetarian-friendly"
     ],
     "lat": 40.7493,
-    "lng": -73.9077
+    "lng": -73.9077,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Tropical Smoothie Cafe",
@@ -757,7 +853,9 @@
       "toasted"
     ],
     "lat": 40.8275,
-    "lng": -73.9221
+    "lng": -73.9221,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Wendy's",
@@ -774,7 +872,9 @@
       "fresh-beef"
     ],
     "lat": 40.7817,
-    "lng": -74.0027
+    "lng": -74.0027,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Whataburger",
@@ -791,7 +891,9 @@
       "customizable"
     ],
     "lat": 40.683,
-    "lng": -73.9884
+    "lng": -73.9884,
+    "website": null,
+    "phone": null
   },
   {
     "name": "White Castle",
@@ -808,7 +910,9 @@
       "midwest"
     ],
     "lat": 40.8037,
-    "lng": -74.0191
+    "lng": -74.0191,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Wingstop",
@@ -825,7 +929,9 @@
       "boneless"
     ],
     "lat": 40.6852,
-    "lng": -73.9224
+    "lng": -73.9224,
+    "website": null,
+    "phone": null
   },
   {
     "name": "Zaxby's",
@@ -842,6 +948,8 @@
       "drive-thru"
     ],
     "lat": 40.7139,
-    "lng": -73.9288
+    "lng": -73.9288,
+    "website": null,
+    "phone": null
   }
 ]
