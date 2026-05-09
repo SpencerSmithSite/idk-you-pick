@@ -9,31 +9,23 @@ Prs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3)
 
 ---
 
-## Current Phase: 4 — Action Links
-- [x] 4.1 Add `url_launcher` dependency to `pubspec.yaml`
-- [x] 4.2 Generate Google Maps URL for each restaurant (lat/lng based)
-- [x] 4.3 Generate DoorDash search URL (or fallback web search)
-- [x] 4.4 Add action buttons / chips on restaurant detail / winner view
-  - Open in Maps
-  - Search on DoorDash
-  - Call restaurant (if phone available)
-  - Visit website (if URL available)
-- [x] 4.5 Add action buttons on random choice card (Maps, DoorDash)
-- [x] 4.6 Add action buttons on head-to-head winner card
-- [x] 4.7 QA: `flutter analyze` clean
-- [x] 4.8 Commit & push Phase 4
-- [x] 4.9 Open PR for Phase 4
+## Current Phase: 5 — History / Seen Tracking
+- [x] 5.1 Persist tried-restaurant history in SharedPreferences (JSON)
+- [x] 5.2 Load history on app start; exclude tried restaurants from pool when `_avoidRepeats` enabled
+- [x] 5.3 Add `DateTime` map `_history` and `_avoidRepeats` toggle state
+- [x] 5.4 Add "Tried it" button on random choice winner card (resets app after marking)
+- [x] 5.5 Add "Tried it" button on head-to-head winner card
+- [x] 5.6 Add history icon in AppBar to open bottom sheet listing tried restaurants
+- [x] 5.7 Allow individual removal from history (X icon per item)
+- [x] 5.8 Allow clearing all history from sheet
+- [x] 5.9 QA: `flutter analyze` clean
+- [ ] 5.10 Commit & push Phase 5
+- [ ] 5.11 Open PR for Phase 5
 
----
-
-## Next Phase: 5 — History / Seen Tracking
-
-### Blocked
-- None
+### Next Phase: 6 — Share / Invite
+- Phase 6: Share / Invite (share winner to Messages, generate invite link)
 
 ### Backlog
-- Phase 5: History / Seen Tracking (mark restaurants as tried, avoid repeats)
-- Phase 6: Share / Invite (share winner to Messages, generate invite link)
 - Phase 7: Onboarding / tutorial for first-time user
 
 ---
