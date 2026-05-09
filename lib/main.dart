@@ -233,10 +233,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// Picks a winner between two restaurants and removes the loser from the pool.
+  /// Picks a winner between two restaurants and continues the bracket with a new challenger.
   void _pickWinner(String winner, String loser) {
     setState(() {
-      _restaurants.remove(loser);
       _chosenRestaurant = winner;
 
       final pool = _filteredPool;
@@ -300,25 +299,44 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_alt),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => FilterScreen(
-                        restaurants: _restaurantDetails,
-                        activeCuisines: _activeCuisines,
-                        activeTypes: _activeTypes,
-                        activePriceTiers: _activePriceTiers,
-                        onSave: () async {
-                          await _loadFilters();
-                        },
-                      ),
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.filter_alt),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => FilterScreen(
+                            restaurants: _restaurantDetails,
+                            activeCuisines: _activeCuisines,
+                            activeTypes: _activeTypes,
+                            activePriceTiers: _activePriceTiers,
+                            onSave: () async {
+                              await _loadFilters();
+                            },
+                          ),
+                    ),
+                  );
+                },
+              ),
+              if (_activeCuisines.isNotEmpty ||
+                  _activeTypes.isNotEmpty ||
+                  _activePriceTiers.isNotEmpty)
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 253, 139, 69),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
                 ),
-              );
-            },
+            ],
           ),
           IconButton(
             icon: const Icon(Icons.settings),
@@ -470,17 +488,25 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const Icon(Icons.filter_alt_off, color: Colors.white54, size: 48),
+        const SizedBox(height: 12),
         const Text(
-          "No restaurants available.",
+          "No restaurants match your filters.",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed:
-              () => setState(() {
-                _helpMeDecideMode = false;
-                _randomChoiceMode = false;
-              }),
+          onPressed: () async {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.remove('filter_cuisines');
+            await prefs.remove('filter_types');
+            await prefs.remove('filter_prices');
+            await _loadFilters();
+            setState(() {
+              _randomChoiceMode = false;
+              _chosenRestaurant = null;
+            });
+          },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
             shape: RoundedRectangleBorder(
@@ -491,11 +517,22 @@ class _MyHomePageState extends State<MyHomePage> {
             elevation: 5,
           ),
           child: const Text(
-            "Return Home",
+            "Clear Filters",
             style: TextStyle(
               color: Color.fromARGB(255, 35, 38, 40),
               fontSize: 20,
             ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        TextButton(
+          onPressed: () => setState(() {
+            _helpMeDecideMode = false;
+            _randomChoiceMode = false;
+          }),
+          child: const Text(
+            "Return Home",
+            style: TextStyle(color: Colors.white70, fontSize: 16),
           ),
         ),
       ],
@@ -650,17 +687,27 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const Icon(Icons.filter_alt_off, color: Colors.white54, size: 48),
+        const SizedBox(height: 12),
         const Text(
-          "No restaurants available.",
+          "No restaurants match your filters.",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed:
-              () => setState(() {
-                _helpMeDecideMode = false;
-                _randomChoiceMode = false;
-              }),
+          onPressed: () async {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.remove('filter_cuisines');
+            await prefs.remove('filter_types');
+            await prefs.remove('filter_prices');
+            await _loadFilters();
+            setState(() {
+              _helpMeDecideMode = false;
+              _chosenRestaurant = null;
+              _optionA = null;
+              _optionB = null;
+            });
+          },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
             shape: RoundedRectangleBorder(
@@ -671,11 +718,22 @@ class _MyHomePageState extends State<MyHomePage> {
             elevation: 5,
           ),
           child: const Text(
-            "Return Home",
+            "Clear Filters",
             style: TextStyle(
               color: Color.fromARGB(255, 35, 38, 40),
               fontSize: 20,
             ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        TextButton(
+          onPressed: () => setState(() {
+            _helpMeDecideMode = false;
+            _randomChoiceMode = false;
+          }),
+          child: const Text(
+            "Return Home",
+            style: TextStyle(color: Colors.white70, fontSize: 16),
           ),
         ),
       ],

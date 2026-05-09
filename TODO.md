@@ -18,16 +18,31 @@
 - [x] 2.5 Wire filters into random-choice generator
 - [x] 2.6 Wire filters into head-to-head pool
 - [x] 2.7 Persist filter state in SharedPreferences
-- [ ] 2.8 Add filter indicator on home screen when filters active
-- [ ] 2.9 Show "no results" state when all filters deselect everything
-- [ ] 2.10 QA: verify flutter analyze passes (no new issues)
-- [ ] 2.11 Commit & push Phase 2
+- [x] 2.8 Add filter indicator on home screen when filters active
+- [x] 2.9 Show "no results" state when all filters deselect everything
+- [x] 2.10 QA: verify flutter analyze passes (no new issues)
+- [x] 2.11 Commit & push Phase 2
 
 ### Blocked
 - None
 
 ### Backlog
 - Phase 3: Location Mode
+
+---
+
+## [Phase 3] — Location Mode
+- [ ] 3.1 Add `geolocator` dependency to `pubspec.yaml`
+- [ ] 3.2 Detect user location on app start with permission handling
+- [ ] 3.3 Add lat/lng fields to `restaurants.json` (or query Google Places API)
+- [ ] 3.4 Compute distance from user to each restaurant
+- [ ] 3.5 Add distance filter slider to FilterScreen
+- [ ] 3.6 Sort random choice / head-to-head pool by nearest first
+- [ ] 3.7 Show distance chip on restaurant cards
+- [ ] 3.8 QA: test on device with real location
+- [ ] 3.9 Commit & push Phase 3
+
+### Blocked
 - Phase 5: Action Links
 
 ---
