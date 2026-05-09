@@ -9,7 +9,9 @@
       "root-beer",
       "burgers",
       "open-late"
-    ]
+    ],
+    "lat": 40.6849,
+    "lng": -74.0389
   },
   {
     "name": "Arby's",
@@ -21,7 +23,9 @@
       "roast-beef",
       "curly-fries",
       "open-late"
-    ]
+    ],
+    "lat": 40.761,
+    "lng": -73.9686
   },
   {
     "name": "Big Chicken",
@@ -33,7 +37,9 @@
       "celebrity-chef",
       "spicy",
       "comfort-food"
-    ]
+    ],
+    "lat": 40.7775,
+    "lng": -73.9655
   },
   {
     "name": "Bojangles",
@@ -46,7 +52,9 @@
       "biscuits",
       "breakfast",
       "southern"
-    ]
+    ],
+    "lat": 40.7961,
+    "lng": -74.0589
   },
   {
     "name": "Burger King",
@@ -59,7 +67,9 @@
       "open-late",
       "breakfast",
       "flame-grilled"
-    ]
+    ],
+    "lat": 40.8095,
+    "lng": -74.0268
   },
   {
     "name": "Cane's",
@@ -71,7 +81,9 @@
       "crinkle-fries",
       "simple-menu",
       "sauce"
-    ]
+    ],
+    "lat": 40.7588,
+    "lng": -73.9053
   },
   {
     "name": "Carl's Jr.",
@@ -84,7 +96,9 @@
       "open-late",
       "thick-burgers",
       "west-coast"
-    ]
+    ],
+    "lat": 40.6956,
+    "lng": -74.0495
   },
   {
     "name": "Cava",
@@ -97,7 +111,9 @@
       "bowls",
       "vegetarian-friendly",
       "fresh"
-    ]
+    ],
+    "lat": 40.7878,
+    "lng": -73.957
   },
   {
     "name": "Checkers",
@@ -110,7 +126,9 @@
       "open-late",
       "bold-flavors",
       "fries"
-    ]
+    ],
+    "lat": 40.715,
+    "lng": -73.9535
   },
   {
     "name": "Chick-fil-A",
@@ -124,7 +142,9 @@
       "closed-sunday",
       "customer-service",
       "waffle-fries"
-    ]
+    ],
+    "lat": 40.8219,
+    "lng": -73.9435
   },
   {
     "name": "Chipotle",
@@ -138,7 +158,9 @@
       "healthy-options",
       "vegetarian-friendly",
       "fresh"
-    ]
+    ],
+    "lat": 40.8261,
+    "lng": -73.9351
   },
   {
     "name": "Church's Chicken",
@@ -151,7 +173,9 @@
       "open-late",
       "southern",
       "biscuits"
-    ]
+    ],
+    "lat": 40.7114,
+    "lng": -73.9932
   },
   {
     "name": "Culver's",
@@ -164,7 +188,9 @@
       "midwest",
       "cheese-curds",
       "family-friendly"
-    ]
+    ],
+    "lat": 40.8168,
+    "lng": -73.9937
   },
   {
     "name": "Del Taco",
@@ -178,7 +204,9 @@
       "open-late",
       "breakfast",
       "budget-friendly"
-    ]
+    ],
+    "lat": 40.6825,
+    "lng": -73.9698
   },
   {
     "name": "Denny's",
@@ -192,7 +220,9 @@
       "family-friendly",
       "pancakes",
       "comfort-food"
-    ]
+    ],
+    "lat": 40.6835,
+    "lng": -74.0034
   },
   {
     "name": "Domino's Pizza",
@@ -205,7 +235,9 @@
       "wings",
       "customizable",
       "tracker"
-    ]
+    ],
+    "lat": 40.7129,
+    "lng": -74.0494
   },
   {
     "name": "Dunkin'",
@@ -218,7 +250,9 @@
       "coffee",
       "donuts",
       "open-early"
-    ]
+    ],
+    "lat": 40.7414,
+    "lng": -73.9061
   },
   {
     "name": "El Pollo Loco",
@@ -231,7 +265,9 @@
       "tacos",
       "burritos",
       "salsa-bar"
-    ]
+    ],
+    "lat": 40.6889,
+    "lng": -73.9296
   },
   {
     "name": "Firehouse Subs",
@@ -244,7 +280,9 @@
       "foundation",
       "deli-style",
       "catering"
-    ]
+    ],
+    "lat": 40.7397,
+    "lng": -73.9163
   },
   {
     "name": "Five Guys",
@@ -257,7 +295,9 @@
       "customizable",
       "fresh-cut-fries",
       "made-to-order"
-    ]
+    ],
+    "lat": 40.7753,
+    "lng": -73.962
   },
   {
     "name": "Freddy's Frozen Custard & Steakburgers",
@@ -270,7 +310,9 @@
       "retro",
       "concretes",
       "thin-patties"
-    ]
+    ],
+    "lat": 40.6937,
+    "lng": -73.9695
   },
   {
     "name": "Hardee's",
@@ -283,7 +325,9 @@
       "breakfast",
       "biscuits",
       "thick-burgers"
-    ]
+    ],
+    "lat": 40.8045,
+    "lng": -73.976
   },
   {
     "name": "Habit Burger & Grill",
@@ -296,7 +340,9 @@
       "salads",
       "customizable",
       "california"
-    ]
+    ],
+    "lat": 40.7234,
+    "lng": -73.9578
   },
   {
     "name": "In-N-Out Burger",
@@ -310,7 +356,9 @@
       "west-coast",
       "animal-style",
       "simple-menu"
-    ]
+    ],
+    "lat": 40.8117,
+    "lng": -73.9373
   },
   {
     "name": "Jack in the Box",
@@ -324,7 +372,9 @@
       "breakfast",
       "burgers",
       "munchies"
-    ]
+    ],
+    "lat": 40.7095,
+    "lng": -74.0103
   },
   {
     "name": "Jersey Mike's",
@@ -337,7 +387,9 @@
       "provolone,oil-and-vinegar",
       "catering",
       "east-coast"
-    ]
+    ],
+    "lat": 40.7652,
+    "lng": -73.9778
   },
   {
     "name": "Jimmy John's",
@@ -350,7 +402,9 @@
       "freaky-fast",
       "open-late",
       "simple-menu"
-    ]
+    ],
+    "lat": 40.6925,
+    "lng": -73.9412
   },
   {
     "name": "KFC",
@@ -364,7 +418,9 @@
       "open-late",
       "buckets",
       "mashed-potatoes"
-    ]
+    ],
+    "lat": 40.8306,
+    "lng": -74.0277
   },
   {
     "name": "Little Caesars",
@@ -377,7 +433,9 @@
       "pickup",
       "open-late",
       "crazy-bread"
-    ]
+    ],
+    "lat": 40.8207,
+    "lng": -74.0284
   },
   {
     "name": "Marco's Pizza",
@@ -390,7 +448,9 @@
       "cheesy-bread",
       "fresh-dough",
       "family-size"
-    ]
+    ],
+    "lat": 40.7269,
+    "lng": -73.9661
   },
   {
     "name": "McAlister's Deli",
@@ -404,7 +464,9 @@
       "tea",
       "spuds",
       "catering"
-    ]
+    ],
+    "lat": 40.7185,
+    "lng": -74.0144
   },
   {
     "name": "McDonald's",
@@ -419,7 +481,9 @@
       "happy-meal",
       "global",
       "coffee"
-    ]
+    ],
+    "lat": 40.7089,
+    "lng": -74.0344
   },
   {
     "name": "Moe's Southwest Grill",
@@ -433,7 +497,9 @@
       "chips-and-salsa",
       "welcome-to-moes",
       "vegetarian-friendly"
-    ]
+    ],
+    "lat": 40.8259,
+    "lng": -73.9285
   },
   {
     "name": "Mooyah Burgers, Fries & Shakes",
@@ -447,7 +513,9 @@
       "shakes",
       "gluten-free-bun",
       "made-to-order"
-    ]
+    ],
+    "lat": 40.7156,
+    "lng": -73.9069
   },
   {
     "name": "Panda Express",
@@ -461,7 +529,9 @@
       "bowls",
       "drive-thru",
       "fortune-cookies"
-    ]
+    ],
+    "lat": 40.6803,
+    "lng": -73.9969
   },
   {
     "name": "Panera Bread",
@@ -477,7 +547,9 @@
       "rewards",
       "healthy-options",
       "cafe"
-    ]
+    ],
+    "lat": 40.7069,
+    "lng": -73.959
   },
   {
     "name": "Papa John's",
@@ -490,7 +562,9 @@
       "wings",
       "open-late",
       "dipping-sauces"
-    ]
+    ],
+    "lat": 40.7237,
+    "lng": -73.9538
   },
   {
     "name": "Papa Murphy's",
@@ -503,7 +577,9 @@
       "family-size",
       "budget-friendly",
       "fresh-dough"
-    ]
+    ],
+    "lat": 40.7067,
+    "lng": -74.0012
   },
   {
     "name": "Pizza Hut",
@@ -517,7 +593,9 @@
       "buffet",
       "breadsticks",
       "family-friendly"
-    ]
+    ],
+    "lat": 40.7923,
+    "lng": -73.9909
   },
   {
     "name": "Popeyes",
@@ -531,7 +609,9 @@
       "cajun",
       "mashed-potatoes",
       "drive-thru"
-    ]
+    ],
+    "lat": 40.7264,
+    "lng": -74.0357
   },
   {
     "name": "Qdoba",
@@ -545,7 +625,9 @@
       "tacos",
       "vegetarian-friendly",
       "catering"
-    ]
+    ],
+    "lat": 40.6826,
+    "lng": -74.0412
   },
   {
     "name": "Raising Cane's",
@@ -558,7 +640,9 @@
       "simple-menu",
       "cane's-sauce",
       "fresh"
-    ]
+    ],
+    "lat": 40.8346,
+    "lng": -74.0361
   },
   {
     "name": "Shake Shack",
@@ -572,7 +656,9 @@
       "hot-dogs",
       "modern",
       "quality-ingredients"
-    ]
+    ],
+    "lat": 40.6816,
+    "lng": -73.9676
   },
   {
     "name": "Sonic Drive-In",
@@ -587,7 +673,9 @@
       "slushes",
       "carhop",
       "breakfast"
-    ]
+    ],
+    "lat": 40.7845,
+    "lng": -73.9549
   },
   {
     "name": "Starbucks",
@@ -602,7 +690,9 @@
       "mobile-order",
       "pastries",
       "seasonal-drinks"
-    ]
+    ],
+    "lat": 40.8207,
+    "lng": -73.9176
   },
   {
     "name": "Steak 'n Shake",
@@ -616,7 +706,9 @@
       "fries",
       "diner",
       "open-late"
-    ]
+    ],
+    "lat": 40.8356,
+    "lng": -73.9437
   },
   {
     "name": "Subway",
@@ -630,7 +722,9 @@
       "fresh",
       "breakfast",
       "global"
-    ]
+    ],
+    "lat": 40.7937,
+    "lng": -73.9372
   },
   {
     "name": "Taco Bell",
@@ -645,7 +739,9 @@
       "breakfast",
       "value-menu",
       "vegetarian-friendly"
-    ]
+    ],
+    "lat": 40.7493,
+    "lng": -73.9077
   },
   {
     "name": "Tropical Smoothie Cafe",
@@ -659,7 +755,9 @@
       "healthy-options",
       "bowls",
       "toasted"
-    ]
+    ],
+    "lat": 40.8275,
+    "lng": -73.9221
   },
   {
     "name": "Wendy's",
@@ -674,7 +772,9 @@
       "open-late",
       "breakfast",
       "fresh-beef"
-    ]
+    ],
+    "lat": 40.7817,
+    "lng": -74.0027
   },
   {
     "name": "Whataburger",
@@ -689,7 +789,9 @@
       "spicy-ketchup",
       "texas",
       "customizable"
-    ]
+    ],
+    "lat": 40.683,
+    "lng": -73.9884
   },
   {
     "name": "White Castle",
@@ -704,7 +806,9 @@
       "fries",
       "breakfast",
       "midwest"
-    ]
+    ],
+    "lat": 40.8037,
+    "lng": -74.0191
   },
   {
     "name": "Wingstop",
@@ -719,7 +823,9 @@
       "delivery",
       "open-late",
       "boneless"
-    ]
+    ],
+    "lat": 40.6852,
+    "lng": -73.9224
   },
   {
     "name": "Zaxby's",
@@ -734,6 +840,8 @@
       "zax-sauce",
       "southern",
       "drive-thru"
-    ]
+    ],
+    "lat": 40.7139,
+    "lng": -73.9288
   }
 ]

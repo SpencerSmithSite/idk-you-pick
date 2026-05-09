@@ -6,7 +6,9 @@ class FilterScreen extends StatefulWidget {
   final Set<String> activeCuisines;
   final Set<String> activeTypes;
   final Set<String> activePriceTiers;
+  final double maxDistance;
   final Future<void> Function() onSave;
+  final ValueChanged<double>? onDistanceChanged;
 
   const FilterScreen({
     super.key,
@@ -14,7 +16,9 @@ class FilterScreen extends StatefulWidget {
     required this.activeCuisines,
     required this.activeTypes,
     required this.activePriceTiers,
+    required this.maxDistance,
     required this.onSave,
+    this.onDistanceChanged,
   });
 
   @override
@@ -28,6 +32,7 @@ class _FilterScreenState extends State<FilterScreen> {
   late Set<String> _selectedCuisines;
   late Set<String> _selectedTypes;
   late Set<String> _selectedPriceTiers;
+  late double _maxDistance;
 
   @override
   void initState() {
@@ -44,10 +49,12 @@ class _FilterScreenState extends State<FilterScreen> {
     _selectedCuisines = Set.from(widget.activeCuisines);
     _selectedTypes = Set.from(widget.activeTypes);
     _selectedPriceTiers = Set.from(widget.activePriceTiers);
+    _maxDistance = widget.maxDistance;
   }
 
   Future<void> _saveFilters() async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('filter_max_distance', _maxDistance);
     await prefs.setStringList('filter_cuisines', _selectedCuisines.toList());
     await prefs.setStringList('filter_types', _selectedTypes.toList());
     await prefs.setStringList('filter_prices', _selectedPriceTiers.toList());
@@ -182,6 +189,44 @@ class _FilterScreenState extends State<FilterScreen> {
                   _selectedPriceTiers.add(v);
                 }
               }),
+              const SizedBox(height: 20),
+              const Text(
+                "Max Distance",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: Slider(
+                      value: _maxDistance,
+                      min: 1.0,
+                      max: 25.0,
+                      divisions: 24,
+                      label: '${_maxDistance.toStringAsFixed(0)} mi',
+                      activeColor: const Color.fromARGB(255, 253, 139, 69),
+                      inactiveColor: const Color.fromARGB(255, 72, 80, 85),
+                      onChanged: (value) {
+                        setState(() {
+                          _maxDistance = value;
+                        });
+                      },
+                    ),
+                  ),
+                  Text(
+                    '${_maxDistance.toStringAsFixed(0)} mi',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
               const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

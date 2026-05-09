@@ -31,19 +31,19 @@
 
 ---
 
-## [Phase 3] — Location Mode
-- [ ] 3.1 Add `geolocator` dependency to `pubspec.yaml`
-- [ ] 3.2 Detect user location on app start with permission handling
-- [ ] 3.3 Add lat/lng fields to `restaurants.json` (or query Google Places API)
-- [ ] 3.4 Compute distance from user to each restaurant
-- [ ] 3.5 Add distance filter slider to FilterScreen
-- [ ] 3.6 Sort random choice / head-to-head pool by nearest first
-- [ ] 3.7 Show distance chip on restaurant cards
-- [ ] 3.8 QA: test on device with real location
-- [ ] 3.9 Commit & push Phase 3
+## Current Phase: 3 — Location Mode
+- [x] 3.1 Add `geolocator` dependency to `pubspec.yaml`
+- [x] 3.2 Detect user location on app start with permission handling
+- [x] 3.3 Add lat/lng fields to `restaurants.json` (or query Google Places API)
+- [x] 3.4 Compute distance from user to each restaurant
+- [x] 3.5 Add distance filter slider to FilterScreen
+- [x] 3.6 Sort random choice / head-to-head pool by nearest first
+- [x] 3.7 Show distance chip on restaurant cards
+- [x] 3.8 QA: `flutter analyze` clean
+- [x] 3.9 Commit & push Phase 3
 
 ### Blocked
-- Phase 5: Action Links
+- Phase 4: Action Links
 
 ---
 

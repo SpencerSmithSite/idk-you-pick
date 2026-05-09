@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:shared_preferences/shared_preferences.dart'; // Add this import
-import 'settings.dart'; // Add this import
-import 'filter_screen.dart'; // Filter UI
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+import 'settings.dart';
+import 'filter_screen.dart';
+import 'location_service.dart';
 
 void main() {
   try {
@@ -54,6 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Set<String> _activeTypes = {};
   Set<String> _activePriceTiers = {};
 
+  // Location state
+  Position? _userPosition;
+  double _maxDistanceMiles = 10.0;
   // Flags to manage app modes
   bool _helpMeDecideMode = false;
   bool _randomChoiceMode = false;
@@ -69,6 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
       final prefs = await SharedPreferences.getInstance();
       await _loadRestaurants();
       await _loadFilters();
+      await _loadDistanceFilter();
+      _userPosition = await LocationService.determinePosition();
       setState(() {
         _restaurantPreferences = {
           for (var item in _restaurants) item: prefs.getBool(item) ?? true,
@@ -115,6 +122,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  /// Load saved distance filter state from SharedPreferences.
+  Future<void> _loadDistanceFilter() async {
+    final prefs = await SharedPreferences.getInstance();
+    _maxDistanceMiles = prefs.getDouble('filter_max_distance') ?? 10.0;
+  }
+
   /// Load saved filter state from SharedPreferences.
   Future<void> _loadFilters() async {
     final prefs = await SharedPreferences.getInstance();
@@ -125,19 +138,38 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// Returns the pool of restaurants after applying preferences and active filters.
+  /// Returns the pool of restaurants after applying preferences, active filters, and distance.
   List<String> get _filteredPool {
+    List<Map<String, dynamic>> pool;
     if (_restaurantDetails.isEmpty) {
-      return _restaurants.where((r) => _restaurantPreferences[r] ?? true).toList();
+      pool = _restaurants
+          .where((r) => _restaurantPreferences[r] ?? true)
+          .map((r) => <String, dynamic>{'name': r})
+          .toList();
+    } else {
+      pool = _restaurantDetails.where((r) {
+        final name = r['name'] as String;
+        if (!(_restaurantPreferences[name] ?? true)) return false;
+        if (_activeCuisines.isNotEmpty && !_activeCuisines.contains(r['cuisine'])) return false;
+        if (_activeTypes.isNotEmpty && !_activeTypes.contains(r['type'])) return false;
+        if (_activePriceTiers.isNotEmpty && !_activePriceTiers.contains(r['priceTier'])) return false;
+        return true;
+      }).toList();
     }
-    return _restaurantDetails.where((r) {
-      final name = r['name'] as String;
-      if (!(_restaurantPreferences[name] ?? true)) return false;
-      if (_activeCuisines.isNotEmpty && !_activeCuisines.contains(r['cuisine'])) return false;
-      if (_activeTypes.isNotEmpty && !_activeTypes.contains(r['type'])) return false;
-      if (_activePriceTiers.isNotEmpty && !_activePriceTiers.contains(r['priceTier'])) return false;
-      return true;
-    }).map((r) => r['name'] as String).toList();
+
+    if (_userPosition != null && _maxDistanceMiles > 0) {
+      final lat = _userPosition!.latitude;
+      final lng = _userPosition!.longitude;
+      pool = pool.where((r) {
+        final rLat = r['lat'] as double?;
+        final rLng = r['lng'] as double?;
+        if (rLat == null || rLng == null) return true; // keep items with no coords
+        final d = LocationService.distanceInMiles(lat, lng, rLat, rLng);
+        return d <= _maxDistanceMiles;
+      }).toList();
+    }
+
+    return pool.map((r) => r['name'] as String).toList();
   }
 
   Widget _buildRestaurantDetailChip(String label, Color bgColor) {
@@ -180,9 +212,28 @@ class _MyHomePageState extends State<MyHomePage> {
             if (priceTier != null && priceTier.isNotEmpty)
               _buildRestaurantDetailChip(priceTier, const Color.fromARGB(255, 253, 139, 69)),
             ...tags.map((t) => _buildRestaurantDetailChip(t, const Color.fromARGB(255, 100, 100, 100))),
+            _buildDistanceMeta(details),
           ],
         ),
       ],
+    );
+  }
+
+  /// Compute distance from user to this restaurant and return a chip, or nothing if no location.
+  Widget _buildDistanceMeta(Map<String, dynamic>? details) {
+    if (details == null || _userPosition == null) return const SizedBox.shrink();
+    final rLat = details['lat'] as double?;
+    final rLng = details['lng'] as double?;
+    if (rLat == null || rLng == null) return const SizedBox.shrink();
+    final d = LocationService.distanceInMiles(
+      _userPosition!.latitude,
+      _userPosition!.longitude,
+      rLat,
+      rLng,
+    );
+    return _buildRestaurantDetailChip(
+      '${d.toStringAsFixed(1)} mi',
+      const Color.fromARGB(255, 47, 168, 156),
     );
   }
 
@@ -199,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Picks a random restaurant from the filtered list and shows it.
   void _chooseRandom() {
-    final pool = _filteredPool;
+    final pool = List<String>.from(_filteredPool);
     setState(() {
       _helpMeDecideMode = false;
       _randomChoiceMode = true;
@@ -313,8 +364,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             activeCuisines: _activeCuisines,
                             activeTypes: _activeTypes,
                             activePriceTiers: _activePriceTiers,
+                            maxDistance: _maxDistanceMiles,
+                            onDistanceChanged: (value) {
+                              setState(() {
+                                _maxDistanceMiles = value;
+                              });
+                            },
                             onSave: () async {
                               await _loadFilters();
+                              await _loadDistanceFilter();
                             },
                           ),
                     ),
