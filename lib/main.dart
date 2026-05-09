@@ -41,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> _restaurants = [];
+  List<Map<String, dynamic>> _restaurantDetails = [];
   Map<String, bool> _restaurantPreferences = {};
   String? _chosenRestaurant;
   String? _optionA;
@@ -80,7 +81,16 @@ class _MyHomePageState extends State<MyHomePage> {
       );
       final List<dynamic> jsonList = json.decode(jsonString);
       setState(() {
-        _restaurants = jsonList.cast<String>();
+        // Support both old format (List<String>) and new rich format (List<Map>)
+        if (jsonList.isNotEmpty && jsonList.first is Map) {
+          _restaurantDetails = jsonList.cast<Map<String, dynamic>>();
+          _restaurants = _restaurantDetails
+              .map((r) => r['name'] as String)
+              .toList();
+        } else {
+          _restaurants = jsonList.cast<String>();
+          _restaurantDetails = [];
+        }
       });
     } catch (e) {
       setState(() {

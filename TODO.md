@@ -3,9 +3,12 @@
 ## Current Phase: 1 — Data Overhaul
 
 ### In Progress
-- [ ] 1.1 Recreate `restaurants.json` with rich metadata
-- [ ] 1.2 Add new fields: cuisine, type, priceTier, tags[]
-- [ ] 1.3 Update `main.dart` loader/parser
+- [-] 1.3 Update `main.dart` loader/parser
+
+### Done
+- [x] 1.1 Recreate `restaurants.json` with rich metadata
+- [x] 1.2 Add new fields: cuisine, type, priceTier, tags[]
+- [x] 1.3 Update `main.dart` loader/parser
 
 ### Next Up
 - [ ] 1.4 Test data loads correctly

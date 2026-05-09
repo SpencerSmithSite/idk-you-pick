@@ -1,56 +1,739 @@
 [
-"A&W",
-"Arby's",
-"Big Chicken",
-"Bojangles",
-"Burger King",
-"Cane's",
-"Carl's Jr.",
-"Cava",
-"Checkers",
-"Chick-fil-A",
-"Chipotle",
-"Church's Chicken",
-"Culver's",
-"Del Taco",
-"Denny's",
-"Domino's Pizza",
-"Dunkin'",
-"El Pollo Loco",
-"Firehouse Subs",
-"Five Guys",
-"Freddy's Frozen Custard & Steakburgers",
-"Hardee's",
-"Habit Burger & Grill",
-"In-N-Out Burger",
-"Jack in the Box",
-"Jersey Mike's",
-"Jimmy John's",
-"KFC",
-"Little Caesars",
-"Marco's Pizza",
-"McAlister's Deli",
-"McDonald's",
-"Moe's Southwest Grill",
-"Mooyah Burgers, Fries & Shakes",
-"Panda Express",
-"Panera Bread",
-"Papa John's",
-"Papa Murphy's",
-"Pizza Hut",
-"Popeyes",
-"Qdoba",
-"Raising Cane's",
-"Shake Shack",
-"Sonic Drive-In",
-"Starbucks",
-"Steak 'n Shake",
-"Subway",
-"Taco Bell",
-"Tropical Smoothie Cafe",
-"Wendy's",
-"Whataburger",
-"White Castle",
-"Wingstop",
-"Zaxby's"
+  {
+    "name": "A&W",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "root-beer",
+      "burgers",
+      "open-late"
+    ]
+  },
+  {
+    "name": "Arby's",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "roast-beef",
+      "curly-fries",
+      "open-late"
+    ]
+  },
+  {
+    "name": "Big Chicken",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "chicken",
+      "celebrity-chef",
+      "spicy",
+      "comfort-food"
+    ]
+  },
+  {
+    "name": "Bojangles",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "fried-chicken",
+      "biscuits",
+      "breakfast",
+      "southern"
+    ]
+  },
+  {
+    "name": "Burger King",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "burgers",
+      "open-late",
+      "breakfast",
+      "flame-grilled"
+    ]
+  },
+  {
+    "name": "Cane's",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$",
+    "tags": [
+      "chicken-fingers",
+      "crinkle-fries",
+      "simple-menu",
+      "sauce"
+    ]
+  },
+  {
+    "name": "Carl's Jr.",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "burgers",
+      "open-late",
+      "thick-burgers",
+      "west-coast"
+    ]
+  },
+  {
+    "name": "Cava",
+    "cuisine": "Mediterranean",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "healthy-options",
+      "customizable",
+      "bowls",
+      "vegetarian-friendly",
+      "fresh"
+    ]
+  },
+  {
+    "name": "Checkers",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "burgers",
+      "open-late",
+      "bold-flavors",
+      "fries"
+    ]
+  },
+  {
+    "name": "Chick-fil-A",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "chicken",
+      "drive-thru",
+      "breakfast",
+      "closed-sunday",
+      "customer-service",
+      "waffle-fries"
+    ]
+  },
+  {
+    "name": "Chipotle",
+    "cuisine": "Mexican",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "customizable",
+      "burritos",
+      "bowls",
+      "healthy-options",
+      "vegetarian-friendly",
+      "fresh"
+    ]
+  },
+  {
+    "name": "Church's Chicken",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "fried-chicken",
+      "open-late",
+      "southern",
+      "biscuits"
+    ]
+  },
+  {
+    "name": "Culver's",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "butter-burgers",
+      "frozen-custard",
+      "midwest",
+      "cheese-curds",
+      "family-friendly"
+    ]
+  },
+  {
+    "name": "Del Taco",
+    "cuisine": "Mexican",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "tacos",
+      "burritos",
+      "open-late",
+      "breakfast",
+      "budget-friendly"
+    ]
+  },
+  {
+    "name": "Denny's",
+    "cuisine": "American",
+    "type": "Casual Dining",
+    "priceTier": "$$",
+    "tags": [
+      "breakfast",
+      "open-24-hours",
+      "diner",
+      "family-friendly",
+      "pancakes",
+      "comfort-food"
+    ]
+  },
+  {
+    "name": "Domino's Pizza",
+    "cuisine": "Pizza",
+    "type": "Fast Food",
+    "priceTier": "$$",
+    "tags": [
+      "delivery",
+      "open-late",
+      "wings",
+      "customizable",
+      "tracker"
+    ]
+  },
+  {
+    "name": "Dunkin'",
+    "cuisine": "Coffee/Breakfast",
+    "type": "Fast Casual",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "breakfast",
+      "coffee",
+      "donuts",
+      "open-early"
+    ]
+  },
+  {
+    "name": "El Pollo Loco",
+    "cuisine": "Mexican",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "flame-grilled-chicken",
+      "healthy-options",
+      "tacos",
+      "burritos",
+      "salsa-bar"
+    ]
+  },
+  {
+    "name": "Firehouse Subs",
+    "cuisine": "Sandwich",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "subs",
+      "steamed-meats",
+      "foundation",
+      "deli-style",
+      "catering"
+    ]
+  },
+  {
+    "name": "Five Guys",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "burgers",
+      "peanuts",
+      "customizable",
+      "fresh-cut-fries",
+      "made-to-order"
+    ]
+  },
+  {
+    "name": "Freddy's Frozen Custard & Steakburgers",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "steakburgers",
+      "frozen-custard",
+      "retro",
+      "concretes",
+      "thin-patties"
+    ]
+  },
+  {
+    "name": "Hardee's",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "burgers",
+      "breakfast",
+      "biscuits",
+      "thick-burgers"
+    ]
+  },
+  {
+    "name": "Habit Burger & Grill",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "charburger",
+      "open-flame",
+      "salads",
+      "customizable",
+      "california"
+    ]
+  },
+  {
+    "name": "In-N-Out Burger",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "burgers",
+      "secret-menu",
+      "fresh",
+      "west-coast",
+      "animal-style",
+      "simple-menu"
+    ]
+  },
+  {
+    "name": "Jack in the Box",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "open-late",
+      "tacos",
+      "breakfast",
+      "burgers",
+      "munchies"
+    ]
+  },
+  {
+    "name": "Jersey Mike's",
+    "cuisine": "Sandwich",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "subs",
+      "fresh-sliced",
+      "provolone,oil-and-vinegar",
+      "catering",
+      "east-coast"
+    ]
+  },
+  {
+    "name": "Jimmy John's",
+    "cuisine": "Sandwich",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "subs",
+      "delivery",
+      "freaky-fast",
+      "open-late",
+      "simple-menu"
+    ]
+  },
+  {
+    "name": "KFC",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "fried-chicken",
+      "biscuits",
+      "open-late",
+      "buckets",
+      "mashed-potatoes"
+    ]
+  },
+  {
+    "name": "Little Caesars",
+    "cuisine": "Pizza",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "budget-friendly",
+      "hot-and-ready",
+      "pickup",
+      "open-late",
+      "crazy-bread"
+    ]
+  },
+  {
+    "name": "Marco's Pizza",
+    "cuisine": "Pizza",
+    "type": "Fast Food",
+    "priceTier": "$$",
+    "tags": [
+      "delivery",
+      "wings",
+      "cheesy-bread",
+      "fresh-dough",
+      "family-size"
+    ]
+  },
+  {
+    "name": "McAlister's Deli",
+    "cuisine": "Sandwich",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "deli",
+      "soup",
+      "salads",
+      "tea",
+      "spuds",
+      "catering"
+    ]
+  },
+  {
+    "name": "McDonald's",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "burgers",
+      "breakfast",
+      "open-late",
+      "happy-meal",
+      "global",
+      "coffee"
+    ]
+  },
+  {
+    "name": "Moe's Southwest Grill",
+    "cuisine": "Mexican",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "customizable",
+      "burritos",
+      "tacos",
+      "chips-and-salsa",
+      "welcome-to-moes",
+      "vegetarian-friendly"
+    ]
+  },
+  {
+    "name": "Mooyah Burgers, Fries & Shakes",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "burgers",
+      "customizable",
+      "fries",
+      "shakes",
+      "gluten-free-bun",
+      "made-to-order"
+    ]
+  },
+  {
+    "name": "Panda Express",
+    "cuisine": "Asian",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "chinese",
+      "orange-chicken",
+      "wok-fired",
+      "bowls",
+      "drive-thru",
+      "fortune-cookies"
+    ]
+  },
+  {
+    "name": "Panera Bread",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "bakery",
+      "soup",
+      "salads",
+      "sandwiches",
+      "bread-bowls",
+      "rewards",
+      "healthy-options",
+      "cafe"
+    ]
+  },
+  {
+    "name": "Papa John's",
+    "cuisine": "Pizza",
+    "type": "Fast Food",
+    "priceTier": "$$",
+    "tags": [
+      "delivery",
+      "garlic-sauce",
+      "wings",
+      "open-late",
+      "dipping-sauces"
+    ]
+  },
+  {
+    "name": "Papa Murphy's",
+    "cuisine": "Pizza",
+    "type": "Fast Food",
+    "priceTier": "$$",
+    "tags": [
+      "take-and-bake",
+      "customizable",
+      "family-size",
+      "budget-friendly",
+      "fresh-dough"
+    ]
+  },
+  {
+    "name": "Pizza Hut",
+    "cuisine": "Pizza",
+    "type": "Fast Food",
+    "priceTier": "$$",
+    "tags": [
+      "delivery",
+      "wings",
+      "pasta",
+      "buffet",
+      "breadsticks",
+      "family-friendly"
+    ]
+  },
+  {
+    "name": "Popeyes",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "fried-chicken",
+      "biscuits",
+      "spicy",
+      "cajun",
+      "mashed-potatoes",
+      "drive-thru"
+    ]
+  },
+  {
+    "name": "Qdoba",
+    "cuisine": "Mexican",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "customizable",
+      "burritos",
+      "queso",
+      "tacos",
+      "vegetarian-friendly",
+      "catering"
+    ]
+  },
+  {
+    "name": "Raising Cane's",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "chicken-fingers",
+      "crinkle-fries",
+      "simple-menu",
+      "cane's-sauce",
+      "fresh"
+    ]
+  },
+  {
+    "name": "Shake Shack",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "burgers",
+      "shakes",
+      "crinkle-fries",
+      "hot-dogs",
+      "modern",
+      "quality-ingredients"
+    ]
+  },
+  {
+    "name": "Sonic Drive-In",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-in",
+      "burgers",
+      "open-late",
+      "tots",
+      "slushes",
+      "carhop",
+      "breakfast"
+    ]
+  },
+  {
+    "name": "Starbucks",
+    "cuisine": "Coffee/Breakfast",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "coffee",
+      "breakfast",
+      "wifi",
+      "drive-thru",
+      "mobile-order",
+      "pastries",
+      "seasonal-drinks"
+    ]
+  },
+  {
+    "name": "Steak 'n Shake",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "steakburgers",
+      "milkshakes",
+      "thin-patties",
+      "fries",
+      "diner",
+      "open-late"
+    ]
+  },
+  {
+    "name": "Subway",
+    "cuisine": "Sandwich",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "subs",
+      "customizable",
+      "healthy-options",
+      "fresh",
+      "breakfast",
+      "global"
+    ]
+  },
+  {
+    "name": "Taco Bell",
+    "cuisine": "Mexican",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "tacos",
+      "burritos",
+      "open-late",
+      "breakfast",
+      "value-menu",
+      "vegetarian-friendly"
+    ]
+  },
+  {
+    "name": "Tropical Smoothie Cafe",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "smoothies",
+      "wraps",
+      "sandwiches",
+      "healthy-options",
+      "bowls",
+      "toasted"
+    ]
+  },
+  {
+    "name": "Wendy's",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "drive-thru",
+      "burgers",
+      "frosty",
+      "chili",
+      "open-late",
+      "breakfast",
+      "fresh-beef"
+    ]
+  },
+  {
+    "name": "Whataburger",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$$",
+    "tags": [
+      "burgers",
+      "orange-and-white",
+      "breakfast",
+      "open-24-hours",
+      "spicy-ketchup",
+      "texas",
+      "customizable"
+    ]
+  },
+  {
+    "name": "White Castle",
+    "cuisine": "American",
+    "type": "Fast Food",
+    "priceTier": "$",
+    "tags": [
+      "sliders",
+      "crave-case",
+      "open-late",
+      "small-burgers",
+      "fries",
+      "breakfast",
+      "midwest"
+    ]
+  },
+  {
+    "name": "Wingstop",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "wings",
+      "flavors",
+      "fries",
+      "ranch",
+      "delivery",
+      "open-late",
+      "boneless"
+    ]
+  },
+  {
+    "name": "Zaxby's",
+    "cuisine": "American",
+    "type": "Fast Casual",
+    "priceTier": "$$",
+    "tags": [
+      "chicken",
+      "wings",
+      "salads",
+      "toast",
+      "zax-sauce",
+      "southern",
+      "drive-thru"
+    ]
+  }
 ]
