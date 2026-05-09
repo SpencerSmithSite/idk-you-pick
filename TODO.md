@@ -8,25 +8,26 @@
 - [x] 1.3 Update `main.dart` loader/parser
 - [x] 1.4 Wire metadata into UI (random choice, head-to-head, winner views)
 - [x] 1.5 Commit Phase 1 work
-
-### Next Up
 - [x] 1.6 Update PR #7 with latest changes
 
 ### Current Phase: 2 — Filter UI
-- [ ] 2.1 Design filter UI layout (bottom sheet or settings page)
-- [ ] 2.2 Add cuisine filter chips (multi-select)
-- [ ] 2.3 Add type filter chips (multi-select)
-- [ ] 2.4 Add priceTier filter slider or chips
-- [ ] 2.5 Wire filters into random-choice generator
-- [ ] 2.6 Wire filters into head-to-head pool
-- [ ] 2.7 Persist filter state in SharedPreferences
+- [x] 2.1 Design filter UI layout (bottom sheet or settings page)
+- [x] 2.2 Add cuisine filter chips (multi-select)
+- [x] 2.3 Add type filter chips (multi-select)
+- [x] 2.4 Add priceTier filter chips
+- [x] 2.5 Wire filters into random-choice generator
+- [x] 2.6 Wire filters into head-to-head pool
+- [x] 2.7 Persist filter state in SharedPreferences
+- [ ] 2.8 Add filter indicator on home screen when filters active
+- [ ] 2.9 Show "no results" state when all filters deselect everything
+- [ ] 2.10 QA: verify flutter analyze passes (no new issues)
+- [ ] 2.11 Commit & push Phase 2
 
 ### Blocked
 - None
 
 ### Backlog
 - Phase 3: Location Mode
-- Phase 4: Dual Filters (already Phase 2, will renumber later)
 - Phase 5: Action Links
 
 ---

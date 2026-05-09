@@ -19,6 +19,19 @@
 
 ---
 
+## [0.1.2] — 2026-05-08
+### Phase 2: Filter UI
+- **feat:** Added `lib/filter_screen.dart` with multi-select chip groups for Cuisine, Type, and Price Tier
+- **feat:** Wired `_filteredPool` getter into `lib/main.dart` — applies preferences + active filters to random choice and head-to-head pools
+- **feat:** Filter state persisted in SharedPreferences (`filter_cuisines`, `filter_types`, `filter_prices`)
+- **feat:** Added filter icon to AppBar; settings icon moved alongside
+- **feat:** Dynamic filter pool rebuilds when user returns from FilterScreen
+- **fix:** Resolved `use_build_context_synchronously` lint in filter_screen.dart by capturing `Navigator.of(context)` before async gaps
+- Verified: `flutter analyze` — no NEW issues introduced (11 total, same 6 pre-existing dataconnect errors + 2 pre-existing lints + 1 asset warning)
+- Branch: `data/phase-2-filter-ui`
+
+---
+
 ## Format
 ### Date — Title
 - What changed

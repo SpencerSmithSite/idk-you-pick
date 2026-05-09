@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart'; // Add this import
 import 'settings.dart'; // Add this import
+import 'filter_screen.dart'; // Filter UI
 
 void main() {
   try {
@@ -48,6 +49,11 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _optionB;
   String? _errorMessage;
 
+  // Filter state
+  Set<String> _activeCuisines = {};
+  Set<String> _activeTypes = {};
+  Set<String> _activePriceTiers = {};
+
   // Flags to manage app modes
   bool _helpMeDecideMode = false;
   bool _randomChoiceMode = false;
@@ -62,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await _loadRestaurants();
+      await _loadFilters();
       setState(() {
         _restaurantPreferences = {
           for (var item in _restaurants) item: prefs.getBool(item) ?? true,
@@ -106,6 +113,31 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       return null;
     }
+  }
+
+  /// Load saved filter state from SharedPreferences.
+  Future<void> _loadFilters() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _activeCuisines = (prefs.getStringList('filter_cuisines') ?? []).toSet();
+      _activeTypes = (prefs.getStringList('filter_types') ?? []).toSet();
+      _activePriceTiers = (prefs.getStringList('filter_prices') ?? []).toSet();
+    });
+  }
+
+  /// Returns the pool of restaurants after applying preferences and active filters.
+  List<String> get _filteredPool {
+    if (_restaurantDetails.isEmpty) {
+      return _restaurants.where((r) => _restaurantPreferences[r] ?? true).toList();
+    }
+    return _restaurantDetails.where((r) {
+      final name = r['name'] as String;
+      if (!(_restaurantPreferences[name] ?? true)) return false;
+      if (_activeCuisines.isNotEmpty && !_activeCuisines.contains(r['cuisine'])) return false;
+      if (_activeTypes.isNotEmpty && !_activeTypes.contains(r['type'])) return false;
+      if (_activePriceTiers.isNotEmpty && !_activePriceTiers.contains(r['priceTier'])) return false;
+      return true;
+    }).map((r) => r['name'] as String).toList();
   }
 
   Widget _buildRestaurantDetailChip(String label, Color bgColor) {
@@ -165,13 +197,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// Picks a random restaurant from the list and shows it.
+  /// Picks a random restaurant from the filtered list and shows it.
   void _chooseRandom() {
+    final pool = _filteredPool;
     setState(() {
       _helpMeDecideMode = false;
       _randomChoiceMode = true;
-      _restaurants.shuffle();
-      _chosenRestaurant = _restaurants.isNotEmpty ? _restaurants.first : null;
+      pool.shuffle();
+      _chosenRestaurant = pool.isNotEmpty ? pool.first : null;
       _optionA = null;
       _optionB = null;
     });
@@ -179,33 +212,39 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Sets the screen to show head-to-head mode (two restaurants to compare).
   void _startHeadToHead() {
+    final pool = _filteredPool;
     setState(() {
       _randomChoiceMode = false;
       _helpMeDecideMode = true;
-      _restaurants.shuffle();
+      pool.shuffle();
 
-      if (_restaurants.length >= 2) {
-        _optionA = _restaurants[0];
-        _optionB = _restaurants[1];
-      } else if (_restaurants.isNotEmpty) {
-        _chosenRestaurant = _restaurants.first;
+      if (pool.length >= 2) {
+        _optionA = pool[0];
+        _optionB = pool[1];
+      } else if (pool.isNotEmpty) {
+        _chosenRestaurant = pool.first;
+        _optionA = null;
+        _optionB = null;
+      } else {
+        _chosenRestaurant = null;
         _optionA = null;
         _optionB = null;
       }
     });
   }
 
-  /// Picks a winner between two restaurants and removes the loser from the list.
+  /// Picks a winner between two restaurants and removes the loser from the pool.
   void _pickWinner(String winner, String loser) {
     setState(() {
       _restaurants.remove(loser);
       _chosenRestaurant = winner;
 
-      if (_restaurants.length >= 2) {
+      final pool = _filteredPool;
+      if (pool.length >= 2) {
         _optionA = winner;
-        final nextIndex = _restaurants.indexWhere((r) => r != winner);
+        final nextIndex = pool.indexWhere((r) => r != winner);
         if (nextIndex != -1) {
-          _optionB = _restaurants[nextIndex];
+          _optionB = pool[nextIndex];
         } else {
           _optionB = null;
         }
@@ -261,6 +300,26 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_alt),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => FilterScreen(
+                        restaurants: _restaurantDetails,
+                        activeCuisines: _activeCuisines,
+                        activeTypes: _activeTypes,
+                        activePriceTiers: _activePriceTiers,
+                        onSave: () async {
+                          await _loadFilters();
+                        },
+                      ),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
