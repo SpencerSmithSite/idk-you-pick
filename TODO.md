@@ -10,18 +10,23 @@
 - [x] 1.5 Commit Phase 1 work
 
 ### Next Up
-- [ ] 1.6 Update PR #7 with latest changes
+- [x] 1.6 Update PR #7 with latest changes
 
-### Blocked
-- None
+### Current Phase: 2 — Filter UI
+- [ ] 2.1 Design filter UI layout (bottom sheet or settings page)
+- [ ] 2.2 Add cuisine filter chips (multi-select)
+- [ ] 2.3 Add type filter chips (multi-select)
+- [ ] 2.4 Add priceTier filter slider or chips
+- [ ] 2.5 Wire filters into random-choice generator
+- [ ] 2.6 Wire filters into head-to-head pool
+- [ ] 2.7 Persist filter state in SharedPreferences
 
 ### Blocked
 - None
 
 ### Backlog
-- Phase 2: UI Redesign
 - Phase 3: Location Mode
-- Phase 4: Dual Filters
+- Phase 4: Dual Filters (already Phase 2, will renumber later)
 - Phase 5: Action Links
 
 ---
