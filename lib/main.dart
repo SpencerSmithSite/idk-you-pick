@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'settings.dart';
 import 'filter_screen.dart';
 import 'location_service.dart';
+import 'share_service.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
@@ -87,10 +89,39 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _helpMeDecideMode = false;
   bool _randomChoiceMode = false;
 
+  // App links subscription for invite links
+  StreamSubscription<Uri>? _appLinksSub;
+
   @override
   void initState() {
     super.initState();
     _initializeApp();
+    _appLinksSub = ShareService.incomingLinks.listen((uri) {
+      _handleIncomingLink(uri);
+    });
+  }
+
+  @override
+  void dispose() {
+    _appLinksSub?.cancel();
+    super.dispose();
+  }
+
+  /// Handle incoming app links (e.g. invite links).
+  void _handleIncomingLink(Uri uri) {
+    if (uri.scheme != 'idkyoupick' || uri.host != 'invite') return;
+    final cuisines = uri.queryParameters['cuisines']?.split(',') ?? [];
+    final types = uri.queryParameters['types']?.split(',') ?? [];
+    final prices = uri.queryParameters['prices']?.split(',') ?? [];
+    final distanceStr = uri.queryParameters['distance'];
+    final distance = distanceStr != null ? double.tryParse(distanceStr) : null;
+
+    setState(() {
+      _activeCuisines = cuisines.where((s) => s.isNotEmpty).toSet();
+      _activeTypes = types.where((s) => s.isNotEmpty).toSet();
+      _activePriceTiers = prices.where((s) => s.isNotEmpty).toSet();
+      if (distance != null && distance > 0) _maxDistanceMiles = distance;
+    });
   }
 
   Future<void> _initializeApp() async {
@@ -316,6 +347,77 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                   ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// Share the current winner via system share sheet.
+  Future<void> _handleShareWinner() async {
+    final name = _chosenRestaurant;
+    if (name == null) return;
+    final details = _getRestaurantDetails(name);
+    await ShareService.shareWinner(name, details);
+  }
+
+  /// Generate and share an invite link encoding current filters.
+  Future<void> _handleShareInvite() async {
+    final url = ShareService.generateInviteLink(
+      cuisines: _activeCuisines,
+      types: _activeTypes,
+      priceTiers: _activePriceTiers,
+      maxDistance: _maxDistanceMiles,
+    );
+    await ShareService.shareInviteLink(url);
+  }
+
+  /// Show bottom sheet with share options.
+  void _showShareSheet() {
+    final colors = AppColors.of(context);
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: colors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Share',
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                if (_chosenRestaurant != null)
+                  ListTile(
+                    leading: Icon(Icons.restaurant, color: colors.primary),
+                    title: Text('Share winner', style: TextStyle(color: colors.textPrimary)),
+                    subtitle: Text(_chosenRestaurant!, style: TextStyle(color: colors.textSecondary)),
+                    onTap: () {
+                      Navigator.pop(ctx);
+                      _handleShareWinner();
+                    },
+                  ),
+                ListTile(
+                  leading: Icon(Icons.link, color: colors.secondary),
+                  title: Text('Invite link', style: TextStyle(color: colors.textPrimary)),
+                  subtitle: Text('Send filters to a friend', style: TextStyle(color: colors.textSecondary)),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    _handleShareInvite();
+                  },
+                ),
               ],
             ),
           ),
@@ -638,6 +740,10 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: _showHistorySheet,
           ),
           IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: _showShareSheet,
+          ),
+          IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
@@ -738,6 +844,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
+            const SizedBox(height: 12),
+            GradientButton(
+              isSecondary: true,
+              icon: Icons.share,
+              label: "Share Winner",
+              onPressed: _handleShareWinner,
+            ),
             const SizedBox(height: 12),
             ElevatedButton.icon(
               onPressed: () => _markTried(_chosenRestaurant!),
@@ -888,6 +1001,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
+            const SizedBox(height: 12),
+            GradientButton(
+              isSecondary: true,
+              icon: Icons.share,
+              label: "Share Winner",
+              onPressed: _handleShareWinner,
+            ),
             const SizedBox(height: 12),
             ElevatedButton.icon(
               onPressed: () => _markTried(_chosenRestaurant!),

@@ -92,4 +92,22 @@
 
 ---
 
+## [0.1.7] — 2026-05-09
+### Phase 6: Share / Invite
+- **feat:** Added `share_plus` and `app_links` dependencies to `pubspec.yaml`
+- **feat:** Created `lib/share_service.dart` — `ShareService` class with `shareWinner()`, `generateInviteLink()`, `shareInviteLink()`, and `incomingLinks` stream
+- **feat:** `shareWinner()` formats restaurant details (name, cuisine, type, price, address) into a shareable message via system share sheet
+- **feat:** `generateInviteLink()` encodes active filters (cuisines, types, price tiers, max distance) into `idkyoupick://invite?...` deep-link URL
+- **feat:** Wired share icon into AppBar actions (`Icons.share`) that opens `_showShareSheet()` bottom sheet
+- **feat:** `_showShareSheet()` offers two options: "Share winner" (when restaurant chosen) and "Invite link" (always available)
+- **feat:** Added "Share Winner" `GradientButton` on both random-choice winner card and head-to-head winner card
+- **feat:** Added `CFBundleURLTypes` to `ios/Runner/Info.plist` registering `idkyoupick://` custom URL scheme
+- **feat:** Subscribed to `ShareService.incomingLinks` in `initState()` and added `dispose()` to cancel subscription
+- **feat:** `_handleIncomingLink(Uri)` parses invite-link query parameters and applies them to `_activeCuisines`, `_activeTypes`, `_activePriceTiers`, and `_maxDistanceMiles`
+- **QA:** `flutter analyze` — zero new errors (all remaining issues are pre-existing: dataconnect stubs, deprecated geolocator, asset dir warning)
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/phase-6-share-invite`
+
+---
+
 *End of changelog.*
