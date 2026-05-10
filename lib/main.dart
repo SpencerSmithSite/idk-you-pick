@@ -9,6 +9,9 @@ import 'settings.dart';
 import 'filter_screen.dart';
 import 'location_service.dart';
 import 'share_service.dart';
+import 'onboarding.dart';
+import 'how_it_works.dart';
+import 'demo_service.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
@@ -26,25 +29,53 @@ void main() {
   }
 }
 
-/// The root widget of your application.
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final ThemeProvider themeProvider;
 
   const MyApp({super.key, required this.themeProvider});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Future<bool> _onboardingFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _onboardingFuture = OnboardingService.hasCompletedOnboarding();
+  }
+
+  @override
   Widget build(BuildContext context) {
     try {
       return ListenableBuilder(
-        listenable: themeProvider,
+        listenable: widget.themeProvider,
         builder: (context, _) {
           return MaterialApp(
             title: 'IDK, What do you want?',
             debugShowCheckedModeBanner: false,
-            themeMode: themeProvider.themeMode,
+            themeMode: widget.themeProvider.themeMode,
             theme: AppTheme.lightTheme(),
             darkTheme: AppTheme.darkTheme(),
-            home: MyHomePage(themeProvider: themeProvider),
+            home: FutureBuilder<bool>(
+              future: _onboardingFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Scaffold(body: SizedBox.shrink());
+                }
+                if (snapshot.data != true) {
+                  return OnboardingScreen(
+                    onComplete: () => setState(() {
+                      _onboardingFuture = Future.value(true);
+                      OnboardingService.markOnboardingComplete();
+                    }),
+                  );
+                }
+                return MyHomePage(themeProvider: widget.themeProvider);
+              },
+            ),
           );
         },
       );
@@ -89,6 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _helpMeDecideMode = false;
   bool _randomChoiceMode = false;
 
+  // Onboarding / first-run tooltip
+  bool _hasSeenHowItWorks = false;
+
   // App links subscription for invite links
   StreamSubscription<Uri>? _appLinksSub;
 
@@ -127,15 +161,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _initializeApp() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await _loadRestaurants();
+      final demo = await DemoService.isEnabled();
+      await _loadRestaurants(demoMode: demo);
       await _loadFilters();
       await _loadDistanceFilter();
       await _loadHistory();
+      final seenHowItWorks = prefs.getBool('has_seen_how_it_works') ?? false;
       _userPosition = await LocationService.determinePosition();
       setState(() {
         _restaurantPreferences = {
           for (var item in _restaurants) item: prefs.getBool(item) ?? true,
         };
+        _hasSeenHowItWorks = seenHowItWorks;
       });
     } catch (e) {
       setState(() {
@@ -144,8 +181,16 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> _loadRestaurants() async {
+  Future<void> _loadRestaurants({bool demoMode = false}) async {
     try {
+      if (demoMode) {
+        final demoData = DemoService.generateFakeRestaurants();
+        setState(() {
+          _restaurantDetails = demoData;
+          _restaurants = demoData.map((r) => r['name'] as String).toList();
+        });
+        return;
+      }
       final String jsonString = await rootBundle.loadString(
         'assets/restaurants.json',
       );
@@ -279,6 +324,15 @@ class _MyHomePageState extends State<MyHomePage> {
       _history.clear();
     });
     await _saveHistory();
+  }
+
+  Future<void> _dismissHowItWorks() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('has_seen_how_it_works', true);
+    if (!mounted) return;
+    setState(() {
+      _hasSeenHowItWorks = true;
+    });
   }
 
   void _showHistorySheet() {
@@ -800,26 +854,31 @@ class _MyHomePageState extends State<MyHomePage> {
   /// The default view with "Choose Random" and "Help Me Decide."
   Widget _buildDefaultView() {
     final colors = AppColors.of(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
       children: [
-        Text(
-          "Not sure where to eat? \nLet's decide!",
-          textAlign: TextAlign.center,
-          style: TextStyle(color: colors.textPrimary, fontSize: 20),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Not sure where to eat? \nLet's decide!",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: colors.textPrimary, fontSize: 20),
+            ),
+            const SizedBox(height: 20),
+            GradientButton(
+              isSecondary: true,
+              label: "Choose For Me",
+              onPressed: _chooseRandom,
+            ),
+            const SizedBox(height: 30),
+            GradientButton(
+              isSecondary: true,
+              label: "Help Me Decide",
+              onPressed: _startHeadToHead,
+            ),
+          ],
         ),
-        const SizedBox(height: 20),
-        GradientButton(
-          isSecondary: true,
-          label: "Choose For Me",
-          onPressed: _chooseRandom,
-        ),
-        const SizedBox(height: 30),
-        GradientButton(
-          isSecondary: true,
-          label: "Help Me Decide",
-          onPressed: _startHeadToHead,
-        ),
+        if (!_hasSeenHowItWorks) HowItWorksOverlay(onDismiss: _dismissHowItWorks),
       ],
     );
   }

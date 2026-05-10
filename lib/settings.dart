@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'demo_service.dart';
+import 'onboarding.dart';
 import 'theme/app_colors.dart';
 import 'theme/theme_provider.dart';
 import 'widgets/gradient_button.dart';
@@ -22,55 +24,50 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late Map<String, bool> _preferences;
-  late List<String> _customRestaurants = []; // Initialize as an empty list
+  late List<String> _customRestaurants = [];
   final TextEditingController _restaurantController = TextEditingController();
-  late ScrollController _scrollController; // Add a ScrollController
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController(); // Initialize the ScrollController
+    _scrollController = ScrollController();
     _preferences = Map.from(widget.restaurantPreferences);
     _loadCustomRestaurants();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Dispose of the ScrollController
+    _scrollController.dispose();
     super.dispose();
   }
 
-  /// Load custom restaurants from SharedPreferences
   Future<void> _loadCustomRestaurants() async {
     final prefs = await SharedPreferences.getInstance();
     final customRestaurants = prefs.getStringList('customRestaurants') ?? [];
-    if (!mounted) return; // Ensure the widget is still mounted
+    if (!mounted) return;
     setState(() {
       _customRestaurants = customRestaurants;
       for (var restaurant in customRestaurants) {
-        _preferences[restaurant] =
-            true; // Add custom restaurants to preferences
+        _preferences[restaurant] = true;
       }
     });
   }
 
-  /// Save custom restaurants to SharedPreferences
   Future<void> _saveCustomRestaurants() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('customRestaurants', _customRestaurants);
   }
 
-  /// Save all preferences to SharedPreferences
   Future<void> _savePreferences() async {
     final prefs = await SharedPreferences.getInstance();
     for (var entry in _preferences.entries) {
       await prefs.setBool(entry.key, entry.value);
     }
-    await _saveCustomRestaurants(); // Save custom restaurants
-    if (!mounted) return; // Check if the widget is still mounted
+    await _saveCustomRestaurants();
+    if (!mounted) return;
   }
 
-  /// Add a new restaurant to the list
   void _addRestaurant() {
     final newRestaurant = _restaurantController.text.trim();
     if (newRestaurant.isNotEmpty && !_preferences.containsKey(newRestaurant)) {
@@ -83,7 +80,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  /// Delete a custom-added restaurant
   void _deleteRestaurant(String restaurant) {
     setState(() {
       _preferences.remove(restaurant);
@@ -188,6 +184,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
             const Divider(),
+            ListTile(
+              leading: Icon(Icons.tour, color: colors.textSecondary),
+              title: Text('Restart Onboarding', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
+              trailing: TextButton(
+                onPressed: () async {
+                  await OnboardingService.resetOnboarding();
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Onboarding will restart on next launch.')),
+                  );
+                },
+                child: Text('Reset', style: TextStyle(color: colors.secondary)),
+              ),
+            ),
+            const Divider(),
+            DemoModeTile(colors: colors),
+            const Divider(),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -220,7 +233,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10), // Add spacing between rows
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -229,20 +242,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         label: 'Select All',
                         onPressed: () {
                           setState(() {
-                            // Select all restaurants
                             _preferences.updateAll((key, value) => true);
                           });
                         },
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ), // Add spacing between the buttons
+                      const SizedBox(width: 10),
                       GradientButton(
                         isSecondary: true,
                         label: 'Deselect All',
                         onPressed: () {
                           setState(() {
-                            // Deselect all restaurants
                             _preferences.updateAll((key, value) => false);
                           });
                         },
@@ -254,77 +263,125 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             Expanded(
               child: Scrollbar(
-                controller: _scrollController, // Attach the ScrollController
+                controller: _scrollController,
                 thumbVisibility: true,
                 thickness: 8,
                 radius: const Radius.circular(10),
-                // Removed thumbColor as it is not a valid parameter
                 child: ListView(
-                  controller: _scrollController, // Attach the ScrollController
+                  controller: _scrollController,
                   padding: const EdgeInsets.all(20),
-                  children:
-                      _preferences.keys.map((restaurant) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Theme(
-                            data: Theme.of(context).copyWith(
-                              checkboxTheme: CheckboxThemeData(
-                                side: BorderSide(
-                                  color: colors.chipDefaultBorder,
-                                  width: 2, // Thickness of the outline
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    5,
-                                  ), // Rounded corners
-                                ),
-                              ),
+                  children: _preferences.keys.map((restaurant) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          checkboxTheme: CheckboxThemeData(
+                            side: BorderSide(
+                              color: colors.chipDefaultBorder,
+                              width: 2,
                             ),
-                            child: CheckboxListTile(
-                              title: Text(
-                                restaurant,
-                                style: TextStyle(
-                                  color: colors.textPrimary,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              value: _preferences[restaurant],
-                              activeColor: colors.secondary,
-                              checkColor: colors.chipTextDark,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _preferences[restaurant] = value ?? false;
-                                });
-                              },
-                              tileColor: colors.primary.withValues(
-                                alpha: 0.04,
-                              ), // Slight primary background
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              secondary:
-                                  _customRestaurants.contains(restaurant)
-                                      ? IconButton(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: colors.danger,
-                                        ),
-                                        onPressed:
-                                            () =>
-                                                _deleteRestaurant(restaurant),
-                                      )
-                                      : null,
-                              controlAffinity: ListTileControlAffinity.leading,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                        );
-                      }).toList(),
+                        ),
+                        child: CheckboxListTile(
+                          title: Text(
+                            restaurant,
+                            style: TextStyle(
+                              color: colors.textPrimary,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          value: _preferences[restaurant],
+                          activeColor: colors.secondary,
+                          checkColor: colors.chipTextDark,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _preferences[restaurant] = value ?? false;
+                            });
+                          },
+                          tileColor: colors.primary.withValues(
+                            alpha: 0.04,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          secondary: _customRestaurants.contains(restaurant)
+                              ? IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: colors.danger,
+                                  ),
+                                  onPressed: () => _deleteRestaurant(restaurant),
+                                )
+                              : null,
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Toggles demo-mode (fake restaurant data) in settings.
+class DemoModeTile extends StatefulWidget {
+  final AppColors colors;
+
+  const DemoModeTile({super.key, required this.colors});
+
+  @override
+  State<DemoModeTile> createState() => _DemoModeTileState();
+}
+
+class _DemoModeTileState extends State<DemoModeTile> {
+  bool _enabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final v = await DemoService.isEnabled();
+    if (!mounted) return;
+    setState(() {
+      _enabled = v;
+    });
+  }
+
+  Future<void> _toggle(bool value) async {
+    await DemoService.setEnabled(value);
+    setState(() {
+      _enabled = value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.videogame_asset, color: widget.colors.textSecondary),
+      title: Text(
+        'Demo Mode',
+        style: TextStyle(color: widget.colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+      ),
+      subtitle: Text(
+        'Use fake restaurants for screenshots and testing',
+        style: TextStyle(color: widget.colors.textSecondary, fontSize: 12),
+      ),
+      trailing: Switch(
+        value: _enabled,
+        activeColor: widget.colors.secondary,
+        onChanged: _toggle,
       ),
     );
   }
