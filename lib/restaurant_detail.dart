@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'theme/app_colors.dart';
-import 'widgets/gradient_button.dart';
 import 'favorites_service.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
@@ -39,70 +38,98 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     return val.toString();
   }
 
-  Future<void> _openMaps(BuildContext context) async {
+  Future<void> _openMaps() async {
     final address = _get('address') ?? widget.restaurant['name'];
     final url = Uri.parse(
       'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address!)}',
     );
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      _showError(context, 'Could not open Maps');
     }
   }
 
-  Future<void> _callRestaurant(BuildContext context) async {
+  Future<void> _callRestaurant() async {
     final phone = _get('phone');
-    if (phone == null) {
-      _showError(context, 'No phone number available');
-      return;
-    }
+    if (phone == null) return;
     final url = Uri.parse('tel:$phone');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
-    } else {
-      _showError(context, 'Could not place call');
     }
   }
 
-  Future<void> _openWebsite(BuildContext context) async {
+  Future<void> _openWebsite() async {
     final website = _get('website');
-    if (website == null) {
-      _showError(context, 'No website available');
-      return;
-    }
+    if (website == null) return;
     final url = Uri.parse(website);
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      _showError(context, 'Could not open website');
     }
   }
 
-  Future<void> _openDoorDash(BuildContext context) async {
+  Future<void> _openDoorDash() async {
     final name = widget.restaurant['name'];
     final url = Uri.parse(
       'https://www.doordash.com/search/store/${Uri.encodeComponent(name)}',
     );
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      _showError(context, 'Could not open DoorDash');
     }
-  }
-
-  void _showError(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
   }
 
   Widget _buildChip(String label, IconData icon, Color color) {
     return Chip(
       avatar: Icon(icon, size: 16, color: color),
       label: Text(label),
-      backgroundColor: color.withOpacity(0.1),
-      side: BorderSide(color: color.withOpacity(0.3)),
+      backgroundColor: color.withValues(alpha: 0.1),
+      side: BorderSide(color: color.withValues(alpha: 0.3)),
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required List<Color> gradient,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: gradient,
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          foregroundColor: Colors.white,
+          textStyle: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.white),
+            const SizedBox(width: 8),
+            Text(label),
+          ],
+        ),
+      ),
     );
   }
 
@@ -120,6 +147,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
 
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final colors = AppColors.of(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -148,16 +176,14 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: isDark
-                        ? AppColors.darkGradient
-                        : AppColors.lightGradient,
+                    colors: isDark ? colors.primaryGradient : colors.secondaryGradient,
                   ),
                 ),
                 child: Center(
                   child: Icon(
                     Icons.restaurant,
                     size: 64,
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                 ),
               ),
@@ -175,9 +201,9 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                     runSpacing: 8,
                     children: [
                       if (cuisine != null)
-                        _buildChip(cuisine, Icons.local_dining, AppColors.teal),
+                        _buildChip(cuisine, Icons.local_dining, colors.primary),
                       if (type != null)
-                        _buildChip(type, Icons.fastfood, AppColors.orange),
+                        _buildChip(type, Icons.fastfood, colors.secondary),
                       if (price != null)
                         _buildChip(price, Icons.attach_money, Colors.green),
                       if (distance != null)
@@ -190,7 +216,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   if (address != null) ...[
                     Row(
                       children: [
-                        Icon(Icons.place, color: AppColors.teal, size: 20),
+                        Icon(Icons.place, color: colors.primary, size: 20),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -207,7 +233,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   if (phone != null) ...[
                     Row(
                       children: [
-                        Icon(Icons.phone, color: AppColors.teal, size: 20),
+                        Icon(Icons.phone, color: colors.primary, size: 20),
                         const SizedBox(width: 8),
                         Text(phone, style: theme.textTheme.bodyMedium),
                       ],
@@ -219,13 +245,13 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   if (website != null) ...[
                     Row(
                       children: [
-                        Icon(Icons.language, color: AppColors.teal, size: 20),
+                        Icon(Icons.language, color: colors.primary, size: 20),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             website,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: AppColors.teal,
+                              color: colors.primary,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -250,10 +276,9 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                       children: tags
                           .map((t) => Chip(
                                 label: Text(t),
-                                backgroundColor:
-                                    AppColors.teal.withOpacity(0.1),
+                                backgroundColor: colors.primary.withValues(alpha: 0.1),
                                 side: BorderSide(
-                                  color: AppColors.teal.withOpacity(0.3),
+                                  color: colors.primary.withValues(alpha: 0.3),
                                 ),
                               ))
                           .toList(),
@@ -269,71 +294,39 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _ActionButton(
+                  _buildActionButton(
                     icon: Icons.map,
                     label: 'Open in Maps',
-                    color: AppColors.teal,
-                    onTap: () => _openMaps(context),
+                    gradient: colors.primaryGradient,
+                    onTap: _openMaps,
                   ),
                   const SizedBox(height: 8),
-                  _ActionButton(
+                  _buildActionButton(
                     icon: Icons.delivery_dining,
                     label: 'Order on DoorDash',
-                    color: AppColors.orange,
-                    onTap: () => _openDoorDash(context),
+                    gradient: colors.secondaryGradient,
+                    onTap: _openDoorDash,
                   ),
                   const SizedBox(height: 8),
                   if (phone != null)
-                    _ActionButton(
+                    _buildActionButton(
                       icon: Icons.phone,
                       label: 'Call Restaurant',
-                      color: Colors.grey[700]!,
-                      onTap: () => _callRestaurant(context),
+                      gradient: [Colors.grey[700]!, Colors.grey[600]!],
+                      onTap: _callRestaurant,
                     ),
                   if (phone != null) const SizedBox(height: 8),
                   if (website != null)
-                    _ActionButton(
+                    _buildActionButton(
                       icon: Icons.language,
                       label: 'Visit Website',
-                      color: Colors.grey[700]!,
-                      onTap: () => _openWebsite(context),
+                      gradient: [Colors.grey[700]!, Colors.grey[600]!],
+                      onTap: _openWebsite,
                     ),
                 ],
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ActionButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _ActionButton({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GradientButton(
-      onPressed: onTap,
-      gradient: LinearGradient(
-        colors: [color, color.withOpacity(0.8)],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: Colors.white),
-          const SizedBox(width: 8),
-          Text(label, style: const TextStyle(color: Colors.white)),
         ],
       ),
     );
