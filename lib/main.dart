@@ -7,11 +7,18 @@ import 'package:url_launcher/url_launcher.dart';
 import 'settings.dart';
 import 'filter_screen.dart';
 import 'location_service.dart';
+import 'theme/app_colors.dart';
+import 'theme/app_theme.dart';
+import 'theme/theme_provider.dart';
+import 'widgets/gradient_button.dart';
+import 'widgets/gradient_text.dart';
+import 'widgets/glow_orb.dart';
 
 void main() {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(const MyApp());
+    final themeProvider = ThemeProvider();
+    runApp(MyApp(themeProvider: themeProvider));
   } catch (e) {
     rethrow;
   }
@@ -19,15 +26,25 @@ void main() {
 
 /// The root widget of your application.
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ThemeProvider themeProvider;
+
+  const MyApp({super.key, required this.themeProvider});
 
   @override
   Widget build(BuildContext context) {
     try {
-      return MaterialApp(
-        title: 'IDK, What do you want?',
-        debugShowCheckedModeBanner: false,
-        home: const MyHomePage(),
+      return ListenableBuilder(
+        listenable: themeProvider,
+        builder: (context, _) {
+          return MaterialApp(
+            title: 'IDK, What do you want?',
+            debugShowCheckedModeBanner: false,
+            themeMode: themeProvider.themeMode,
+            theme: AppTheme.lightTheme(),
+            darkTheme: AppTheme.darkTheme(),
+            home: MyHomePage(themeProvider: themeProvider),
+          );
+        },
       );
     } catch (e) {
       rethrow;
@@ -37,7 +54,9 @@ class MyApp extends StatelessWidget {
 
 /// The stateful widget for your app's main screen.
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final ThemeProvider themeProvider;
+
+  const MyHomePage({super.key, required this.themeProvider});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -234,7 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showHistorySheet() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color.fromARGB(255, 35, 38, 40),
+      backgroundColor: AppColors.of(context).surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -250,21 +269,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'History (Tried)',
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: AppColors.of(context).textPrimary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     TextButton.icon(
                       onPressed: () { Navigator.pop(ctx); _clearHistory(); },
-                      icon: const Icon(Icons.delete_forever, color: Colors.redAccent, size: 18),
-                      label: const Text('Clear', style: TextStyle(color: Colors.redAccent)),
+                      icon: Icon(Icons.delete_forever,
+                        color: AppColors.of(context).danger, size: 18),
+                      label: Text('Clear',
+                        style: TextStyle(color: AppColors.of(context).danger)),
                     ),
                   ],
                 ),
                 if (entries.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 24),
-                    child: Text('No restaurants marked as tried yet.', style: TextStyle(color: Colors.white70)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    child: Text(
+                      'No restaurants marked as tried yet.',
+                      style: TextStyle(color: AppColors.of(context).textSecondary),
+                    ),
                   )
                 else
                   Flexible(
@@ -275,10 +303,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         final e = entries[index];
                         final dateStr = '${e.value.month}/${e.value.day}/${e.value.year}';
                         return ListTile(
-                          title: Text(e.key, style: const TextStyle(color: Colors.white)),
-                          subtitle: Text(dateStr, style: const TextStyle(color: Colors.white54)),
+                          title: Text(e.key,
+                            style: TextStyle(color: AppColors.of(context).textPrimary)),
+                          subtitle: Text(dateStr,
+                            style: TextStyle(color: AppColors.of(context).textMuted)),
                           trailing: IconButton(
-                            icon: const Icon(Icons.close, color: Colors.white54),
+                            icon: Icon(Icons.close,
+                              color: AppColors.of(context).textMuted),
                             onPressed: () => _removeFromHistory(e.key),
                           ),
                         );
@@ -293,7 +324,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildRestaurantDetailChip(String label, Color bgColor) {
+  Widget _buildRestaurantDetailChip(String label, Color bgColor, Color textColor) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -302,8 +333,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: textColor,
           fontSize: 11,
           fontWeight: FontWeight.w500,
         ),
@@ -317,6 +348,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final type = details['type'] as String?;
     final priceTier = details['priceTier'] as String?;
     final tags = (details['tags'] as List<dynamic>?)?.cast<String>() ?? <String>[];
+    final colors = AppColors.of(context);
 
     return Column(
       children: [
@@ -327,12 +359,12 @@ class _MyHomePageState extends State<MyHomePage> {
           alignment: WrapAlignment.center,
           children: [
             if (cuisine != null && cuisine.isNotEmpty)
-              _buildRestaurantDetailChip(cuisine, const Color.fromARGB(255, 72, 80, 85)),
+              _buildRestaurantDetailChip(cuisine, colors.primary, colors.chipTextLight),
             if (type != null && type.isNotEmpty)
-              _buildRestaurantDetailChip(type, const Color.fromARGB(255, 47, 168, 156)),
+              _buildRestaurantDetailChip(type, colors.primary, colors.chipTextLight),
             if (priceTier != null && priceTier.isNotEmpty)
-              _buildRestaurantDetailChip(priceTier, const Color.fromARGB(255, 253, 139, 69)),
-            ...tags.map((t) => _buildRestaurantDetailChip(t, const Color.fromARGB(255, 100, 100, 100))),
+              _buildRestaurantDetailChip(priceTier, colors.secondary, colors.chipTextLight),
+            ...tags.map((t) => _buildRestaurantDetailChip(t, colors.chipDefaultBg, colors.textPrimary)),
             _buildDistanceMeta(details),
           ],
         ),
@@ -352,9 +384,11 @@ class _MyHomePageState extends State<MyHomePage> {
       rLat,
       rLng,
     );
+    final colors = AppColors.of(context);
     return _buildRestaurantDetailChip(
       '${d.toStringAsFixed(1)} mi',
-      const Color.fromARGB(255, 47, 168, 156),
+      colors.primary,
+      colors.chipTextLight,
     );
   }
 
@@ -393,31 +427,24 @@ class _MyHomePageState extends State<MyHomePage> {
     final hasCoords = details['lat'] != null && details['lng'] != null;
     final hasPhone = (details['phone'] as String?)?.isNotEmpty ?? false;
     final hasWebsite = (details['website'] as String?)?.isNotEmpty ?? false;
+    final colors = AppColors.of(context);
     return Wrap(
       spacing: 8,
       runSpacing: 8,
       alignment: WrapAlignment.center,
       children: [
         if (hasCoords)
-          ElevatedButton.icon(
+          GradientButton(
+            isSecondary: false,
+            icon: Icons.map,
+            label: 'Maps',
             onPressed: () => _openMaps(details),
-            icon: const Icon(Icons.map, size: 16),
-            label: const Text('Maps'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 47, 168, 156),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            ),
           ),
-        ElevatedButton.icon(
+        GradientButton(
+          isSecondary: true,
+          icon: Icons.delivery_dining,
+          label: 'DoorDash',
           onPressed: () => _openDoorDash(details),
-          icon: const Icon(Icons.delivery_dining, size: 16),
-          label: const Text('DoorDash'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-            foregroundColor: const Color.fromARGB(255, 35, 38, 40),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          ),
         ),
         if (hasPhone)
           ElevatedButton.icon(
@@ -425,8 +452,8 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: const Icon(Icons.phone, size: 16),
             label: const Text('Call'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 72, 80, 85),
-              foregroundColor: Colors.white,
+              backgroundColor: colors.chipDefaultBg,
+              foregroundColor: colors.textPrimary,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             ),
           ),
@@ -436,8 +463,8 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: const Icon(Icons.language, size: 16),
             label: const Text('Website'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 72, 80, 85),
-              foregroundColor: Colors.white,
+              backgroundColor: colors.chipDefaultBg,
+              foregroundColor: colors.textPrimary,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             ),
           ),
@@ -523,7 +550,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Text(
                 _errorMessage!,
-                style: const TextStyle(color: Colors.red),
+                style: TextStyle(color: AppColors.of(context).danger),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -537,21 +564,23 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
 
+    final colors = AppColors.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "IDK, What do you want?",
           style: TextStyle(
-            color: Color.fromARGB(255, 62, 69, 74),
+            color: colors.appBarText,
             fontWeight: FontWeight.bold,
             fontSize: 28,
             fontFamily: 'Arial',
           ),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color.fromARGB(255, 47, 168, 156), Color(0xFF40E0D0)],
+              colors: colors.appBarGradient,
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -596,8 +625,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                     width: 10,
                     height: 10,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 253, 139, 69),
+                    decoration: BoxDecoration(
+                      color: colors.secondary,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -617,6 +646,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   builder:
                       (context) => SettingsScreen(
                         restaurantPreferences: _restaurantPreferences,
+                        themeProvider: widget.themeProvider,
                         onSave: (newPreferences) {
                           setState(() {
                             _restaurantPreferences = newPreferences;
@@ -629,78 +659,60 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 72, 80, 85),
-              Color.fromARGB(255, 35, 38, 40),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: colors.backgroundGradient,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
           ),
-        ),
-        child: Center(
-          child:
-              _helpMeDecideMode
-                  ? _buildHelpMeDecideView()
-                  : _randomChoiceMode
-                  ? _buildRandomChoiceView()
-                  : _buildDefaultView(),
-        ),
+          const GlowOrb(size: 300, alignment: Alignment.topLeft),
+          const GlowOrb(
+            size: 250,
+            alignment: Alignment.bottomRight,
+            colors: [Color.fromRGBO(249, 115, 22, 0.06), Colors.transparent],
+          ),
+          SafeArea(
+            child: Center(
+              child:
+                  _helpMeDecideMode
+                      ? _buildHelpMeDecideView()
+                      : _randomChoiceMode
+                      ? _buildRandomChoiceView()
+                      : _buildDefaultView(),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   /// The default view with "Choose Random" and "Help Me Decide."
   Widget _buildDefaultView() {
+    final colors = AppColors.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           "Not sure where to eat? \nLet's decide!",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: colors.textPrimary, fontSize: 20),
         ),
         const SizedBox(height: 20),
-        ElevatedButton(
+        GradientButton(
+          isSecondary: true,
+          label: "Choose For Me",
           onPressed: _chooseRandom,
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-            shadowColor: Colors.black.withAlpha(10),
-            elevation: 5,
-          ),
-          child: const Text(
-            "Choose For Me",
-            style: TextStyle(
-              color: Color.fromARGB(255, 35, 38, 40),
-              fontSize: 20,
-            ),
-          ),
         ),
         const SizedBox(height: 30),
-        ElevatedButton(
+        GradientButton(
+          isSecondary: true,
+          label: "Help Me Decide",
           onPressed: _startHeadToHead,
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-            shadowColor: Colors.black.withAlpha(10),
-            elevation: 5,
-          ),
-          child: const Text(
-            "Help Me Decide",
-            style: TextStyle(
-              color: Color.fromARGB(255, 35, 38, 40),
-              fontSize: 20,
-            ),
-          ),
         ),
       ],
     );
@@ -709,23 +721,20 @@ class _MyHomePageState extends State<MyHomePage> {
   /// The view for a random choice result.
   Widget _buildRandomChoiceView() {
     if (_chosenRestaurant != null) {
+      final colors = AppColors.of(context);
       return Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               "Random choice:",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: colors.textPrimary, fontSize: 20),
             ),
             const SizedBox(height: 10),
-            Text(
-              _chosenRestaurant!,
-              style: const TextStyle(
-                color: Color(0xFF40E0D0),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+            GradientText(
+              text: _chosenRestaurant!,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
@@ -735,49 +744,35 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: const Icon(Icons.check_circle, size: 18),
               label: const Text('Tried it'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 72, 80, 85),
-                foregroundColor: Colors.white,
+                backgroundColor: colors.chipDefaultBg,
+                foregroundColor: colors.textPrimary,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
             const SizedBox(height: 12),
-            ElevatedButton(
+            GradientButton(
+              isSecondary: true,
+              label: "Start Over",
               onPressed: _resetApp,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-                shadowColor: Colors.black.withAlpha(10),
-                elevation: 5,
-              ),
-              child: const Text(
-                "Start Over",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 35, 38, 40),
-                  fontSize: 20,
-                ),
-              ),
             ),
           ],
         ),
       );
     }
+    final colors = AppColors.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.filter_alt_off, color: Colors.white54, size: 48),
+        Icon(Icons.filter_alt_off, color: colors.textSecondary, size: 48),
         const SizedBox(height: 12),
-        const Text(
+        Text(
           "No restaurants match your filters.",
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: colors.textPrimary, fontSize: 20),
         ),
         const SizedBox(height: 20),
-        ElevatedButton(
+        GradientButton(
+          isSecondary: true,
+          label: "Clear Filters",
           onPressed: () async {
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('filter_cuisines');
@@ -789,22 +784,6 @@ class _MyHomePageState extends State<MyHomePage> {
               _chosenRestaurant = null;
             });
           },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-            shadowColor: Colors.black.withAlpha(10),
-            elevation: 5,
-          ),
-          child: const Text(
-            "Clear Filters",
-            style: TextStyle(
-              color: Color.fromARGB(255, 35, 38, 40),
-              fontSize: 20,
-            ),
-          ),
         ),
         const SizedBox(height: 12),
         TextButton(
@@ -812,9 +791,9 @@ class _MyHomePageState extends State<MyHomePage> {
             _helpMeDecideMode = false;
             _randomChoiceMode = false;
           }),
-          child: const Text(
+          child: Text(
             "Return Home",
-            style: TextStyle(color: Colors.white70, fontSize: 16),
+            style: TextStyle(color: colors.textSecondary, fontSize: 16),
           ),
         ),
       ],
@@ -824,66 +803,39 @@ class _MyHomePageState extends State<MyHomePage> {
   /// The head-to-head view: pick between two restaurants, or show the final winner.
   Widget _buildHelpMeDecideView() {
     if (_optionA != null && _optionB != null) {
+      final colors = AppColors.of(context);
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             "Which one do you prefer?",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: TextStyle(color: colors.textPrimary, fontSize: 20),
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
+          GradientButton(
+            isSecondary: true,
             onPressed: () => _pickWinner(_optionA!, _optionB!),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 15,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-              shadowColor: Colors.black.withAlpha(10),
-              elevation: 5,
-            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   _optionA!,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 35, 38, 40),
-                    fontSize: 20,
-                  ),
+                  style: const TextStyle(fontSize: 20),
                 ),
                 _buildRestaurantMeta(_getRestaurantDetails(_optionA!)),
               ],
             ),
           ),
           const SizedBox(height: 10),
-          ElevatedButton(
+          GradientButton(
+            isSecondary: true,
             onPressed: () => _pickWinner(_optionB!, _optionA!),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 15,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-              shadowColor: Colors.black.withAlpha(10),
-              elevation: 5,
-            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   _optionB!,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 35, 38, 40),
-                    fontSize: 20,
-                  ),
+                  style: const TextStyle(fontSize: 20),
                 ),
                 _buildRestaurantMeta(_getRestaurantDetails(_optionB!)),
               ],
@@ -903,13 +855,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 72, 80, 85),
-                  shadowColor: Colors.black.withAlpha(10),
+                  backgroundColor: colors.chipDefaultBg,
+                  shadowColor: colors.shadow,
                   elevation: 5,
                 ),
-                child: const Text(
+                child: Text(
                   "Start Over",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: TextStyle(color: colors.textPrimary, fontSize: 20),
                 ),
               ),
             ],
@@ -919,23 +871,20 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     if (_chosenRestaurant != null) {
+      final colors = AppColors.of(context);
       return Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               "The winner is:",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: colors.textPrimary, fontSize: 20),
             ),
             const SizedBox(height: 10),
-            Text(
-              _chosenRestaurant!,
-              style: const TextStyle(
-                color: Color(0xFF40E0D0),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+            GradientText(
+              text: _chosenRestaurant!,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
@@ -945,50 +894,36 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: const Icon(Icons.check_circle, size: 18),
               label: const Text('Tried it'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 72, 80, 85),
-                foregroundColor: Colors.white,
+                backgroundColor: colors.chipDefaultBg,
+                foregroundColor: colors.textPrimary,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
             const SizedBox(height: 12),
-            ElevatedButton(
+            GradientButton(
+              isSecondary: true,
+              label: "Start Over",
               onPressed: _resetApp,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-                shadowColor: Colors.black.withAlpha(10),
-                elevation: 5,
-              ),
-              child: const Text(
-                "Start Over",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 35, 38, 40),
-                  fontSize: 20,
-                ),
-              ),
             ),
           ],
         ),
       );
     }
 
+    final colors = AppColors.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.filter_alt_off, color: Colors.white54, size: 48),
+        Icon(Icons.filter_alt_off, color: colors.textSecondary, size: 48),
         const SizedBox(height: 12),
-        const Text(
+        Text(
           "No restaurants match your filters.",
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: colors.textPrimary, fontSize: 20),
         ),
         const SizedBox(height: 20),
-        ElevatedButton(
+        GradientButton(
+          isSecondary: true,
+          label: "Clear Filters",
           onPressed: () async {
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('filter_cuisines');
@@ -1002,22 +937,6 @@ class _MyHomePageState extends State<MyHomePage> {
               _optionB = null;
             });
           },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-            shadowColor: Colors.black.withAlpha(10),
-            elevation: 5,
-          ),
-          child: const Text(
-            "Clear Filters",
-            style: TextStyle(
-              color: Color.fromARGB(255, 35, 38, 40),
-              fontSize: 20,
-            ),
-          ),
         ),
         const SizedBox(height: 12),
         TextButton(
@@ -1025,9 +944,9 @@ class _MyHomePageState extends State<MyHomePage> {
             _helpMeDecideMode = false;
             _randomChoiceMode = false;
           }),
-          child: const Text(
+          child: Text(
             "Return Home",
-            style: TextStyle(color: Colors.white70, fontSize: 16),
+            style: TextStyle(color: colors.textSecondary, fontSize: 16),
           ),
         ),
       ],

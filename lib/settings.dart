@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'theme/app_colors.dart';
+import 'theme/theme_provider.dart';
+import 'widgets/gradient_button.dart';
 
 class SettingsScreen extends StatefulWidget {
   final Map<String, bool> restaurantPreferences;
   final Function(Map<String, bool>) onSave;
+  final ThemeProvider themeProvider;
 
   const SettingsScreen({
     super.key,
     required this.restaurantPreferences,
     required this.onSave,
+    required this.themeProvider,
   });
 
   @override
@@ -87,26 +92,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _savePreferences();
   }
 
+  Widget _buildThemeChip(String label, ThemeMode value, ThemeMode current, AppColors colors) {
+    final isSelected = current == value;
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (_) async {
+        await widget.themeProvider.setThemeMode(value);
+      },
+      selectedColor: colors.secondary,
+      backgroundColor: colors.chipDefaultBg,
+      labelStyle: TextStyle(
+        color: isSelected ? colors.chipTextDark : colors.textPrimary,
+        fontWeight: FontWeight.w600,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: isSelected ? colors.secondary : colors.chipDefaultBorder,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Settings",
           style: TextStyle(
-            color: Color.fromARGB(255, 62, 69, 74),
+            color: colors.appBarText,
             fontWeight: FontWeight.bold,
             fontSize: 28,
             fontFamily: 'Arial',
           ),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 47, 168, 156),
-                Color(0xFF40E0D0),
-              ], // Turquoise to dark blue-grey
+              colors: colors.appBarGradient,
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -128,18 +155,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 72, 80, 85),
-              Color.fromARGB(255, 35, 38, 40),
-            ], // Dark blue-grey gradient
+            colors: colors.backgroundGradient,
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
         child: Column(
           children: [
+            ListenableBuilder(
+              listenable: widget.themeProvider,
+              builder: (context, child) {
+                final mode = widget.themeProvider.themeMode;
+                return ListTile(
+                  leading: Icon(Icons.palette, color: colors.textSecondary),
+                  title: Text(
+                    'Appearance',
+                    style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildThemeChip('System', ThemeMode.system, mode, colors),
+                      const SizedBox(width: 8),
+                      _buildThemeChip('Light', ThemeMode.light, mode, colors),
+                      const SizedBox(width: 8),
+                      _buildThemeChip('Dark', ThemeMode.dark, mode, colors),
+                    ],
+                  ),
+                );
+              },
+            ),
+            const Divider(),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -149,48 +197,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Expanded(
                         child: TextField(
                           controller: _restaurantController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: "Add a new restaurant",
-                            hintStyle: TextStyle(color: Colors.white70),
+                            hintStyle: TextStyle(color: colors.textMuted),
                             filled: true,
-                            fillColor: Color.fromARGB(255, 47, 168, 156),
-                            border: OutlineInputBorder(
+                            fillColor: colors.primary,
+                            border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(15),
                               ),
                               borderSide: BorderSide.none,
                             ),
                           ),
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(color: colors.textPrimary),
                         ),
                       ),
                       const SizedBox(width: 10),
-                      ElevatedButton(
+                      GradientButton(
+                        isSecondary: true,
+                        label: 'Add',
                         onPressed: _addRestaurant,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            253,
-                            139,
-                            69,
-                          ), // Orange
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: const BorderSide(
-                              color: Color.fromARGB(
-                                255,
-                                253,
-                                139,
-                                69,
-                              ), // Orange border
-                              width: 2, // Border width
-                            ),
-                          ),
-                        ),
-                        child: const Text(
-                          "Add",
-                          style: TextStyle(color: Colors.white),
-                        ),
                       ),
                     ],
                   ),
@@ -198,72 +224,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      ElevatedButton(
+                      GradientButton(
+                        isSecondary: true,
+                        label: 'Select All',
                         onPressed: () {
                           setState(() {
                             // Select all restaurants
                             _preferences.updateAll((key, value) => true);
                           });
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            253,
-                            139,
-                            69,
-                          ), // Orange
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: const BorderSide(
-                              color: Color.fromARGB(
-                                255,
-                                253,
-                                139,
-                                69,
-                              ), // Orange border
-                              width: 2, // Border width
-                            ),
-                          ),
-                        ),
-                        child: const Text(
-                          "Select All",
-                          style: TextStyle(color: Colors.white),
-                        ),
                       ),
                       const SizedBox(
                         width: 10,
                       ), // Add spacing between the buttons
-                      ElevatedButton(
+                      GradientButton(
+                        isSecondary: true,
+                        label: 'Deselect All',
                         onPressed: () {
                           setState(() {
                             // Deselect all restaurants
                             _preferences.updateAll((key, value) => false);
                           });
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            253,
-                            139,
-                            69,
-                          ), // Orange
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: const BorderSide(
-                              color: Color.fromARGB(
-                                255,
-                                253,
-                                139,
-                                69,
-                              ), // Orange border
-                              width: 2, // Border width
-                            ),
-                          ),
-                        ),
-                        child: const Text(
-                          "Deselect All",
-                          style: TextStyle(color: Colors.white),
-                        ),
                       ),
                     ],
                   ),
@@ -287,13 +269,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: Theme(
                             data: Theme.of(context).copyWith(
                               checkboxTheme: CheckboxThemeData(
-                                side: const BorderSide(
-                                  color: Color.fromARGB(
-                                    255,
-                                    253,
-                                    139,
-                                    69,
-                                  ), // Orange outline
+                                side: BorderSide(
+                                  color: colors.chipDefaultBorder,
                                   width: 2, // Thickness of the outline
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -306,47 +283,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: CheckboxListTile(
                               title: Text(
                                 restaurant,
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: TextStyle(
+                                  color: colors.textPrimary,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               value: _preferences[restaurant],
-                              activeColor: const Color.fromARGB(
-                                255,
-                                253,
-                                139,
-                                69,
-                              ), // Orange for the checkbox fill
-                              checkColor: const Color.fromARGB(
-                                255,
-                                35,
-                                38,
-                                40,
-                              ), // Dark text for the checkmark
+                              activeColor: colors.secondary,
+                              checkColor: colors.chipTextDark,
                               onChanged: (bool? value) {
                                 setState(() {
                                   _preferences[restaurant] = value ?? false;
                                 });
                               },
-                              tileColor: const Color.fromARGB(
-                                255,
-                                47,
-                                168,
-                                156,
-                              ).withValues(
-                                alpha: 10,
-                              ), // Slight turquoise background
+                              tileColor: colors.primary.withValues(
+                                alpha: 0.04,
+                              ), // Slight primary background
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               secondary:
                                   _customRestaurants.contains(restaurant)
                                       ? IconButton(
-                                        icon: const Icon(
+                                        icon: Icon(
                                           Icons.delete,
-                                          color: Colors.red,
+                                          color: colors.danger,
                                         ),
                                         onPressed:
                                             () =>

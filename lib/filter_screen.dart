@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'theme/app_colors.dart';
+import 'widgets/gradient_button.dart';
 
 class FilterScreen extends StatefulWidget {
   final List<Map<String, dynamic>> restaurants;
@@ -61,13 +63,14 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 
   Widget _buildChipGroup(String title, Set<String> all, Set<String> selected, void Function(String) toggle) {
+    final colors = AppColors.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: colors.textPrimary,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -81,19 +84,19 @@ class _FilterScreenState extends State<FilterScreen> {
             return FilterChip(
               label: Text(value),
               labelStyle: TextStyle(
-                color: isSelected ? const Color.fromARGB(255, 35, 38, 40) : Colors.white,
+                color: isSelected ? colors.chipTextDark : colors.textPrimary,
                 fontWeight: FontWeight.w600,
               ),
               selected: isSelected,
-              selectedColor: const Color.fromARGB(255, 253, 139, 69),
-              backgroundColor: const Color.fromARGB(255, 72, 80, 85),
-              checkmarkColor: const Color.fromARGB(255, 35, 38, 40),
+              selectedColor: colors.secondary,
+              backgroundColor: colors.chipDefaultBg,
+              checkmarkColor: colors.chipTextDark,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
                 side: BorderSide(
                   color: isSelected
-                      ? const Color.fromARGB(255, 253, 139, 69)
-                      : Colors.white24,
+                      ? colors.secondary
+                      : colors.chipDefaultBorder,
                 ),
               ),
               onSelected: (_) => setState(() {
@@ -109,24 +112,22 @@ class _FilterScreenState extends State<FilterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Filters",
           style: TextStyle(
-            color: Color.fromARGB(255, 62, 69, 74),
+            color: colors.appBarText,
             fontWeight: FontWeight.bold,
             fontSize: 28,
             fontFamily: 'Arial',
           ),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 47, 168, 156),
-                Color(0xFF40E0D0),
-              ],
+              colors: colors.appBarGradient,
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -141,10 +142,10 @@ class _FilterScreenState extends State<FilterScreen> {
               if (!mounted) return;
               navigator.pop();
             },
-            child: const Text(
+            child: Text(
               "Apply",
               style: TextStyle(
-                color: Color.fromARGB(255, 35, 38, 40),
+                color: colors.chipTextDark,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -153,12 +154,9 @@ class _FilterScreenState extends State<FilterScreen> {
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 72, 80, 85),
-              Color.fromARGB(255, 35, 38, 40),
-            ],
+            colors: colors.backgroundGradient,
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -190,10 +188,10 @@ class _FilterScreenState extends State<FilterScreen> {
                 }
               }),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 "Max Distance",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: colors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -208,8 +206,8 @@ class _FilterScreenState extends State<FilterScreen> {
                       max: 25.0,
                       divisions: 24,
                       label: '${_maxDistance.toStringAsFixed(0)} mi',
-                      activeColor: const Color.fromARGB(255, 253, 139, 69),
-                      inactiveColor: const Color.fromARGB(255, 72, 80, 85),
+                      activeColor: colors.secondary,
+                      inactiveColor: colors.chipDefaultBg,
                       onChanged: (value) {
                         setState(() {
                           _maxDistance = value;
@@ -219,8 +217,8 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   Text(
                     '${_maxDistance.toStringAsFixed(0)} mi',
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: colors.textPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -231,7 +229,9 @@ class _FilterScreenState extends State<FilterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
+                  GradientButton(
+                    isSecondary: true,
+                    label: 'Select All',
                     onPressed: () {
                       setState(() {
                         _selectedCuisines.addAll(_cuisines);
@@ -239,14 +239,6 @@ class _FilterScreenState extends State<FilterScreen> {
                         _selectedPriceTiers.addAll(_priceTiers);
                       });
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 253, 139, 69),
-                      foregroundColor: const Color.fromARGB(255, 35, 38, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text("Select All"),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
@@ -258,8 +250,8 @@ class _FilterScreenState extends State<FilterScreen> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 72, 80, 85),
-                      foregroundColor: Colors.white,
+                      backgroundColor: colors.chipDefaultBg,
+                      foregroundColor: colors.textPrimary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
