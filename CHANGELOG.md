@@ -146,4 +146,17 @@
 
 ---
 
+## [0.2.0] — 2026-05-10
+### Phase 9: Favorites List Screen
+- **feat:** Created `lib/favorites_list_screen.dart` — dedicated favorites list view
+  - Themed list tiles with cuisine/type/price/distance chips, swipe-to-remove via `Dismissible`
+  - Empty state with Aurora Frost gradient illustration and "Start favoriting!" prompt
+  - Tap-to-detail navigation via `RestaurantDetailScreen`
+- **feat:** Heart icon added to `AppBar` actions in `main.dart`; opens `FavoritesListScreen`
+- **feat:** `FavoritesListScreen` uses `FavoritesService` to load persisted favorites and sync in real-time
+- Verified: `flutter analyze` passes — no NEW issues introduced
+- Branch: `data/phase-9-favorites-list-v2`, commit `d8b12ee`
+
+---
+
 *End of changelog.*
