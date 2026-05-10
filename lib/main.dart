@@ -12,6 +12,7 @@ import 'share_service.dart';
 import 'onboarding.dart';
 import 'how_it_works.dart';
 import 'demo_service.dart';
+import 'restaurant_detail.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
@@ -905,6 +906,23 @@ class _MyHomePageState extends State<MyHomePage> {
             _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
             const SizedBox(height: 12),
             GradientButton(
+              isSecondary: false,
+              icon: Icons.info_outline,
+              label: "View Details",
+              onPressed: () {
+                final details = _getRestaurantDetails(_chosenRestaurant!);
+                if (details != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => RestaurantDetailScreen(restaurant: details),
+                    ),
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: 12),
+            GradientButton(
               isSecondary: true,
               icon: Icons.share,
               label: "Share Winner",
@@ -995,6 +1013,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: const TextStyle(fontSize: 20),
                 ),
                 _buildRestaurantMeta(_getRestaurantDetails(_optionA!)),
+                TextButton(
+                  onPressed: () {
+                    final details = _getRestaurantDetails(_optionA!);
+                    if (details != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => RestaurantDetailScreen(restaurant: details),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text('View Details', style: TextStyle(fontSize: 12)),
+                ),
               ],
             ),
           ),
@@ -1010,6 +1042,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: const TextStyle(fontSize: 20),
                 ),
                 _buildRestaurantMeta(_getRestaurantDetails(_optionB!)),
+                TextButton(
+                  onPressed: () {
+                    final details = _getRestaurantDetails(_optionB!);
+                    if (details != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => RestaurantDetailScreen(restaurant: details),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text('View Details', style: TextStyle(fontSize: 12)),
+                ),
               ],
             ),
           ),
@@ -1060,6 +1106,23 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
+            const SizedBox(height: 12),
+            GradientButton(
+              isSecondary: false,
+              icon: Icons.info_outline,
+              label: "View Details",
+              onPressed: () {
+                final details = _getRestaurantDetails(_chosenRestaurant!);
+                if (details != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => RestaurantDetailScreen(restaurant: details),
+                    ),
+                  );
+                }
+              },
+            ),
             const SizedBox(height: 12),
             GradientButton(
               isSecondary: true,

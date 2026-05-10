@@ -132,4 +132,18 @@
 
 ---
 
+## [0.1.9] — 2026-05-10
+### Phase 8: Restaurant Detail Screen
+- **feat:** Created `lib/restaurant_detail.dart` — full-screen detail view with `CustomScrollView` + `SliverAppBar`
+- **feat:** Displays cuisine, type, price tier, distance chips, address, phone, website, tags
+- **feat:** Action buttons: Maps, DoorDash, Call, Website (consistent with existing palette)
+- **feat:** Favorite toggle with heart icon in AppBar; persisted via `FavoritesService` (SharedPreferences)
+- **feat:** "View Details" button added to random choice winner and head-to-head winner views
+- **feat:** "View Details" link added to each head-to-head option card for quick preview before picking
+- **feat:** Created `lib/favorites_service.dart` — `addFavorite`, `removeFavorite`, `isFavorite`, `toggleFavorite`
+- Verified: `flutter analyze` passes — no NEW issues introduced
+- Branch: `data/phase-8-restaurant-detail`
+
+---
+
 *End of changelog.*
