@@ -14,8 +14,12 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
-## Current Phase: 10 — Next Feature (to be defined)
-- [ ] TBD
+## Current Phase: 10 — Search & Sort
+- [-] Search screen with live text search across name, cuisine, type, tags
+- [-] Sort by name, distance, price (low→high), cuisine, random
+- [-] Respects active filters + distance
+- [-] Tap-to-detail navigation, favorite indicator
+- [-] Themed empty state, clear-search button
 
 ---
 

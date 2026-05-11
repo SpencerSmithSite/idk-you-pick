@@ -14,6 +14,7 @@ class SearchScreen extends StatefulWidget {
   final Set<String> activePriceTiers;
   final double maxDistanceMiles;
   final Position? userPosition;
+  final bool useLocation;
 
   const SearchScreen({
     super.key,
@@ -23,6 +24,7 @@ class SearchScreen extends StatefulWidget {
     required this.activePriceTiers,
     required this.maxDistanceMiles,
     this.userPosition,
+    this.useLocation = true,
   });
 
   @override
@@ -55,11 +57,11 @@ class _SearchScreenState extends State<SearchScreen> {
     if (widget.activePriceTiers.isNotEmpty) {
       pool = pool.where((r) => widget.activePriceTiers.contains(r['priceTier'])).toList();
     }
-    if (widget.userPosition != null) {
+    if (widget.useLocation && widget.userPosition != null) {
       pool = pool.where((r) {
         final lat = r['lat'] as double?;
         final lng = r['lng'] as double?;
-        if (lat == null || lng == null) return false;
+        if (lat == null || lng == null) return true;
         final d = LocationService.distanceBetween(
           widget.userPosition!.latitude,
           widget.userPosition!.longitude,
