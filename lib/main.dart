@@ -21,6 +21,7 @@ import 'theme/theme_provider.dart';
 import 'widgets/gradient_button.dart';
 import 'widgets/gradient_text.dart';
 import 'widgets/glow_orb.dart';
+import 'widgets/glass_card.dart';
 
 void main() {
   try {

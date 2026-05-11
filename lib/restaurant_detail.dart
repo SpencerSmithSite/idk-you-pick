@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'theme/app_colors.dart';
+import 'widgets/glass_card.dart';
 import 'favorites_service.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
@@ -192,8 +193,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+            child: GlassCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

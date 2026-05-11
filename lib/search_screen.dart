@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme/app_colors.dart';
+import 'widgets/glass_card.dart';
 import 'restaurant_detail.dart';
 import 'favorites_service.dart';
 import 'location_service.dart';
@@ -156,11 +157,9 @@ class _SearchScreenState extends State<SearchScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (ctx) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          ),
+        return GlassCard(
+          margin: EdgeInsets.zero,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           padding: const EdgeInsets.all(20),
           child: SafeArea(
             child: Column(

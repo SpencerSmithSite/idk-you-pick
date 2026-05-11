@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'favorites_service.dart';
 import 'restaurant_detail.dart';
 import 'theme/app_colors.dart';
+import 'widgets/glass_card.dart';
 
 class FavoritesListScreen extends StatefulWidget {
   final List<Map<String, dynamic>> restaurants;
