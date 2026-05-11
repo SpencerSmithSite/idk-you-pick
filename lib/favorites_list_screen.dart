@@ -173,17 +173,10 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                               ),
                             );
                           },
-                          child: Container(
+                          child: GlassCard(
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: colors.surface,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: colors.primary.withValues(alpha: 0.15),
-                                width: 1,
-                              ),
-                            ),
+                            borderRadius: BorderRadius.circular(16),
                             child: Row(
                               children: [
                                 Expanded(

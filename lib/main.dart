@@ -964,27 +964,40 @@ class _MyHomePageState extends State<MyHomePage> {
     final colors = AppColors.of(context);
     return Stack(
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Not sure where to eat? \nLet's decide!",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: colors.textPrimary, fontSize: 20),
+        Center(
+          child: GlassCard(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+            margin: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.restaurant, size: 48, color: colors.primary),
+                const SizedBox(height: 16),
+                GradientText(
+                  text: "Not sure where to eat?",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Let's decide!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: colors.textSecondary, fontSize: 16),
+                ),
+                const SizedBox(height: 28),
+                GradientButton(
+                  isSecondary: true,
+                  label: "Choose For Me",
+                  onPressed: _chooseRandom,
+                ),
+                const SizedBox(height: 16),
+                GradientButton(
+                  isSecondary: true,
+                  label: "Help Me Decide",
+                  onPressed: _startHeadToHead,
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            GradientButton(
-              isSecondary: true,
-              label: "Choose For Me",
-              onPressed: _chooseRandom,
-            ),
-            const SizedBox(height: 30),
-            GradientButton(
-              isSecondary: true,
-              label: "Help Me Decide",
-              onPressed: _startHeadToHead,
-            ),
-          ],
+          ),
         ),
         if (!_hasSeenHowItWorks) HowItWorksOverlay(onDismiss: _dismissHowItWorks),
       ],

@@ -5,6 +5,7 @@ import 'onboarding.dart';
 import 'theme/app_colors.dart';
 import 'theme/theme_provider.dart';
 import 'widgets/gradient_button.dart';
+import 'widgets/glass_card.dart';
 
 class SettingsScreen extends StatefulWidget {
   final Map<String, bool> restaurantPreferences;
@@ -180,66 +181,87 @@ class _SettingsScreenState extends State<SettingsScreen> {
               listenable: widget.themeProvider,
               builder: (context, child) {
                 final mode = widget.themeProvider.themeMode;
-                return ListTile(
-                  leading: Icon(Icons.palette, color: colors.textSecondary),
-                  title: Text(
-                    'Appearance',
-                    style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildThemeChip('System', ThemeMode.system, mode, colors),
-                      const SizedBox(width: 8),
-                      _buildThemeChip('Light', ThemeMode.light, mode, colors),
-                      const SizedBox(width: 8),
-                      _buildThemeChip('Dark', ThemeMode.dark, mode, colors),
-                    ],
+                return GlassCard(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  padding: EdgeInsets.zero,
+                  borderRadius: BorderRadius.circular(16),
+                  child: ListTile(
+                    leading: Icon(Icons.palette, color: colors.textSecondary),
+                    title: Text(
+                      'Appearance',
+                      style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildThemeChip('System', ThemeMode.system, mode, colors),
+                        const SizedBox(width: 8),
+                        _buildThemeChip('Light', ThemeMode.light, mode, colors),
+                        const SizedBox(width: 8),
+                        _buildThemeChip('Dark', ThemeMode.dark, mode, colors),
+                      ],
+                    ),
                   ),
                 );
               },
             ),
             const Divider(),
-            ListTile(
-              leading: Icon(Icons.tour, color: colors.textSecondary),
-              title: Text('Restart Onboarding', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
-              trailing: TextButton(
-                onPressed: () async {
-                  await OnboardingService.resetOnboarding();
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Onboarding will restart on next launch.')),
-                  );
-                },
-                child: Text('Reset', style: TextStyle(color: colors.secondary)),
+            GlassCard(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(16),
+              child: ListTile(
+                leading: Icon(Icons.tour, color: colors.textSecondary),
+                title: Text('Restart Onboarding', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
+                trailing: TextButton(
+                  onPressed: () async {
+                    await OnboardingService.resetOnboarding();
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Onboarding will restart on next launch.')),
+                    );
+                  },
+                  child: Text('Reset', style: TextStyle(color: colors.secondary)),
+                ),
               ),
             ),
             const Divider(),
-            DemoModeTile(colors: colors),
+            GlassCard(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(16),
+              child: DemoModeTile(colors: colors),
+            ),
             const Divider(),
-            ListTile(
-              leading: Icon(Icons.location_on, color: colors.textSecondary),
-              title: Text('Use My Location', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
-              subtitle: Text(
-                _useLocation
-                    ? 'Show nearby restaurants based on your location'
-                    : 'Location is off. All restaurants will be shown.',
-                style: TextStyle(color: colors.textSecondary, fontSize: 12),
-              ),
-              trailing: Switch(
-                value: _useLocation,
-                activeTrackColor: colors.secondary,
-                thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
-                  if (states.contains(WidgetState.selected)) {
-                    return colors.foregroundOnDark;
-                  }
-                  return colors.switchThumbUnselected;
-                }),
-                onChanged: _toggleLocation,
+            GlassCard(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(16),
+              child: ListTile(
+                leading: Icon(Icons.location_on, color: colors.textSecondary),
+                title: Text('Use My Location', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
+                subtitle: Text(
+                  _useLocation
+                      ? 'Show nearby restaurants based on your location'
+                      : 'Location is off. All restaurants will be shown.',
+                  style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                ),
+                trailing: Switch(
+                  value: _useLocation,
+                  activeTrackColor: colors.secondary,
+                  thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return colors.foregroundOnDark;
+                    }
+                    return colors.switchThumbUnselected;
+                  }),
+                  onChanged: _toggleLocation,
+                ),
               ),
             ),
             const Divider(),
-            Padding(
+            GlassCard(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
@@ -309,8 +331,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   controller: _scrollController,
                   padding: const EdgeInsets.all(20),
                   children: _preferences.keys.map((restaurant) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                    return GlassCard(
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                      padding: EdgeInsets.zero,
+                      borderRadius: BorderRadius.circular(16),
                       child: Theme(
                         data: Theme.of(context).copyWith(
                           checkboxTheme: CheckboxThemeData(
