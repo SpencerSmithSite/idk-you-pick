@@ -398,8 +398,7 @@ class _MyHomePageState extends State<MyHomePage> {
         final entries = _history.entries.toList()
           ..sort((a, b) => b.value.compareTo(a.value));
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
+          child: GlassCard(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -995,8 +994,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildRandomChoiceView() {
     if (_chosenRestaurant != null) {
       final colors = AppColors.of(context);
-      return Padding(
-        padding: const EdgeInsets.all(20),
+      return GlassCard(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
