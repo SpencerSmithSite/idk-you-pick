@@ -43,9 +43,9 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 - [x] Refactor `filter_screen.dart` — wrap filters body in GlassCard
 - [x] Refactor `restaurant_detail.dart` — wrap content in GlassCard
 - [x] Refactor `search_screen.dart` — wrap sort bottom sheet in GlassCard
-- [ ] Refactor `settings.dart` — wrap settings list blocks in GlassCard (needs individual ListTile GlassCards; Expanded+ListView issue)
-- [ ] Refactor `favorites_list_screen.dart` — wrap list tiles in GlassCard
-- [ ] Refactor `main.dart` home screen with Aurora Frost styling
+- [x] Refactor `settings.dart` — wrap settings list blocks in GlassCard
+- [x] Refactor `favorites_list_screen.dart` — wrap list tiles in GlassCard
+- [x] Refactor `main.dart` home screen with Aurora Frost styling
 - [ ] Screenshot light + dark mode for Captain
 
 ---
