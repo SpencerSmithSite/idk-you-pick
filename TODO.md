@@ -35,16 +35,17 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
-## Next: Aurora Frost Theme (Phase 11)
+## Current Phase: 11 — Aurora Frost Theme
 - [x] Create `lib/theme/` — color tokens, ThemeData provider, theme switching
 - [x] Create `lib/widgets/` — GlassCard, GradientButton, GradientText, GlowOrb
-- [x] Migrate hardcoded Colors.* to Aurora Frost semantic tokens (all screens)
-- [-] Refactor all screens to use `GlassCard` consistently
+- [x] Migrate hardcoded `Colors.*` to Aurora Frost semantic tokens (all screens)
+- [x] Refactor `main.dart` — wrap History bottom sheet + Random Result in GlassCard
+- [x] Refactor `filter_screen.dart` — wrap filters body in GlassCard
+- [x] Refactor `restaurant_detail.dart` — wrap content in GlassCard
+- [x] Refactor `search_screen.dart` — wrap sort bottom sheet in GlassCard
+- [ ] Refactor `settings.dart` — wrap settings list blocks in GlassCard (needs individual ListTile GlassCards; Expanded+ListView issue)
+- [ ] Refactor `favorites_list_screen.dart` — wrap list tiles in GlassCard
 - [ ] Refactor `main.dart` home screen with Aurora Frost styling
-- [ ] Refactor `filter_screen.dart` with themed chips + glass surfaces
-- [ ] Refactor `restaurant_detail.dart` glass surfaces
-- [ ] Refactor `search_screen.dart` glass surfaces
-- [ ] Refactor `favorites_list_screen.dart` glass surfaces
 - [ ] Screenshot light + dark mode for Captain
 
 ---
