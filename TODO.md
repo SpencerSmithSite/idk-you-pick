@@ -46,6 +46,6 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 - [x] Refactor `settings.dart` — wrap settings list blocks in GlassCard
 - [x] Refactor `favorites_list_screen.dart` — wrap list tiles in GlassCard
 - [x] Refactor `main.dart` home screen with Aurora Frost styling
-- [ ] Screenshot light + dark mode for Captain
+- [x] Screenshot light + dark mode for Captain
 
 ---
