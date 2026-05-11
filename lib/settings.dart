@@ -160,10 +160,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               await _savePreferences();
               if (!mounted) return;
               widget.onSave(_preferences);
-              if (!mounted) return;
-              final navigator = Navigator.of(context);
-              if (!mounted) return;
-              navigator.pop();
+              if (!context.mounted) return;
+              Navigator.of(context).pop();
             },
           ),
         ],
@@ -230,7 +228,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               trailing: Switch(
                 value: _useLocation,
-                activeColor: colors.secondary,
+                activeTrackColor: colors.secondary,
+                thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return Colors.white;
+                  }
+                  return Colors.white70;
+                }),
                 onChanged: _toggleLocation,
               ),
             ),
@@ -414,7 +418,13 @@ class _DemoModeTileState extends State<DemoModeTile> {
       ),
       trailing: Switch(
         value: _enabled,
-        activeColor: widget.colors.secondary,
+        activeTrackColor: widget.colors.secondary,
+        thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return Colors.white70;
+        }),
         onChanged: _toggle,
       ),
     );
