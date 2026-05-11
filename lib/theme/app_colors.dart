@@ -102,6 +102,44 @@ class AppColors {
   /// Dark text used on light colored chips/buttons.
   Color get chipTextDark => const Color(0xFF1A1A2E);
 
+  /// Favorite heart icon color (semantic alias for danger).
+  Color get favorite => danger;
+
+  /// Success / confirmation color (green).
+  Color get success =>
+      isDark ? const Color(0xFF4ADE80) : const Color(0xFF22C55E);
+
+  /// Info / distance color (purple).
+  Color get info =>
+      isDark ? const Color(0xFFA78BFA) : const Color(0xFF8B5CF6);
+
+  /// Neutral gradient for secondary action buttons (call, website).
+  List<Color> get neutralGradient =>
+      isDark
+          ? [const Color(0xFF374151), const Color(0xFF4B5563)]
+          : [const Color(0xFF9CA3AF), const Color(0xFFD1D5DB)];
+
+  /// Large icon tint on gradient backgrounds (low opacity white).
+  Color get surfaceIcon => chipTextLight.withValues(alpha: 0.3);
+
+  /// Overlay scrim for modals / overlays.
+  Color get scrim => const Color.fromRGBO(0, 0, 0, 0.6);
+
+  /// Accent glow color (orange radial glow behind screens).
+  Color get accentGlow =>
+      isDark
+          ? const Color.fromRGBO(249, 115, 22, 0.12)
+          : const Color.fromRGBO(249, 115, 22, 0.06);
+
+  /// Light text for icons / foreground on dark backgrounds.
+  Color get foregroundOnDark => chipTextLight;
+
+  /// Switch thumb when unselected (slightly dimmed white).
+  Color get switchThumbUnselected => chipTextLight.withValues(alpha: 0.7);
+
+  /// Dismissible background (delete swipe) surface color.
+  Color get dismissibleBackground => danger.withValues(alpha: 0.3);
+
   /// Glow orb low-opacity tint.
   Color get glowTint =>
       isDark

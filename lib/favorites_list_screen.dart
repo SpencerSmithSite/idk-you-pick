@@ -155,10 +155,10 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                           alignment: Alignment.centerRight,
                           padding: const EdgeInsets.only(right: 20),
                           decoration: BoxDecoration(
-                            color: Colors.red.withValues(alpha: 0.3),
+                            color: colors.dismissibleBackground,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Icon(Icons.delete, color: Colors.red),
+                          child: Icon(Icons.delete, color: colors.favorite),
                         ),
                         onDismissed: (_) => _removeFavorite(name),
                         child: GestureDetector(
@@ -232,7 +232,7 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                                 IconButton(
                                   icon: Icon(
                                     Icons.favorite,
-                                    color: Colors.red,
+                                    color: colors.favorite,
                                   ),
                                   onPressed: () => _removeFavorite(name),
                                   tooltip: 'Remove from favorites',

@@ -15,7 +15,7 @@ class HowItWorksOverlay extends StatelessWidget {
     return GestureDetector(
       onTap: onDismiss,
       child: Container(
-        color: Colors.black.withValues(alpha: 0.6),
+        color: colors.scrim,
         child: Center(
           child: GestureDetector(
             onTap: () {}, // prevent tap-through to background

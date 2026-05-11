@@ -231,9 +231,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 activeTrackColor: colors.secondary,
                 thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
                   if (states.contains(WidgetState.selected)) {
-                    return Colors.white;
+                    return colors.foregroundOnDark;
                   }
-                  return Colors.white70;
+                  return colors.switchThumbUnselected;
                 }),
                 onChanged: _toggleLocation,
               ),

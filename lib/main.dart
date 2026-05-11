@@ -939,10 +939,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           const GlowOrb(size: 300, alignment: Alignment.topLeft),
-          const GlowOrb(
+          GlowOrb(
             size: 250,
             alignment: Alignment.bottomRight,
-            colors: [Color.fromRGBO(249, 115, 22, 0.06), Colors.transparent],
+            colors: [colors.accentGlow, Colors.transparent],
           ),
           SafeArea(
             child: Center(

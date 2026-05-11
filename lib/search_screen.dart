@@ -271,16 +271,16 @@ class _SearchScreenState extends State<SearchScreen> {
                   if (type != null)
                     _miniChip(type, colors.secondary),
                   if (price != null)
-                    _miniChip(price, Colors.green),
+                    _miniChip(price, colors.success),
                   if (distance != null)
-                    _miniChip('$distance mi', Colors.purple),
+                    _miniChip('$distance mi', colors.info),
                   ...tags.take(3).map((t) => _miniChip(t, colors.textMuted)),
                 ],
               ),
             ),
             trailing: Icon(
               isFav ? Icons.favorite : Icons.chevron_right,
-              color: isFav ? Colors.red : colors.textMuted,
+              color: isFav ? colors.favorite : colors.textMuted,
               size: 20,
             ),
             onTap: () {
