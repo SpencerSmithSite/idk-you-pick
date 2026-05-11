@@ -32,3 +32,20 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 - **Commit format:** `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`
 - **After work session:** commit, push branch, open PR or update existing PR
 - **Tick summary format:** "[IDK P{N}] {what got done} — branch: data/..."
+
+---
+
+## Next: Aurora Frost Theme (Phase 11)
+- [x] Create `lib/theme/` — color tokens, ThemeData provider, theme switching
+- [x] Create `lib/widgets/` — GlassCard, GradientButton, GradientText, GlowOrb
+- [x] Wire theme switching into Settings (Appearance: System / Light / Dark)
+- [x] Fix deprecated `activeColor` and `use_build_context_synchronously` lint
+- [ ] Refactor all screens to use `GlassCard` consistently
+- [ ] Refactor `main.dart` home screen with Aurora Frost styling
+- [ ] Refactor `filter_screen.dart` with themed chips + glass surfaces
+- [ ] Refactor `restaurant_detail.dart` glass surfaces
+- [ ] Refactor `search_screen.dart` glass surfaces
+- [ ] Refactor `favorites_list_screen.dart` glass surfaces
+- [ ] Screenshot light + dark mode for Captain
+
+---

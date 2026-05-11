@@ -176,6 +176,24 @@
 
 ## [0.2.2] — 2026-05-11
 ### Bug Fixes: Location Opt-In, AppBar Title, Empty Pool Messages
+---
+
+## [0.3.0] — 2026-05-11 (proactive)
+### Aurora Frost Theme Foundation
+- **feat:** Aurora Frost design system foundation — light/dark mode, glassmorphism, gradient buttons, glow orbs, theme tokens
+- **feat:** `lib/theme/app_colors.dart` — color tokens for light/dark (surface, primary, secondary, text, chip, shadow, danger)
+- **feat:** `lib/theme/app_theme.dart` — `ThemeData` definitions for light + dark modes (ColorScheme, AppBar, chips, slider, checkbox, input)
+- **feat:** `lib/theme/theme_provider.dart` — `ChangeNotifier` for theme mode switching with SharedPreferences persistence (`app_theme_mode`)
+- **feat:** `lib/widgets/glass_card.dart` — reusable glassmorphism card widget (opacity + border + shadow)
+- **feat:** `lib/widgets/gradient_button.dart` — reusable gradient pill button with primary/secondary variants
+- **feat:** `lib/widgets/gradient_text.dart` — reusable `ShaderMask` gradient text widget
+- **feat:** `lib/widgets/glow_orb.dart` — reusable radial glow orbs for ambient background decoration
+- **feat:** Settings screen `Appearance` row with System / Light / Dark choice chips (fully functional)
+- **fix:** Replaced deprecated `Switch.activeColor` with `activeTrackColor` + `WidgetStateProperty` thumb color in Settings (2 instances)
+- **fix:** Fixed `use_build_context_synchronously` lint in Settings `onPressed` save handler
+- **QA:** `flutter analyze` — zero issues across all 15 Dart source files
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/aurora-frost-theme`, PR #17 opened
 - **fix:** Added `Use My Location` toggle in Settings; persists to SharedPreferences (`use_location`)
 - **fix:** `_filteredPool` now only applies distance filtering when `_useLocation == true` AND `_userPosition != null`
 - **fix:** Silenced location permission denial — app silently falls back to all restaurants instead of crashing
