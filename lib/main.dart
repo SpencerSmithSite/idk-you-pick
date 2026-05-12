@@ -797,162 +797,42 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        actions: [
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.filter_alt),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                          builder:
-                              (context) => FilterScreen(
-                                restaurants: _restaurantDetails,
-                                activeCuisines: _activeCuisines,
-                                activeTypes: _activeTypes,
-                                activePriceTiers: _activePriceTiers,
-                                maxDistance: _maxDistanceMiles,
-                                useLocation: _useLocation,
-                                onDistanceChanged: (value) {
-                                  setState(() {
-                                    _maxDistanceMiles = value;
-                                  });
-                                },
-                                onSave: () async {
-                                  await _loadFilters();
-                                  await _loadDistanceFilter();
-                                },
-                              ),
-                    ),
-                  );
-                },
-              ),
-              if (_activeCuisines.isNotEmpty ||
-                  _activeTypes.isNotEmpty ||
-                  _activePriceTiers.isNotEmpty)
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: colors.secondary,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: _showHistorySheet,
-          ),
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: _showShareSheet,
-          ),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchScreen(
-                    restaurants: _restaurantDetails,
-                    activeCuisines: _activeCuisines,
-                    activeTypes: _activeTypes,
-                    activePriceTiers: _activePriceTiers,
-                    maxDistanceMiles: _maxDistanceMiles,
-                    userPosition: _userPosition,
-                    useLocation: _useLocation,
-                  ),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.favorite),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => FavoritesListScreen(
-                        restaurants: _restaurantDetails,
-                      ),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => SettingsScreen(
-                        restaurantPreferences: _restaurantPreferences,
-                        themeProvider: widget.themeProvider,
-                        onSave: (newPreferences) {
-                          setState(() {
-                            _restaurantPreferences = newPreferences;
-                          });
-                        },
-                        useLocation: _useLocation,
-                        onLocationChanged: (enabled) async {
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.setBool('use_location', enabled);
-                          setState(() {
-                            _useLocation = enabled;
-                            if (!enabled) {
-                              _userPosition = null;
-                            }
-                          });
-                          if (enabled) {
-                            final pos = await LocationService.determinePosition();
-                            if (pos != null) {
-                              setState(() {
-                                _userPosition = pos;
-                              });
-                            }
-                          }
-                        },
-                      ),
-                ),
-              );
-            },
-          ),
-        ],
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: colors.backgroundGradient,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+          Expanded(
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: colors.backgroundGradient,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
+                const GlowOrb(size: 300, alignment: Alignment.topLeft),
+                GlowOrb(
+                  size: 250,
+                  alignment: Alignment.bottomRight,
+                  colors: [colors.accentGlow, Colors.transparent],
+                ),
+                SafeArea(
+                  child: Center(
+                    child:
+                        _helpMeDecideMode
+                            ? _buildHelpMeDecideView()
+                            : _randomChoiceMode
+                            ? _buildRandomChoiceView()
+                            : _buildDefaultView(),
+                  ),
+                ),
+              ],
             ),
-          ),
-          const GlowOrb(size: 300, alignment: Alignment.topLeft),
-          GlowOrb(
-            size: 250,
-            alignment: Alignment.bottomRight,
-            colors: [colors.accentGlow, Colors.transparent],
           ),
           SafeArea(
-            child: Center(
-              child:
-                  _helpMeDecideMode
-                      ? _buildHelpMeDecideView()
-                      : _randomChoiceMode
-                      ? _buildRandomChoiceView()
-                      : _buildDefaultView(),
-            ),
+            child: _buildBottomActionBar(),
           ),
         ],
       ),
@@ -1311,6 +1191,150 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ],
+    );
+  }
+
+  /// Bottom action bar with Filter, History, Share, Search, Favorites, Settings.
+  Widget _buildBottomActionBar() {
+    final colors = AppColors.of(context);
+    return GlassCard(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.filter_alt, size: 22),
+                color: colors.textPrimary,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FilterScreen(
+                        restaurants: _restaurantDetails,
+                        activeCuisines: _activeCuisines,
+                        activeTypes: _activeTypes,
+                        activePriceTiers: _activePriceTiers,
+                        maxDistance: _maxDistanceMiles,
+                        useLocation: _useLocation,
+                        onDistanceChanged: (value) {
+                          setState(() {
+                            _maxDistanceMiles = value;
+                          });
+                        },
+                        onSave: () async {
+                          await _loadFilters();
+                          await _loadDistanceFilter();
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+              if (_activeCuisines.isNotEmpty ||
+                  _activeTypes.isNotEmpty ||
+                  _activePriceTiers.isNotEmpty)
+                Positioned(
+                  right: 6,
+                  top: 6,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: colors.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          IconButton(
+            icon: const Icon(Icons.history, size: 22),
+            color: colors.textPrimary,
+            onPressed: _showHistorySheet,
+          ),
+          IconButton(
+            icon: const Icon(Icons.share, size: 22),
+            color: colors.textPrimary,
+            onPressed: _showShareSheet,
+          ),
+          IconButton(
+            icon: const Icon(Icons.search, size: 22),
+            color: colors.textPrimary,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                    restaurants: _restaurantDetails,
+                    activeCuisines: _activeCuisines,
+                    activeTypes: _activeTypes,
+                    activePriceTiers: _activePriceTiers,
+                    maxDistanceMiles: _maxDistanceMiles,
+                    userPosition: _userPosition,
+                    useLocation: _useLocation,
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.favorite, size: 22),
+            color: colors.textPrimary,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FavoritesListScreen(
+                    restaurants: _restaurantDetails,
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings, size: 22),
+            color: colors.textPrimary,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsScreen(
+                    restaurantPreferences: _restaurantPreferences,
+                    themeProvider: widget.themeProvider,
+                    onSave: (newPreferences) {
+                      setState(() {
+                        _restaurantPreferences = newPreferences;
+                      });
+                    },
+                    useLocation: _useLocation,
+                    onLocationChanged: (enabled) async {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('use_location', enabled);
+                      setState(() {
+                        _useLocation = enabled;
+                        if (!enabled) {
+                          _userPosition = null;
+                        }
+                      });
+                      if (enabled) {
+                        final pos = await LocationService.determinePosition();
+                        if (pos != null) {
+                          setState(() {
+                            _userPosition = pos;
+                          });
+                        }
+                      }
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

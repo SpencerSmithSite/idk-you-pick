@@ -146,6 +146,18 @@ class AppColors {
           ? const Color.fromRGBO(13, 148, 136, 0.12)
           : const Color.fromRGBO(13, 148, 136, 0.08);
 
+  /// Frosted-glass blur sigma (adapts to brightness).
+  double get backdropBlur => isDark ? 16.0 : 12.0;
+
+  /// Frost overlay tint applied on top of the blurred background.
+  Color get backdropTint =>
+      isDark
+          ? const Color.fromRGBO(255, 255, 255, 0.03)
+          : const Color.fromRGBO(255, 255, 255, 0.25);
+
+  /// Transparent overlay for modals behind the glass card.
+  Color get overlay => const Color.fromRGBO(0, 0, 0, 0.0);
+
   static AppColors of(BuildContext context) {
     final brightness = Theme.of(context).brightness;
     return AppColors(brightness);
