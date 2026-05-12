@@ -447,6 +447,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           trailing: IconButton(
                             icon: Icon(Icons.close,
                               color: AppColors.of(context).textMuted),
+                            tooltip: 'Remove from history',
                             onPressed: () => _removeFromHistory(e.key),
                           ),
                         );
@@ -1208,6 +1209,7 @@ class _MyHomePageState extends State<MyHomePage> {
               IconButton(
                 icon: const Icon(Icons.filter_alt, size: 22),
                 color: colors.textPrimary,
+                tooltip: 'Filters',
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -1253,16 +1255,19 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.history, size: 22),
             color: colors.textPrimary,
+            tooltip: 'History',
             onPressed: _showHistorySheet,
           ),
           IconButton(
             icon: const Icon(Icons.share, size: 22),
             color: colors.textPrimary,
+            tooltip: 'Share',
             onPressed: _showShareSheet,
           ),
           IconButton(
             icon: const Icon(Icons.search, size: 22),
             color: colors.textPrimary,
+            tooltip: 'Search',
             onPressed: () {
               Navigator.push(
                 context,
@@ -1283,6 +1288,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.favorite, size: 22),
             color: colors.textPrimary,
+            tooltip: 'Favorites',
             onPressed: () {
               Navigator.push(
                 context,
@@ -1297,6 +1303,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.settings, size: 22),
             color: colors.textPrimary,
+            tooltip: 'Settings',
             onPressed: () {
               Navigator.push(
                 context,

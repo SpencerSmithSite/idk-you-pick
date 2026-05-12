@@ -377,6 +377,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     Icons.delete,
                                     color: colors.danger,
                                   ),
+                                  tooltip: 'Delete restaurant',
                                   onPressed: () => _deleteRestaurant(restaurant),
                                 )
                               : null,
