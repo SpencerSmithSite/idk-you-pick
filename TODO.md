@@ -31,11 +31,11 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 - [ ] Unit tests for restaurant data parsing edge cases
 - [ ] Widget tests for onboarding flow
 - [ ] Widget tests for Settings save/restore cycle
-- [ ] Semantic labels for all IconButtons and actionable chips
-- [ ] Tooltip coverage for GradientButtons across all screens
-- [ ] Screen reader audit (VoiceOver / TalkBack)
+- [x] Semantic labels for all IconButtons and actionable chips
+- [x] Tooltip coverage for GradientButtons across all screens
+- [x] CI workflow: run `flutter test` on every PR
 - [ ] Dynamic type / text scaling sanity check
-- [ ] CI workflow: run `flutter test` on every PR
+- [ ] Screen reader audit (VoiceOver / TalkBack)
 
 ---
 
