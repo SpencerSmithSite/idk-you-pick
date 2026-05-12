@@ -250,6 +250,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   GradientButton(
                     isSecondary: true,
                     label: 'Select All',
+                    tooltip: 'Select all cuisines, types, and price tiers',
                     onPressed: () {
                       setState(() {
                         _selectedCuisines.addAll(_cuisines);

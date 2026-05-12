@@ -157,6 +157,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
+            tooltip: 'Save settings',
             onPressed: () async {
               await _savePreferences();
               if (!mounted) return;

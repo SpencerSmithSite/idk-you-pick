@@ -13,6 +13,7 @@ class GradientButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final double? fontSize;
   final IconData? icon;
+  final String? tooltip;
 
   const GradientButton({
     super.key,
@@ -23,6 +24,7 @@ class GradientButton extends StatelessWidget {
     this.padding,
     this.fontSize,
     this.icon,
+    this.tooltip,
   }) : assert(label != null || child != null, 'Provide label or child');
 
   @override
@@ -43,7 +45,24 @@ class GradientButton extends StatelessWidget {
           : Text(label!)
     );
 
-    return Container(
+    final elevated = ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        elevation: 0,
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        foregroundColor: colors.chipTextLight,
+        textStyle: TextStyle(
+          fontSize: fontSize ?? 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      child: buttonContent,
+    );
+
+    final container = Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: gradient,
@@ -59,22 +78,12 @@ class GradientButton extends StatelessWidget {
           ),
         ],
       ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          elevation: 0,
-          padding: padding ?? const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          foregroundColor: colors.chipTextLight,
-          textStyle: TextStyle(
-            fontSize: fontSize ?? 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        child: buttonContent,
-      ),
+      child: elevated,
     );
+
+    if (tooltip != null && tooltip!.isNotEmpty) {
+      return Tooltip(message: tooltip!, child: container);
+    }
+    return container;
   }
 }
