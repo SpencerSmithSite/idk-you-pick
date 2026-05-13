@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:rest_chooser/settings.dart';
 
 /// Unit tests for Settings save/restore cycle — verifies SharedPreferences
 /// integration without widget-level Navigator.pop complexity.
