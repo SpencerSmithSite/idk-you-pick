@@ -5,20 +5,15 @@
 - [x] Phase 2 — Filter UI (cuisine, type, priceTier chips, SharedPreferences persistence, indicator, empty state)
 - [x] Phase 3 — Location Mode (geolocator, distance filter, lat/lng data, distance chips)
 - [x] Phase 5 — History / Seen Tracking (PR #11, branch `data/phase-5-history-seen`, commit `39e61aa`)
-- [x] Phase 6 — Aurora Frost Design System (commit `409380b`, branch `data/phase-6-share-invite`)
+- [x] Phase 6 — Share / Invite (PR #12, branch `data/phase-6-share-invite`, commit `3c28fed`)
+- [x] Phase 7 — Onboarding / Tutorial (PR #13, branch `data/phase-7-onboarding`, commit `f4dd3d4`)
 
-PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase 5)
+PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase 5), #12 (Phase 6), #13 (Phase 7)
 
 ---
 
-## Current Phase: 6 — Share / Invite (in progress on same branch as theme)
-- [x] 6.1 Share winner to Messages / clipboard
-- [x] 6.2 Generate invite link
-- [x] 6.3 Deep-link URL scheme (idkyoupick://invite)
-- [x] 6.4 Handle incoming invite links (apply filters)
-
-### Backlog
-- Phase 7: Onboarding / tutorial for first-time user
+## Current Phase: 8 — Next Feature (to be defined)
+- [ ] TBD
 
 ---
 

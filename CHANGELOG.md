@@ -110,4 +110,26 @@
 
 ---
 
+## [0.1.8] — 2026-05-10
+### Phase 7: Onboarding / Tutorial
+- **feat:** Created `lib/onboarding.dart` — 4-slide PageView walkthrough (welcome, random pick, head-to-head, settings)
+  - themed dot indicators (animated width), gradient "Get Started" button, Skip option on non-final slides
+  - `OnboardingService` with SharedPreferences key `onboarding_complete`; `resetOnboarding()` wired into Settings tile
+- **feat:** Created `lib/how_it_works.dart` — first-run "How It Works" overlay on main screen
+  - Dark modal with 4 bullet instructions, persists dismissal via `has_seen_how_it_works` flag
+- **feat:** Created `lib/demo_service.dart` — `DemoService.generateFakeRestaurants()` generates 6 synthetic spots with lat/lng
+  - toggled via Settings tile `DemoModeTile` with `demo_mode_enabled` flag
+  - `_loadRestaurants(demoMode:)` uses demo data when enabled
+- **feat:** Updated `lib/main.dart` — `MyApp` is now `StatefulWidget` with `FutureBuilder<bool>` onboarding gate
+  - `_initializeApp()` passes `demoMode` into `_loadRestaurants()`
+  - `_hasSeenHowItWorks` state + `_dismissHowItWorks()` persistence
+  - `_buildDefaultView()` wraps `HowItWorksOverlay` in a `Stack`
+- **feat:** Updated `lib/settings.dart` — added "Restart Onboarding" and "Demo Mode" tiles
+- **QA:** `flutter analyze` — zero new Dart errors (pre-existing issues only)
+- **QA:** `flutter test` — passes
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/phase-7-onboarding`, commit `f4dd3d4`
+
+---
+
 *End of changelog.*
