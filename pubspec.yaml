@@ -26,6 +26,8 @@ dependencies:
   # iOS-style icons for the app
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.0
+  share_plus: ^13.1.0
+  app_links: ^7.0.0
 
 dependencies_overrides: {}
 

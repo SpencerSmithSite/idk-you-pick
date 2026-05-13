@@ -6,17 +6,17 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:rest_chooser/main.dart';
+import 'package:rest_chooser/theme/theme_provider.dart';
 
 void main() {
   testWidgets('App loads default screen', (WidgetTester tester) async {
-    // Build the widget.
-    await tester.pumpWidget(const MyApp());
+    final themeProvider = ThemeProvider();
+    await tester.pumpWidget(MyApp(themeProvider: themeProvider));
 
     // Verify we see the default welcome text and buttons.
-    expect(find.text('Welcome to Restaurant Chooser!'), findsOneWidget);
-    expect(find.text('Choose Random'), findsOneWidget);
+    expect(find.text('Not sure where to eat?'), findsOneWidget);
+    expect(find.text('Choose For Me'), findsOneWidget);
     expect(find.text('Help Me Decide'), findsOneWidget);
   });
 }
