@@ -175,12 +175,22 @@ class _MyHomePageState extends State<MyHomePage> {
       _useLocation = prefs.getBool('use_location') ?? true;
       if (_useLocation) {
         try {
-          _userPosition = await LocationService.determinePosition();
-          if (_userPosition == null) {
+          // Never request permission on launch — silently disable if denied.
+          final permission = await Geolocator.checkPermission();
+          if (permission == LocationPermission.denied ||
+              permission == LocationPermission.deniedForever) {
             _useLocation = false;
+            await prefs.setBool('use_location', false);
+          } else {
+            _userPosition = await LocationService.determinePosition();
+            if (_userPosition == null) {
+              _useLocation = false;
+              await prefs.setBool('use_location', false);
+            }
           }
         } catch (_) {
           _useLocation = false;
+          await prefs.setBool('use_location', false);
         }
       }
       await _loadCustomRestaurants();
