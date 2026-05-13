@@ -54,8 +54,8 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 - [x] Dynamic Type / text scaling support (respect user's preferred text size)
 - [x] Screen reader audit — Semantics() wrappers for key elements
 - [x] Privacy Policy page (required for App Store with geolocation)
-- [ ] App Store description / keywords
-- [ ] Screenshots script (iPhone + iPad sizes)
+- [x] App Store description / keywords
+- [x] Screenshots script (iPhone + iPad sizes)
 - [x] Version bump in pubspec.yaml
 
 ### Remaining Widget Tests

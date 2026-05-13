@@ -1,0 +1,48 @@
+IDK You Pick — Restaurant Chooser
+=================================
+
+Short Description (30 chars)
+  Restaurant decision maker
+
+Subtitle (30 chars)
+  Pick where to eat, fast
+
+Description
+------------
+Can't decide where to eat? Let IDK You Pick choose for you.
+
+IDK You Pick is a fast, fun restaurant decision-making app for couples, groups, and anyone tired of the "I don't know, what do you want?" conversation.
+
+FEATURES
+• Random Choice — Get an instant restaurant pick with one tap.
+• Head-to-Head — Compare two restaurants side-by-side and pick a winner.
+• Smart Filters — Filter by cuisine (Italian, Mexican, BBQ, etc.), type (sit-down, fast casual, quick), and price tier.
+• Nearby Mode — Uses your location to show restaurants closest to you.
+• Favorites & History — Save winners and see where you've already been.
+• Search & Sort — Full-text search with sorting by name, distance, price, or random.
+• Onboarding — Quick first-launch tutorial shows how everything works.
+• Beautiful Themes — Dark and light mode with a modern glass-card UI (Aurora Frost).
+• Share — Send a restaurant to friends via messages or a shareable link.
+• Accessibility Friendly — Supports Dynamic Type, VoiceOver, and screen-reader semantics.
+
+PRIVACY
+IDK You Pick uses your location only when you enable Nearby Mode. Location data stays on your device and is never shared. Read our full Privacy Policy inside the app.
+
+Built with Flutter in Upstate NY.
+
+Keywords
+--------
+restaurant,food,decision maker,random picker,where to eat,dining,cuisine,local restaurants,nearby food,meal picker,date night,dinner,lunch,brunch,pick where to eat,restaurant roulette,random restaurant,food app
+
+Categories
+----------
+Primary: Food & Drink
+Secondary: Lifestyle
+
+Support URL
+-----------
+https://github.com/SpencerSmithSite/idk-you-pick/issues
+
+Marketing URL
+---------------
+https://github.com/SpencerSmithSite/idk-you-pick
