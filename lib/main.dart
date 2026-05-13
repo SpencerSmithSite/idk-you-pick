@@ -13,6 +13,7 @@ import 'onboarding.dart';
 import 'how_it_works.dart';
 import 'demo_service.dart';
 import 'restaurant_detail.dart';
+import 'favorites_list_screen.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
@@ -797,6 +798,20 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: _showShareSheet,
+          ),
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => FavoritesListScreen(
+                        restaurants: _restaurantDetails,
+                      ),
+                ),
+              );
+            },
           ),
           IconButton(
             icon: const Icon(Icons.settings),

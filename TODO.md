@@ -7,13 +7,14 @@
 - [x] Phase 5 — History / Seen Tracking (PR #11, branch `data/phase-5-history-seen`, commit `39e61aa`)
 - [x] Phase 6 — Share / Invite (PR #12, branch `data/phase-6-share-invite`, commit `3c28fed`)
 - [x] Phase 7 — Onboarding / Tutorial (PR #13, branch `data/phase-7-onboarding`, commit `f4dd3d4`)
-- [x] Phase 8 — Restaurant Detail + Favorites (branch `data/phase-8-restaurant-detail`, commit `c5c82fb`)
+- [x] Phase 8 — Restaurant Detail + Favorites (branch `data/phase-8-restaurant-detail`, commit `af34346`)
+- [x] Phase 9 — Favorites List Screen (branch `data/phase-9-favorites-list-v2`, commit `d8b12ee`)
 
-PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase 5), #12 (Phase 6), #13 (Phase 7)
+PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase 5), #12 (Phase 6), #13 (Phase 7), #14 (Phase 8), #15 (Phase 9)
 
 ---
 
-## Current Phase: 8 — Next Feature (to be defined)
+## Current Phase: 10 — Next Feature (to be defined)
 - [ ] TBD
 
 ---
