@@ -57,28 +57,33 @@ class _MyAppState extends State<MyApp> {
       return ListenableBuilder(
         listenable: widget.themeProvider,
         builder: (context, _) {
-          return MaterialApp(
-            title: 'IDK, What do you want?',
-            debugShowCheckedModeBanner: false,
-            themeMode: widget.themeProvider.themeMode,
-            theme: AppTheme.lightTheme(),
-            darkTheme: AppTheme.darkTheme(),
-            home: FutureBuilder<bool>(
-              future: _onboardingFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Scaffold(body: SizedBox.shrink());
-                }
-                if (snapshot.data != true) {
-                  return OnboardingScreen(
-                    onComplete: () => setState(() {
-                      _onboardingFuture = Future.value(true);
-                      OnboardingService.markOnboardingComplete();
-                    }),
-                  );
-                }
-                return MyHomePage(themeProvider: widget.themeProvider);
-              },
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(MediaQuery.textScalerOf(context).scale(1.0).clamp(0.8, 1.4)),
+            ),
+            child: MaterialApp(
+              title: 'IDK, What do you want?',
+              debugShowCheckedModeBanner: false,
+              themeMode: widget.themeProvider.themeMode,
+              theme: AppTheme.lightTheme(),
+              darkTheme: AppTheme.darkTheme(),
+              home: FutureBuilder<bool>(
+                future: _onboardingFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Scaffold(body: SizedBox.shrink());
+                  }
+                  if (snapshot.data != true) {
+                    return OnboardingScreen(
+                      onComplete: () => setState(() {
+                        _onboardingFuture = Future.value(true);
+                        OnboardingService.markOnboardingComplete();
+                      }),
+                    );
+                  }
+                  return MyHomePage(themeProvider: widget.themeProvider);
+                },
+              ),
             ),
           );
         },
