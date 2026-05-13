@@ -10,12 +10,16 @@ class SettingsScreen extends StatefulWidget {
   final Map<String, bool> restaurantPreferences;
   final Function(Map<String, bool>) onSave;
   final ThemeProvider themeProvider;
+  final ValueChanged<bool>? onLocationChanged;
+  final bool useLocation;
 
   const SettingsScreen({
     super.key,
     required this.restaurantPreferences,
     required this.onSave,
     required this.themeProvider,
+    this.onLocationChanged,
+    this.useLocation = true,
   });
 
   @override
@@ -25,6 +29,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   late Map<String, bool> _preferences;
   late List<String> _customRestaurants = [];
+  late bool _useLocation;
   final TextEditingController _restaurantController = TextEditingController();
   late ScrollController _scrollController;
 
@@ -33,6 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.initState();
     _scrollController = ScrollController();
     _preferences = Map.from(widget.restaurantPreferences);
+    _useLocation = widget.useLocation;
     _loadCustomRestaurants();
   }
 
@@ -66,6 +72,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
     await _saveCustomRestaurants();
     if (!mounted) return;
+  }
+
+  Future<void> _toggleLocation(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('use_location', value);
+    setState(() {
+      _useLocation = value;
+    });
+    widget.onLocationChanged?.call(value);
   }
 
   void _addRestaurant() {
@@ -117,13 +132,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Settings",
-          style: TextStyle(
-            color: colors.appBarText,
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-            fontFamily: 'Arial',
+        title: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            "Settings",
+            style: TextStyle(
+              color: colors.appBarText,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: 'Arial',
+            ),
           ),
         ),
         flexibleSpace: Container(
@@ -200,6 +218,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const Divider(),
             DemoModeTile(colors: colors),
+            const Divider(),
+            ListTile(
+              leading: Icon(Icons.location_on, color: colors.textSecondary),
+              title: Text('Use My Location', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
+              subtitle: Text(
+                _useLocation
+                    ? 'Show nearby restaurants based on your location'
+                    : 'Location is off. All restaurants will be shown.',
+                style: TextStyle(color: colors.textSecondary, fontSize: 12),
+              ),
+              trailing: Switch(
+                value: _useLocation,
+                activeColor: colors.secondary,
+                onChanged: _toggleLocation,
+              ),
+            ),
             const Divider(),
             Padding(
               padding: const EdgeInsets.all(20),

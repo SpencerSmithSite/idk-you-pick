@@ -11,6 +11,7 @@ class FilterScreen extends StatefulWidget {
   final double maxDistance;
   final Future<void> Function() onSave;
   final ValueChanged<double>? onDistanceChanged;
+  final bool useLocation;
 
   const FilterScreen({
     super.key,
@@ -21,6 +22,7 @@ class FilterScreen extends StatefulWidget {
     required this.maxDistance,
     required this.onSave,
     this.onDistanceChanged,
+    this.useLocation = true,
   });
 
   @override
@@ -115,13 +117,16 @@ class _FilterScreenState extends State<FilterScreen> {
     final colors = AppColors.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Filters",
-          style: TextStyle(
-            color: colors.appBarText,
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-            fontFamily: 'Arial',
+        title: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            "Filters",
+            style: TextStyle(
+              color: colors.appBarText,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: 'Arial',
+            ),
           ),
         ),
         flexibleSpace: Container(
@@ -187,44 +192,56 @@ class _FilterScreenState extends State<FilterScreen> {
                   _selectedPriceTiers.add(v);
                 }
               }),
-              const SizedBox(height: 20),
-              Text(
-                "Max Distance",
-                style: TextStyle(
-                  color: colors.textPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              if (widget.useLocation) ...[
+                const SizedBox(height: 20),
+                Text(
+                  "Max Distance",
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: Slider(
-                      value: _maxDistance,
-                      min: 1.0,
-                      max: 25.0,
-                      divisions: 24,
-                      label: '${_maxDistance.toStringAsFixed(0)} mi',
-                      activeColor: colors.secondary,
-                      inactiveColor: colors.chipDefaultBg,
-                      onChanged: (value) {
-                        setState(() {
-                          _maxDistance = value;
-                        });
-                      },
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Slider(
+                        value: _maxDistance,
+                        min: 1.0,
+                        max: 25.0,
+                        divisions: 24,
+                        label: '${_maxDistance.toStringAsFixed(0)} mi',
+                        activeColor: colors.secondary,
+                        inactiveColor: colors.chipDefaultBg,
+                        onChanged: (value) {
+                          setState(() {
+                            _maxDistance = value;
+                          });
+                        },
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${_maxDistance.toStringAsFixed(0)} mi',
-                    style: TextStyle(
-                      color: colors.textPrimary,
-                      fontWeight: FontWeight.w600,
+                    Text(
+                      '${_maxDistance.toStringAsFixed(0)} mi',
+                      style: TextStyle(
+                        color: colors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
+                    const SizedBox(width: 8),
+                  ],
+                ),
+              ] else ...[
+                const SizedBox(height: 20),
+                Text(
+                  "Enable location to filter by distance",
+                  style: TextStyle(
+                    color: colors.textSecondary,
+                    fontSize: 14,
+                    fontStyle: FontStyle.italic,
                   ),
-                  const SizedBox(width: 8),
-                ],
-              ),
+                ),
+              ],
               const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

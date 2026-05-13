@@ -14,6 +14,7 @@ import 'how_it_works.dart';
 import 'demo_service.dart';
 import 'restaurant_detail.dart';
 import 'favorites_list_screen.dart';
+import 'search_screen.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
@@ -118,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // Location state
   Position? _userPosition;
   double _maxDistanceMiles = 10.0;
+  bool _useLocation = true;
   // Flags to manage app modes
   bool _helpMeDecideMode = false;
   bool _randomChoiceMode = false;
@@ -169,7 +171,18 @@ class _MyHomePageState extends State<MyHomePage> {
       await _loadDistanceFilter();
       await _loadHistory();
       final seenHowItWorks = prefs.getBool('has_seen_how_it_works') ?? false;
-      _userPosition = await LocationService.determinePosition();
+      _useLocation = prefs.getBool('use_location') ?? true;
+      if (_useLocation) {
+        try {
+          _userPosition = await LocationService.determinePosition();
+          if (_userPosition == null) {
+            _useLocation = false;
+          }
+        } catch (_) {
+          _useLocation = false;
+        }
+      }
+      await _loadCustomRestaurants();
       setState(() {
         _restaurantPreferences = {
           for (var item in _restaurants) item: prefs.getBool(item) ?? true,
@@ -231,6 +244,30 @@ class _MyHomePageState extends State<MyHomePage> {
     _maxDistanceMiles = prefs.getDouble('filter_max_distance') ?? 10.0;
   }
 
+  /// Load custom restaurants and merge them into the pool.
+  Future<void> _loadCustomRestaurants() async {
+    final prefs = await SharedPreferences.getInstance();
+    final custom = prefs.getStringList('customRestaurants') ?? [];
+    if (custom.isEmpty) return;
+    setState(() {
+      for (final name in custom) {
+        if (!_restaurantDetails.any((r) => r['name'] == name)) {
+          _restaurantDetails.add({
+            'name': name,
+            'cuisine': 'Custom',
+            'type': 'Custom',
+            'priceTier': '\$',
+            'lat': null,
+            'lng': null,
+          });
+        }
+        if (!_restaurants.contains(name)) {
+          _restaurants.add(name);
+        }
+      }
+    });
+  }
+
   /// Load saved filter state from SharedPreferences.
   Future<void> _loadFilters() async {
     final prefs = await SharedPreferences.getInstance();
@@ -260,7 +297,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }).toList();
     }
 
-    if (_userPosition != null && _maxDistanceMiles > 0) {
+    if (_useLocation && _userPosition != null && _maxDistanceMiles > 0) {
       final lat = _userPosition!.latitude;
       final lng = _userPosition!.longitude;
       pool = pool.where((r) {
@@ -277,6 +314,19 @@ class _MyHomePageState extends State<MyHomePage> {
       return names.where((n) => !_history.containsKey(n)).toList();
     }
     return names;
+  }
+
+  String _getEmptyPoolMessage() {
+    if (_restaurantPreferences.isNotEmpty &&
+        _restaurantPreferences.values.every((v) => v == false)) {
+      return "All restaurants are disabled in Settings. Enable some restaurants to continue.";
+    }
+    if (_activeCuisines.isEmpty && _activeTypes.isEmpty && _activePriceTiers.isEmpty) {
+      if (_useLocation && _userPosition != null && _maxDistanceMiles > 0) {
+        return "No restaurants within ${_maxDistanceMiles.toStringAsFixed(0)} miles of your location. Try increasing the distance or adding local restaurants.";
+      }
+    }
+    return "No restaurants match your filters. Try clearing filters.";
   }
 
   Future<void> _loadHistory() async {
@@ -726,13 +776,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "IDK, What do you want?",
-          style: TextStyle(
-            color: colors.appBarText,
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-            fontFamily: 'Arial',
+        title: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            "IDK, What do you want?",
+            style: TextStyle(
+              color: colors.appBarText,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: 'Arial',
+            ),
           ),
         ),
         flexibleSpace: Container(
@@ -753,23 +806,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder:
-                          (context) => FilterScreen(
-                            restaurants: _restaurantDetails,
-                            activeCuisines: _activeCuisines,
-                            activeTypes: _activeTypes,
-                            activePriceTiers: _activePriceTiers,
-                            maxDistance: _maxDistanceMiles,
-                            onDistanceChanged: (value) {
-                              setState(() {
-                                _maxDistanceMiles = value;
-                              });
-                            },
-                            onSave: () async {
-                              await _loadFilters();
-                              await _loadDistanceFilter();
-                            },
-                          ),
+                          builder:
+                              (context) => FilterScreen(
+                                restaurants: _restaurantDetails,
+                                activeCuisines: _activeCuisines,
+                                activeTypes: _activeTypes,
+                                activePriceTiers: _activePriceTiers,
+                                maxDistance: _maxDistanceMiles,
+                                useLocation: _useLocation,
+                                onDistanceChanged: (value) {
+                                  setState(() {
+                                    _maxDistanceMiles = value;
+                                  });
+                                },
+                                onSave: () async {
+                                  await _loadFilters();
+                                  await _loadDistanceFilter();
+                                },
+                              ),
                     ),
                   );
                 },
@@ -800,6 +854,25 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: _showShareSheet,
           ),
           IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                    restaurants: _restaurantDetails,
+                    activeCuisines: _activeCuisines,
+                    activeTypes: _activeTypes,
+                    activePriceTiers: _activePriceTiers,
+                    maxDistanceMiles: _maxDistanceMiles,
+                    userPosition: _userPosition,
+                    useLocation: _useLocation,
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.favorite),
             onPressed: () {
               Navigator.push(
@@ -827,6 +900,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           setState(() {
                             _restaurantPreferences = newPreferences;
                           });
+                        },
+                        useLocation: _useLocation,
+                        onLocationChanged: (enabled) async {
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setBool('use_location', enabled);
+                          setState(() {
+                            _useLocation = enabled;
+                            if (!enabled) {
+                              _userPosition = null;
+                            }
+                          });
+                          if (enabled) {
+                            final pos = await LocationService.determinePosition();
+                            if (pos != null) {
+                              setState(() {
+                                _userPosition = pos;
+                              });
+                            }
+                          }
                         },
                       ),
                 ),
@@ -971,7 +1063,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Icon(Icons.filter_alt_off, color: colors.textSecondary, size: 48),
         const SizedBox(height: 12),
         Text(
-          "No restaurants match your filters.",
+          _getEmptyPoolMessage(),
           style: TextStyle(color: colors.textPrimary, fontSize: 20),
         ),
         const SizedBox(height: 20),
@@ -1174,7 +1266,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Icon(Icons.filter_alt_off, color: colors.textSecondary, size: 48),
         const SizedBox(height: 12),
         Text(
-          "No restaurants match your filters.",
+          _getEmptyPoolMessage(),
           style: TextStyle(color: colors.textPrimary, fontSize: 20),
         ),
         const SizedBox(height: 20),

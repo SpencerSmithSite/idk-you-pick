@@ -30,6 +30,9 @@ class LocationService {
   /// Return the cached position (may be null).
   static Position? get lastPosition => _lastPosition;
 
+  static double distanceBetween(double lat1, double lon1, double lat2, double lon2) =>
+      distanceInMiles(lat1, lon1, lat2, lon2);
+
   /// Haversine distance in miles between two lat/lng points.
   static double distanceInMiles(
     double lat1,

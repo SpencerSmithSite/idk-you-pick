@@ -146,4 +146,48 @@
 
 ---
 
+## [0.2.0] — 2026-05-10
+### Phase 9: Favorites List Screen
+- **feat:** Created `lib/favorites_list_screen.dart` — dedicated favorites list view
+  - Themed list tiles with cuisine/type/price/distance chips, swipe-to-remove via `Dismissible`
+  - Empty state with Aurora Frost gradient illustration and "Start favoriting!" prompt
+  - Tap-to-detail navigation via `RestaurantDetailScreen`
+- **feat:** Heart icon added to `AppBar` actions in `main.dart`; opens `FavoritesListScreen`
+- **feat:** `FavoritesListScreen` uses `FavoritesService` to load persisted favorites and sync in real-time
+- Verified: `flutter analyze` passes — no NEW issues introduced
+- Branch: `data/phase-9-favorites-list-v2`, commit `d8b12ee`
+
+---
+
+## [0.2.1] — 2026-05-10
+### Phase 10: Search & Sort Screen
+- **feat:** Created `lib/search_screen.dart` — live text search across name, cuisine, type, and tags
+- **feat:** Sort bottom sheet with 5 options: name A→Z, distance nearest, price low→high, cuisine, random
+- **feat:** Respects active filters + distance; shows favorite indicator on results
+- **feat:** Tap-to-detail navigation via `RestaurantDetailScreen`
+- **feat:** Themed empty state with "No matches" message and clear-search button
+- **feat:** Added search icon (`Icons.search`) to `AppBar` actions in `main.dart`
+- **feat:** Added `distanceBetween` alias in `location_service.dart` for sorting by distance
+- **QA:** `flutter analyze` — zero new errors (pre-existing issues only)
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/phase-10-search-sort`, commit `2d3abc5`
+
+---
+
+## [0.2.2] — 2026-05-11
+### Bug Fixes: Location Opt-In, AppBar Title, Empty Pool Messages
+- **fix:** Added `Use My Location` toggle in Settings; persists to SharedPreferences (`use_location`)
+- **fix:** `_filteredPool` now only applies distance filtering when `_useLocation == true` AND `_userPosition != null`
+- **fix:** Silenced location permission denial — app silently falls back to all restaurants instead of crashing
+- **fix:** Custom restaurants now merged into `_restaurantDetails` on app init with null lat/lng (kept by distance filter)
+- **fix:** Improved empty pool error messages — distinguishes distance-caused, filter-caused, and preference-caused emptiness
+- **fix:** AppBar title truncation resolved with `FittedBox` + reduced fontSize (20) in `main.dart`, `settings.dart`, and `filter_screen.dart`
+- **fix:** `FilterScreen` hides distance slider when `useLocation == false`
+- **fix:** `SearchScreen` distance filter respects `_useLocation` and keeps null-coord items
+- **QA:** `flutter analyze` — zero new errors
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/phase-10-search-sort`, commit `106f7d7` (pushed to PR #16)
+
+---
+
 *End of changelog.*
