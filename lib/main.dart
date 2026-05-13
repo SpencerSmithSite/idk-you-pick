@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'settings.dart';
 import 'filter_screen.dart';
 import 'location_service.dart';
@@ -234,6 +235,93 @@ class _MyHomePageState extends State<MyHomePage> {
     return _buildRestaurantDetailChip(
       '${d.toStringAsFixed(1)} mi',
       const Color.fromARGB(255, 47, 168, 156),
+    );
+  }
+
+  /// Action URL helpers
+  Future<void> _openMaps(Map<String, dynamic> details) async {
+    final lat = details['lat'] as double?;
+    final lng = details['lng'] as double?;
+    if (lat == null || lng == null) return;
+    final uri = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lng');
+    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _openDoorDash(Map<String, dynamic> details) async {
+    final name = details['name'] as String? ?? '';
+    final uri = Uri.parse('https://www.doordash.com/search/store/$name/');
+    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _callRestaurant(Map<String, dynamic> details) async {
+    final phone = details['phone'] as String?;
+    if (phone == null || phone.isEmpty) return;
+    final uri = Uri.parse('tel:$phone');
+    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _openWebsite(Map<String, dynamic> details) async {
+    final url = details['website'] as String?;
+    if (url == null || url.isEmpty) return;
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  /// Build action button chips: Maps, DoorDash, Call, Website
+  Widget _buildActionButtons(Map<String, dynamic>? details) {
+    if (details == null) return const SizedBox.shrink();
+    final hasCoords = details['lat'] != null && details['lng'] != null;
+    final hasPhone = (details['phone'] as String?)?.isNotEmpty ?? false;
+    final hasWebsite = (details['website'] as String?)?.isNotEmpty ?? false;
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      alignment: WrapAlignment.center,
+      children: [
+        if (hasCoords)
+          ElevatedButton.icon(
+            onPressed: () => _openMaps(details),
+            icon: const Icon(Icons.map, size: 16),
+            label: const Text('Maps'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 47, 168, 156),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            ),
+          ),
+        ElevatedButton.icon(
+          onPressed: () => _openDoorDash(details),
+          icon: const Icon(Icons.delivery_dining, size: 16),
+          label: const Text('DoorDash'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 253, 139, 69),
+            foregroundColor: const Color.fromARGB(255, 35, 38, 40),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          ),
+        ),
+        if (hasPhone)
+          ElevatedButton.icon(
+            onPressed: () => _callRestaurant(details),
+            icon: const Icon(Icons.phone, size: 16),
+            label: const Text('Call'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 72, 80, 85),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            ),
+          ),
+        if (hasWebsite)
+          ElevatedButton.icon(
+            onPressed: () => _openWebsite(details),
+            icon: const Icon(Icons.language, size: 16),
+            label: const Text('Website'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 72, 80, 85),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            ),
+          ),
+      ],
     );
   }
 
@@ -516,6 +604,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
+            _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _resetApp,
@@ -714,6 +803,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
+            _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _resetApp,
