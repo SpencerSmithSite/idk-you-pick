@@ -188,6 +188,18 @@
 - **QA:** `flutter build ios --simulator` — builds successfully
 - Branch: `data/aurora-frost-theme`
 
+## [0.3.1] — 2026-05-12
+### Phase 12: Testing, QA & Accessibility (Incremental)
+- **test(unit):** Added `test/unit/restaurant_data_test.dart` — validates all 54 JSON records: required-field presence, unique non-empty names, lat/lng within US bounds, allowed cuisine/type/priceTier values, non-empty string tag lists, optional website/phone null-or-valid checks
+- **test(widget):** Added `test/widget/onboarding_test.dart` — 4-slide flow coverage: title/icon rendering, Next/Skip navigation, dot-indicator state, onComplete callback on final slide and via Skip
+- **test(unit):** Added `test/unit/settings_service_test.dart` — SharedPreferences round-trip for restaurant bools, `use_location` flag, and `customRestaurants` list
+- **QA:** `flutter test` — 30/30 passing (7 filter + 5 Haversine + 1 widget + 9 restaurant data + 3 settings service + 5 onboarding)
+- **QA:** `flutter analyze` — zero issues
+- **QA:** `flutter build ios --simulator` — builds successfully
+- **docs(TODO):** Marked data-parsing tests and onboarding widget tests done under Phase 12
+- **chore:** Synced TODO.md phase ordering (Phase 10, 11, 12)
+- Branch: `data/aurora-frost-theme`, commit `d1b20bc`, PR #17 updated
+
 ## [0.3.0] — 2026-05-11 (proactive)
 ### Aurora Frost Theme Foundation
 - **feat:** Aurora Frost design system foundation — light/dark mode, glassmorphism, gradient buttons, glow orbs, theme tokens
