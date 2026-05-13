@@ -49,7 +49,7 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
-## Phase 13 — Store Prep & Polish ✅
+## Phase 13 — Store Prep & Polish ✅ (PR #18)
 ### App Store Compliance
 - [x] Dynamic Type / text scaling support (respect user's preferred text size)
 - [x] Screen reader audit — Semantics() wrappers for key elements
@@ -62,6 +62,28 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 - [x] Widget test for FilterScreen (chip selection, clear, apply)
 - [x] Widget test for SearchScreen (query, sort, tap detail)
 - [x] Widget test for FavoritesListScreen (add, remove, empty state)
+
+---
+
+## Phase 14 — Post-Launch Polish 🔄 (Current)
+### Haptics & Micro-interactions
+- [ ] Add haptic feedback on "Choose For Me" and "Help Me Decide" winner reveal
+- [ ] Add haptic on filter chip tap, favorite toggle, history add/remove
+- [ ] Subtle scroll physics / overscroll glow tuning
+
+### App Store Review Prompt
+- [ ] Integrate `in_app_review` package
+- [ ] Show review prompt after 3+ successful "Choose For Me" picks
+- [ ] Rate-limit: max once per 30 days, only if user hasn't rated
+
+### Version & Build Info
+- [ ] Add "About" tile in Settings showing version, build number, and Git commit
+- [ ] Tap-to-copy support info for bug reports
+
+### Performance & Polish
+- [ ] Debounce search query (300ms) to reduce rebuilds
+- [ ] Image asset placeholders / lazy loading for restaurant photos (if added later)
+- [ ] Reduce unnecessary `setState` calls in main view rebuilds
 
 ---
 
