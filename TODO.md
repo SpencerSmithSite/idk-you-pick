@@ -49,7 +49,7 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
-## Phase 13 — Store Prep & Polish
+## Phase 13 — Store Prep & Polish ✅
 ### App Store Compliance
 - [x] Dynamic Type / text scaling support (respect user's preferred text size)
 - [x] Screen reader audit — Semantics() wrappers for key elements
