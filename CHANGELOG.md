@@ -188,6 +188,13 @@
 - **QA:** `flutter build ios --simulator` — builds successfully
 - Branch: `data/aurora-frost-theme`
 
+## [0.3.3] — 2026-05-12
+### CI Fix: unused_import lint
+- **test:** Removed unused `import 'package:rest_chooser/settings.dart';` from `test/unit/settings_service_test.dart`
+- **QA:** `flutter analyze` — zero issues (was failing CI due to unused_import warning treated as error)
+- **QA:** `flutter test` — 30/30 passing
+- Branch: `data/aurora-frost-theme`, commit `e391beb`, PR #17 updated
+
 ## [0.3.2] — 2026-05-12
 ### Phase 12 Complete: CI Enhancement & Final QA
 - **ci:** Enhanced `.github/workflows/flutter-test.yml` with `flutter analyze` lint gate and macOS `build-ios --simulator --no-codesign` job to prevent iOS build regressions
