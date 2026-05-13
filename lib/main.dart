@@ -41,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> _restaurants = [];
+  List<Map<String, dynamic>> _restaurantDetails = [];
   Map<String, bool> _restaurantPreferences = {};
   String? _chosenRestaurant;
   String? _optionA;
@@ -80,13 +81,77 @@ class _MyHomePageState extends State<MyHomePage> {
       );
       final List<dynamic> jsonList = json.decode(jsonString);
       setState(() {
-        _restaurants = jsonList.cast<String>();
+        // Support both old format (List<String>) and new rich format (List<Map>)
+        if (jsonList.isNotEmpty && jsonList.first is Map) {
+          _restaurantDetails = jsonList.cast<Map<String, dynamic>>();
+          _restaurants = _restaurantDetails
+              .map((r) => r['name'] as String)
+              .toList();
+        } else {
+          _restaurants = jsonList.cast<String>();
+          _restaurantDetails = [];
+        }
       });
     } catch (e) {
       setState(() {
         _errorMessage = "Failed to load restaurants.";
       });
     }
+  }
+
+  Map<String, dynamic>? _getRestaurantDetails(String name) {
+    if (_restaurantDetails.isEmpty) return null;
+    try {
+      return _restaurantDetails.firstWhere((r) => r['name'] == name);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Widget _buildRestaurantDetailChip(String label, Color bgColor) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRestaurantMeta(Map<String, dynamic>? details) {
+    if (details == null || details.isEmpty) return const SizedBox.shrink();
+    final cuisine = details['cuisine'] as String?;
+    final type = details['type'] as String?;
+    final priceTier = details['priceTier'] as String?;
+    final tags = (details['tags'] as List<dynamic>?)?.cast<String>() ?? <String>[];
+
+    return Column(
+      children: [
+        const SizedBox(height: 6),
+        Wrap(
+          spacing: 6,
+          runSpacing: 4,
+          alignment: WrapAlignment.center,
+          children: [
+            if (cuisine != null && cuisine.isNotEmpty)
+              _buildRestaurantDetailChip(cuisine, const Color.fromARGB(255, 72, 80, 85)),
+            if (type != null && type.isNotEmpty)
+              _buildRestaurantDetailChip(type, const Color.fromARGB(255, 47, 168, 156)),
+            if (priceTier != null && priceTier.isNotEmpty)
+              _buildRestaurantDetailChip(priceTier, const Color.fromARGB(255, 253, 139, 69)),
+            ...tags.map((t) => _buildRestaurantDetailChip(t, const Color.fromARGB(255, 100, 100, 100))),
+          ],
+        ),
+      ],
+    );
   }
 
   /// Resets the app state.
@@ -315,6 +380,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _resetApp,
@@ -402,12 +468,18 @@ class _MyHomePageState extends State<MyHomePage> {
               shadowColor: Colors.black.withAlpha(10),
               elevation: 5,
             ),
-            child: Text(
-              _optionA!,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 35, 38, 40),
-                fontSize: 20,
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _optionA!,
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 35, 38, 40),
+                    fontSize: 20,
+                  ),
+                ),
+                _buildRestaurantMeta(_getRestaurantDetails(_optionA!)),
+              ],
             ),
           ),
           const SizedBox(height: 10),
@@ -425,12 +497,18 @@ class _MyHomePageState extends State<MyHomePage> {
               shadowColor: Colors.black.withAlpha(10),
               elevation: 5,
             ),
-            child: Text(
-              _optionB!,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 35, 38, 40),
-                fontSize: 20,
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _optionB!,
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 35, 38, 40),
+                    fontSize: 20,
+                  ),
+                ),
+                _buildRestaurantMeta(_getRestaurantDetails(_optionB!)),
+              ],
             ),
           ),
           const SizedBox(height: 30),
@@ -481,6 +559,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _resetApp,
