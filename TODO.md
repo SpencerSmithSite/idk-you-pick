@@ -49,6 +49,22 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
+## Phase 13 — Store Prep & Polish ✅
+### App Store Compliance
+- [x] Dynamic Type / text scaling support (respect user's preferred text size)
+- [x] Screen reader audit — Semantics() wrappers for key elements
+- [x] Privacy Policy page (required for App Store with geolocation)
+- [x] App Store description / keywords
+- [x] Screenshots script (iPhone + iPad sizes)
+- [x] Version bump in pubspec.yaml
+
+### Remaining Widget Tests
+- [x] Widget test for FilterScreen (chip selection, clear, apply)
+- [x] Widget test for SearchScreen (query, sort, tap detail)
+- [x] Widget test for FavoritesListScreen (add, remove, empty state)
+
+---
+
 ## Legend
 - [ ] = Not started  |  [-] = In progress  |  [x] = Done
 

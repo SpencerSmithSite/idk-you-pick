@@ -88,8 +88,6 @@ coverage/
 **/android/app/upload-keystore.jks
 **/android/app/google-services.json
 **/ios/Runner/GoogleService-Info.plist
-**/ios/Flutter/Release.xcconfig
-**/ios/Flutter/Debug.xcconfig
 .env*
 *.jks
 key.properties

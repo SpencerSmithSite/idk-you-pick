@@ -57,28 +57,33 @@ class _MyAppState extends State<MyApp> {
       return ListenableBuilder(
         listenable: widget.themeProvider,
         builder: (context, _) {
-          return MaterialApp(
-            title: 'IDK, What do you want?',
-            debugShowCheckedModeBanner: false,
-            themeMode: widget.themeProvider.themeMode,
-            theme: AppTheme.lightTheme(),
-            darkTheme: AppTheme.darkTheme(),
-            home: FutureBuilder<bool>(
-              future: _onboardingFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Scaffold(body: SizedBox.shrink());
-                }
-                if (snapshot.data != true) {
-                  return OnboardingScreen(
-                    onComplete: () => setState(() {
-                      _onboardingFuture = Future.value(true);
-                      OnboardingService.markOnboardingComplete();
-                    }),
-                  );
-                }
-                return MyHomePage(themeProvider: widget.themeProvider);
-              },
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(MediaQuery.textScalerOf(context).scale(1.0).clamp(0.8, 1.4)),
+            ),
+            child: MaterialApp(
+              title: 'IDK, What do you want?',
+              debugShowCheckedModeBanner: false,
+              themeMode: widget.themeProvider.themeMode,
+              theme: AppTheme.lightTheme(),
+              darkTheme: AppTheme.darkTheme(),
+              home: FutureBuilder<bool>(
+                future: _onboardingFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Scaffold(body: SizedBox.shrink());
+                  }
+                  if (snapshot.data != true) {
+                    return OnboardingScreen(
+                      onComplete: () => setState(() {
+                        _onboardingFuture = Future.value(true);
+                        OnboardingService.markOnboardingComplete();
+                      }),
+                    );
+                  }
+                  return MyHomePage(themeProvider: widget.themeProvider);
+                },
+              ),
             ),
           );
         },
@@ -875,16 +880,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(color: colors.textSecondary, fontSize: 16),
                 ),
                 const SizedBox(height: 28),
-                GradientButton(
-                  isSecondary: true,
-                  label: "Choose For Me",
-                  onPressed: _chooseRandom,
+                Semantics(
+                  button: true,
+                  label: 'Choose a random restaurant',
+                  child: GradientButton(
+                    isSecondary: true,
+                    label: "Choose For Me",
+                    onPressed: _chooseRandom,
+                  ),
                 ),
                 const SizedBox(height: 16),
-                GradientButton(
-                  isSecondary: true,
-                  label: "Help Me Decide",
-                  onPressed: _startHeadToHead,
+                Semantics(
+                  button: true,
+                  label: 'Compare two restaurants head to head',
+                  child: GradientButton(
+                    isSecondary: true,
+                    label: "Help Me Decide",
+                    onPressed: _startHeadToHead,
+                  ),
                 ),
               ],
             ),

@@ -232,4 +232,35 @@
 
 ---
 
+## [0.3.4] — 2026-05-13
+### Phase 13: Store Prep & Polish (First pass)
+- **feat(a11y):** Dynamic Type support — clamped `textScaler` in `MaterialApp` via `MediaQuery` (0.8–1.4x) to respect accessibility while preventing layout breakage
+- **feat(a11y):** Semantics wrappers on main action buttons: "Choose For Me" & "Help Me Decide" with descriptive labels for VoiceOver/TalkBack
+- **feat(legal):** New `lib/privacy_policy.dart` — Aurora Frost themed Privacy Policy screen with on-device data disclosure, location policy, third-party services list
+- **feat(legal):** Settings screen now links to Privacy Policy via a new GlassCard row (App Store compliance for geolocation apps)
+- **test:** 11 new widget tests added:
+  - `test/widget/filter_test.dart` — 4 tests (render, chip tap, clear-all, distance toggle)
+  - `test/widget/search_test.dart` — 5 tests (render, sort, query filter, empty state, clear btn)
+  - `test/widget/favorites_test.dart` — 2 tests (builds, themed container)
+  - Total: **30 → 41 tests**, all passing
+- **chore:** Bump version to `1.0.1+2` in `pubspec.yaml`
+- **QA:** `flutter analyze` — zero issues
+- **QA:** `flutter test` — 41/41 pass
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/phase-13-store-prep`
+
+---
+
+## [0.3.5] — 2026-05-13
+### Phase 13: Store Prep & Polish (Second pass)
+- **chore:** Add `metadata/app_store_description.txt` — full App Store listing copy (description, keywords, categories, support/marketing URLs)
+- **chore:** Add `scripts/take_screenshots.sh` — automated iOS Simulator screenshot pipeline for 6.7in, 6.1in, 5.5in devices; light + dark captures each
+- **docs:** Update README to reference new scripts directory for building App Store graphics
+- **chore:** Update `TODO.md` — mark App Store description and screenshot script complete
+- **QA:** `flutter analyze` — zero issues
+- **QA:** `flutter test` — 41/41 pass
+- Branch: `data/phase-13-store-prep`
+
+---
+
 *End of changelog.*

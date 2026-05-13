@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'demo_service.dart';
 import 'onboarding.dart';
+import 'privacy_policy.dart';
 import 'theme/app_colors.dart';
 import 'theme/theme_provider.dart';
 import 'widgets/gradient_button.dart';
@@ -258,6 +259,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }),
                   onChanged: _toggleLocation,
                 ),
+              ),
+            ),
+            const Divider(),
+            GlassCard(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(16),
+              child: ListTile(
+                leading: Icon(Icons.privacy_tip, color: colors.textSecondary),
+                title: Text(
+                  'Privacy Policy',
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios, color: colors.textMuted, size: 16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()),
+                  );
+                },
               ),
             ),
             const Divider(),
