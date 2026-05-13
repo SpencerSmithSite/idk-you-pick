@@ -176,17 +176,59 @@
 
 ## [0.2.2] — 2026-05-11
 ### Bug Fixes: Location Opt-In, AppBar Title, Empty Pool Messages
-- **fix:** Added `Use My Location` toggle in Settings; persists to SharedPreferences (`use_location`)
-- **fix:** `_filteredPool` now only applies distance filtering when `_useLocation == true` AND `_userPosition != null`
-- **fix:** Silenced location permission denial — app silently falls back to all restaurants instead of crashing
-- **fix:** Custom restaurants now merged into `_restaurantDetails` on app init with null lat/lng (kept by distance filter)
-- **fix:** Improved empty pool error messages — distinguishes distance-caused, filter-caused, and preference-caused emptiness
-- **fix:** AppBar title truncation resolved with `FittedBox` + reduced fontSize (20) in `main.dart`, `settings.dart`, and `filter_screen.dart`
-- **fix:** `FilterScreen` hides distance slider when `useLocation == false`
-- **fix:** `SearchScreen` distance filter respects `_useLocation` and keeps null-coord items
+- **fix:** `lib/main.dart` `_initializeApp()` — checks `Geolocator.checkPermission()` *before* calling `determinePosition()` to avoid requesting permission on every cold launch; silently sets `_useLocation = false` and persists to SharedPreferences (`use_location`) if denied or deniedForever
+- **fix:** `_filteredPool` now correctly gated by `_useLocation == true` AND `_userPosition != null`; custom restaurants with `null` lat/lng are always retained (not subject to distance filtering)
+- **fix:** `_getEmptyPoolMessage()` distinguishes three causes: all restaurants disabled, no restaurants within distance, and filters too restrictive
+- **fix:** `lib/settings.dart` `Use My Location` toggle persists to SharedPreferences; `onLocationChanged` callback wired in `main.dart` to clear `_userPosition` when disabled and re-acquire when enabled
+- **fix:** `FilterScreen` hides distance slider and shows italic "Enable location to filter by distance" when `useLocation == false`
+- **fix:** `SearchScreen` distance sort/filter respects `useLocation` state and retains null-coord custom restaurants
+- **fix:** AppBar title truncation in `main.dart`, `settings.dart`, `filter_screen.dart` resolved with `FittedBox(fit: BoxFit.scaleDown)` + `fontSize: 20`
 - **QA:** `flutter analyze` — zero new errors
+- **QA:** `flutter test` — 13/13 passing
 - **QA:** `flutter build ios --simulator` — builds successfully
-- Branch: `data/phase-10-search-sort`, commit `106f7d7` (pushed to PR #16)
+- Branch: `data/aurora-frost-theme`
+
+## [0.3.3] — 2026-05-12
+### CI Fix: unused_import lint
+- **test:** Removed unused `import 'package:rest_chooser/settings.dart';` from `test/unit/settings_service_test.dart`
+- **QA:** `flutter analyze` — zero issues (was failing CI due to unused_import warning treated as error)
+- **QA:** `flutter test` — 30/30 passing
+- Branch: `data/aurora-frost-theme`, commit `e391beb`, PR #17 updated
+
+## [0.3.2] — 2026-05-12
+### Phase 12 Complete: CI Enhancement & Final QA
+- **ci:** Enhanced `.github/workflows/flutter-test.yml` with `flutter analyze` lint gate and macOS `build-ios --simulator --no-codesign` job to prevent iOS build regressions
+- **docs(TODO):** Marked Phases 10, 11, and 12 as complete; promoted Phase 12 remaining items (Settings widget tests, text scaling, screen reader audit) into Phase 13: Store Prep & Polish
+- **chore:** Updated branch `data/aurora-frost-theme` commit `5f2ce52`; PR #17 updated
+
+## [0.3.1] — 2026-05-12
+### Phase 12: Testing, QA & Accessibility (Incremental)
+- **test(unit):** Added `test/unit/restaurant_data_test.dart` — validates all 54 JSON records: required-field presence, unique non-empty names, lat/lng within US bounds, allowed cuisine/type/priceTier values, non-empty string tag lists, optional website/phone null-or-valid checks
+- **test(widget):** Added `test/widget/onboarding_test.dart` — 4-slide flow coverage: title/icon rendering, Next/Skip navigation, dot-indicator state, onComplete callback on final slide and via Skip
+- **test(unit):** Added `test/unit/settings_service_test.dart` — SharedPreferences round-trip for restaurant bools, `use_location` flag, and `customRestaurants` list
+- **QA:** `flutter test` — 30/30 passing (7 filter + 5 Haversine + 1 widget + 9 restaurant data + 3 settings service + 5 onboarding)
+- **QA:** `flutter analyze` — zero issues
+- **QA:** `flutter build ios --simulator` — builds successfully
+- **docs(TODO):** Marked data-parsing tests and onboarding widget tests done under Phase 12
+- **chore:** Synced TODO.md phase ordering (Phase 10, 11, 12)
+- Branch: `data/aurora-frost-theme`, commit `d1b20bc`, PR #17 updated
+
+## [0.3.0] — 2026-05-11 (proactive)
+### Aurora Frost Theme Foundation
+- **feat:** Aurora Frost design system foundation — light/dark mode, glassmorphism, gradient buttons, glow orbs, theme tokens
+- **feat:** `lib/theme/app_colors.dart` — color tokens for light/dark (surface, primary, secondary, text, chip, shadow, danger)
+- **feat:** `lib/theme/app_theme.dart` — `ThemeData` definitions for light + dark modes (ColorScheme, AppBar, chips, slider, checkbox, input)
+- **feat:** `lib/theme/theme_provider.dart` — `ChangeNotifier` for theme mode switching with SharedPreferences persistence (`app_theme_mode`)
+- **feat:** `lib/widgets/glass_card.dart` — reusable glassmorphism card widget (opacity + border + shadow)
+- **feat:** `lib/widgets/gradient_button.dart` — reusable gradient pill button with primary/secondary variants
+- **feat:** `lib/widgets/gradient_text.dart` — reusable `ShaderMask` gradient text widget
+- **feat:** `lib/widgets/glow_orb.dart` — reusable radial glow orbs for ambient background decoration
+- **feat:** Settings screen `Appearance` row with System / Light / Dark choice chips (fully functional)
+- **fix:** Replaced deprecated `Switch.activeColor` with `activeTrackColor` + `WidgetStateProperty` thumb color in Settings (2 instances)
+- **fix:** Fixed `use_build_context_synchronously` lint in Settings `onPressed` save handler
+- **QA:** `flutter analyze` — zero issues across all 15 Dart source files
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/aurora-frost-theme`, PR #17 opened
 
 ---
 

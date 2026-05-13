@@ -19,7 +19,9 @@ class LocationService {
       if (permission == LocationPermission.deniedForever) return null;
 
       _lastPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.medium,
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.medium,
+        ),
       );
       return _lastPosition;
     } catch (e) {

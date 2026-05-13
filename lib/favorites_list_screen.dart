@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'favorites_service.dart';
 import 'restaurant_detail.dart';
 import 'theme/app_colors.dart';
+import 'widgets/glass_card.dart';
 
 class FavoritesListScreen extends StatefulWidget {
   final List<Map<String, dynamic>> restaurants;
@@ -155,10 +156,10 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                           alignment: Alignment.centerRight,
                           padding: const EdgeInsets.only(right: 20),
                           decoration: BoxDecoration(
-                            color: Colors.red.withValues(alpha: 0.3),
+                            color: colors.dismissibleBackground,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Icon(Icons.delete, color: Colors.red),
+                          child: Icon(Icons.delete, color: colors.favorite),
                         ),
                         onDismissed: (_) => _removeFavorite(name),
                         child: GestureDetector(
@@ -172,17 +173,10 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                               ),
                             );
                           },
-                          child: Container(
+                          child: GlassCard(
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: colors.surface,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: colors.primary.withValues(alpha: 0.15),
-                                width: 1,
-                              ),
-                            ),
+                            borderRadius: BorderRadius.circular(16),
                             child: Row(
                               children: [
                                 Expanded(
@@ -232,7 +226,7 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                                 IconButton(
                                   icon: Icon(
                                     Icons.favorite,
-                                    color: Colors.red,
+                                    color: colors.favorite,
                                   ),
                                   onPressed: () => _removeFavorite(name),
                                   tooltip: 'Remove from favorites',

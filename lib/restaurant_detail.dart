@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'theme/app_colors.dart';
+import 'widgets/glass_card.dart';
 import 'favorites_service.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
@@ -90,6 +91,8 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     required String label,
     required List<Color> gradient,
     required VoidCallback onTap,
+    Color shadowColor = const Color.fromRGBO(0, 0, 0, 0.1),
+    Color foregroundColor = Colors.white,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -101,7 +104,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: shadowColor,
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -115,7 +118,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          foregroundColor: Colors.white,
+          foregroundColor: foregroundColor,
           textStyle: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -124,7 +127,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white),
+            Icon(icon, color: foregroundColor),
             const SizedBox(width: 8),
             Text(label),
           ],
@@ -160,7 +163,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
               IconButton(
                 icon: Icon(
                   _isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: _isFavorite ? Colors.red : Colors.white,
+                  color: _isFavorite ? colors.favorite : colors.surfaceIcon,
                 ),
                 onPressed: _toggleFavorite,
                 tooltip: _isFavorite ? 'Remove from favorites' : 'Add to favorites',
@@ -183,15 +186,14 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   child: Icon(
                     Icons.restaurant,
                     size: 64,
-                    color: Colors.white.withValues(alpha: 0.3),
+                    color: colors.surfaceIcon,
                   ),
                 ),
               ),
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+            child: GlassCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -205,9 +207,9 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                       if (type != null)
                         _buildChip(type, Icons.fastfood, colors.secondary),
                       if (price != null)
-                        _buildChip(price, Icons.attach_money, Colors.green),
+                        _buildChip(price, Icons.attach_money, colors.success),
                       if (distance != null)
-                        _buildChip('$distance mi', Icons.location_on, Colors.purple),
+                        _buildChip('$distance mi', Icons.location_on, colors.info),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -312,7 +314,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                     _buildActionButton(
                       icon: Icons.phone,
                       label: 'Call Restaurant',
-                      gradient: [Colors.grey[700]!, Colors.grey[600]!],
+                      gradient: colors.neutralGradient,
                       onTap: _callRestaurant,
                     ),
                   if (phone != null) const SizedBox(height: 8),
@@ -320,7 +322,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                     _buildActionButton(
                       icon: Icons.language,
                       label: 'Visit Website',
-                      gradient: [Colors.grey[700]!, Colors.grey[600]!],
+                      gradient: colors.neutralGradient,
                       onTap: _openWebsite,
                     ),
                 ],

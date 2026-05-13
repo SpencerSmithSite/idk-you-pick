@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme/app_colors.dart';
+import 'widgets/glass_card.dart';
 import 'restaurant_detail.dart';
 import 'favorites_service.dart';
 import 'location_service.dart';
@@ -156,11 +157,9 @@ class _SearchScreenState extends State<SearchScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (ctx) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          ),
+        return GlassCard(
+          margin: EdgeInsets.zero,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           padding: const EdgeInsets.all(20),
           child: SafeArea(
             child: Column(
@@ -225,6 +224,7 @@ class _SearchScreenState extends State<SearchScreen> {
           if (_query.isNotEmpty)
             IconButton(
               icon: Icon(Icons.clear, color: colors.textMuted),
+              tooltip: 'Clear search',
               onPressed: () {
                 _controller.clear();
                 setState(() => _query = '');
@@ -271,16 +271,16 @@ class _SearchScreenState extends State<SearchScreen> {
                   if (type != null)
                     _miniChip(type, colors.secondary),
                   if (price != null)
-                    _miniChip(price, Colors.green),
+                    _miniChip(price, colors.success),
                   if (distance != null)
-                    _miniChip('$distance mi', Colors.purple),
+                    _miniChip('$distance mi', colors.info),
                   ...tags.take(3).map((t) => _miniChip(t, colors.textMuted)),
                 ],
               ),
             ),
             trailing: Icon(
               isFav ? Icons.favorite : Icons.chevron_right,
-              color: isFav ? Colors.red : colors.textMuted,
+              color: isFav ? colors.favorite : colors.textMuted,
               size: 20,
             ),
             onTap: () {

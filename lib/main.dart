@@ -21,6 +21,7 @@ import 'theme/theme_provider.dart';
 import 'widgets/gradient_button.dart';
 import 'widgets/gradient_text.dart';
 import 'widgets/glow_orb.dart';
+import 'widgets/glass_card.dart';
 
 void main() {
   try {
@@ -174,12 +175,22 @@ class _MyHomePageState extends State<MyHomePage> {
       _useLocation = prefs.getBool('use_location') ?? true;
       if (_useLocation) {
         try {
-          _userPosition = await LocationService.determinePosition();
-          if (_userPosition == null) {
+          // Never request permission on launch — silently disable if denied.
+          final permission = await Geolocator.checkPermission();
+          if (permission == LocationPermission.denied ||
+              permission == LocationPermission.deniedForever) {
             _useLocation = false;
+            await prefs.setBool('use_location', false);
+          } else {
+            _userPosition = await LocationService.determinePosition();
+            if (_userPosition == null) {
+              _useLocation = false;
+              await prefs.setBool('use_location', false);
+            }
           }
         } catch (_) {
           _useLocation = false;
+          await prefs.setBool('use_location', false);
         }
       }
       await _loadCustomRestaurants();
@@ -398,8 +409,7 @@ class _MyHomePageState extends State<MyHomePage> {
         final entries = _history.entries.toList()
           ..sort((a, b) => b.value.compareTo(a.value));
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
+          child: GlassCard(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -447,6 +457,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           trailing: IconButton(
                             icon: Icon(Icons.close,
                               color: AppColors.of(context).textMuted),
+                            tooltip: 'Remove from history',
                             onPressed: () => _removeFromHistory(e.key),
                           ),
                         );
@@ -797,162 +808,42 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        actions: [
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.filter_alt),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                          builder:
-                              (context) => FilterScreen(
-                                restaurants: _restaurantDetails,
-                                activeCuisines: _activeCuisines,
-                                activeTypes: _activeTypes,
-                                activePriceTiers: _activePriceTiers,
-                                maxDistance: _maxDistanceMiles,
-                                useLocation: _useLocation,
-                                onDistanceChanged: (value) {
-                                  setState(() {
-                                    _maxDistanceMiles = value;
-                                  });
-                                },
-                                onSave: () async {
-                                  await _loadFilters();
-                                  await _loadDistanceFilter();
-                                },
-                              ),
-                    ),
-                  );
-                },
-              ),
-              if (_activeCuisines.isNotEmpty ||
-                  _activeTypes.isNotEmpty ||
-                  _activePriceTiers.isNotEmpty)
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: colors.secondary,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: _showHistorySheet,
-          ),
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: _showShareSheet,
-          ),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchScreen(
-                    restaurants: _restaurantDetails,
-                    activeCuisines: _activeCuisines,
-                    activeTypes: _activeTypes,
-                    activePriceTiers: _activePriceTiers,
-                    maxDistanceMiles: _maxDistanceMiles,
-                    userPosition: _userPosition,
-                    useLocation: _useLocation,
-                  ),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.favorite),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => FavoritesListScreen(
-                        restaurants: _restaurantDetails,
-                      ),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => SettingsScreen(
-                        restaurantPreferences: _restaurantPreferences,
-                        themeProvider: widget.themeProvider,
-                        onSave: (newPreferences) {
-                          setState(() {
-                            _restaurantPreferences = newPreferences;
-                          });
-                        },
-                        useLocation: _useLocation,
-                        onLocationChanged: (enabled) async {
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.setBool('use_location', enabled);
-                          setState(() {
-                            _useLocation = enabled;
-                            if (!enabled) {
-                              _userPosition = null;
-                            }
-                          });
-                          if (enabled) {
-                            final pos = await LocationService.determinePosition();
-                            if (pos != null) {
-                              setState(() {
-                                _userPosition = pos;
-                              });
-                            }
-                          }
-                        },
-                      ),
-                ),
-              );
-            },
-          ),
-        ],
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: colors.backgroundGradient,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+          Expanded(
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: colors.backgroundGradient,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
+                const GlowOrb(size: 300, alignment: Alignment.topLeft),
+                GlowOrb(
+                  size: 250,
+                  alignment: Alignment.bottomRight,
+                  colors: [colors.accentGlow, Colors.transparent],
+                ),
+                SafeArea(
+                  child: Center(
+                    child:
+                        _helpMeDecideMode
+                            ? _buildHelpMeDecideView()
+                            : _randomChoiceMode
+                            ? _buildRandomChoiceView()
+                            : _buildDefaultView(),
+                  ),
+                ),
+              ],
             ),
-          ),
-          const GlowOrb(size: 300, alignment: Alignment.topLeft),
-          const GlowOrb(
-            size: 250,
-            alignment: Alignment.bottomRight,
-            colors: [Color.fromRGBO(249, 115, 22, 0.06), Colors.transparent],
           ),
           SafeArea(
-            child: Center(
-              child:
-                  _helpMeDecideMode
-                      ? _buildHelpMeDecideView()
-                      : _randomChoiceMode
-                      ? _buildRandomChoiceView()
-                      : _buildDefaultView(),
-            ),
+            child: _buildBottomActionBar(),
           ),
         ],
       ),
@@ -964,27 +855,40 @@ class _MyHomePageState extends State<MyHomePage> {
     final colors = AppColors.of(context);
     return Stack(
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Not sure where to eat? \nLet's decide!",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: colors.textPrimary, fontSize: 20),
+        Center(
+          child: GlassCard(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+            margin: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.restaurant, size: 48, color: colors.primary),
+                const SizedBox(height: 16),
+                GradientText(
+                  text: "Not sure where to eat?",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Let's decide!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: colors.textSecondary, fontSize: 16),
+                ),
+                const SizedBox(height: 28),
+                GradientButton(
+                  isSecondary: true,
+                  label: "Choose For Me",
+                  onPressed: _chooseRandom,
+                ),
+                const SizedBox(height: 16),
+                GradientButton(
+                  isSecondary: true,
+                  label: "Help Me Decide",
+                  onPressed: _startHeadToHead,
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            GradientButton(
-              isSecondary: true,
-              label: "Choose For Me",
-              onPressed: _chooseRandom,
-            ),
-            const SizedBox(height: 30),
-            GradientButton(
-              isSecondary: true,
-              label: "Help Me Decide",
-              onPressed: _startHeadToHead,
-            ),
-          ],
+          ),
         ),
         if (!_hasSeenHowItWorks) HowItWorksOverlay(onDismiss: _dismissHowItWorks),
       ],
@@ -995,8 +899,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildRandomChoiceView() {
     if (_chosenRestaurant != null) {
       final colors = AppColors.of(context);
-      return Padding(
-        padding: const EdgeInsets.all(20),
+      return GlassCard(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -1299,6 +1202,156 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ],
+    );
+  }
+
+  /// Bottom action bar with Filter, History, Share, Search, Favorites, Settings.
+  Widget _buildBottomActionBar() {
+    final colors = AppColors.of(context);
+    return GlassCard(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.filter_alt, size: 22),
+                color: colors.textPrimary,
+                tooltip: 'Filters',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FilterScreen(
+                        restaurants: _restaurantDetails,
+                        activeCuisines: _activeCuisines,
+                        activeTypes: _activeTypes,
+                        activePriceTiers: _activePriceTiers,
+                        maxDistance: _maxDistanceMiles,
+                        useLocation: _useLocation,
+                        onDistanceChanged: (value) {
+                          setState(() {
+                            _maxDistanceMiles = value;
+                          });
+                        },
+                        onSave: () async {
+                          await _loadFilters();
+                          await _loadDistanceFilter();
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+              if (_activeCuisines.isNotEmpty ||
+                  _activeTypes.isNotEmpty ||
+                  _activePriceTiers.isNotEmpty)
+                Positioned(
+                  right: 6,
+                  top: 6,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: colors.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          IconButton(
+            icon: const Icon(Icons.history, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'History',
+            onPressed: _showHistorySheet,
+          ),
+          IconButton(
+            icon: const Icon(Icons.share, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'Share',
+            onPressed: _showShareSheet,
+          ),
+          IconButton(
+            icon: const Icon(Icons.search, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'Search',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                    restaurants: _restaurantDetails,
+                    activeCuisines: _activeCuisines,
+                    activeTypes: _activeTypes,
+                    activePriceTiers: _activePriceTiers,
+                    maxDistanceMiles: _maxDistanceMiles,
+                    userPosition: _userPosition,
+                    useLocation: _useLocation,
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.favorite, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'Favorites',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FavoritesListScreen(
+                    restaurants: _restaurantDetails,
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'Settings',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsScreen(
+                    restaurantPreferences: _restaurantPreferences,
+                    themeProvider: widget.themeProvider,
+                    onSave: (newPreferences) {
+                      setState(() {
+                        _restaurantPreferences = newPreferences;
+                      });
+                    },
+                    useLocation: _useLocation,
+                    onLocationChanged: (enabled) async {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('use_location', enabled);
+                      setState(() {
+                        _useLocation = enabled;
+                        if (!enabled) {
+                          _userPosition = null;
+                        }
+                      });
+                      if (enabled) {
+                        final pos = await LocationService.determinePosition();
+                        if (pos != null) {
+                          setState(() {
+                            _userPosition = pos;
+                          });
+                        }
+                      }
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

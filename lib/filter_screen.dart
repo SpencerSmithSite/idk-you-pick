@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/app_colors.dart';
+import 'widgets/glass_card.dart';
 import 'widgets/gradient_button.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -166,7 +167,7 @@ class _FilterScreenState extends State<FilterScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Padding(
+        child: GlassCard(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,6 +250,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   GradientButton(
                     isSecondary: true,
                     label: 'Select All',
+                    tooltip: 'Select all cuisines, types, and price tiers',
                     onPressed: () {
                       setState(() {
                         _selectedCuisines.addAll(_cuisines);

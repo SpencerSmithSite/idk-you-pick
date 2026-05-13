@@ -14,12 +14,38 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
-## Current Phase: 10 — Search & Sort
+## Phase 10 — Search & Sort ✅
 - [x] Search screen with live text search across name, cuisine, type, tags
 - [x] Sort by name, distance, price (low→high), cuisine, random
 - [x] Respects active filters + distance
 - [x] Tap-to-detail navigation, favorite indicator
 - [x] Themed empty state, clear-search button
+
+---
+
+## Phase 11 — Aurora Frost Theme ✅
+- [x] Create `lib/theme/` — color tokens, ThemeData provider, theme switching
+- [x] Create `lib/widgets/` — GlassCard, GradientButton, GradientText, GlowOrb
+- [x] Migrate hardcoded `Colors.*` to Aurora Frost semantic tokens (all screens)
+- [x] Refactor `main.dart` — wrap History bottom sheet + Random Result in GlassCard
+- [x] Refactor `filter_screen.dart` — wrap filters body in GlassCard
+- [x] Refactor `restaurant_detail.dart` — wrap content in GlassCard
+- [x] Refactor `search_screen.dart` — wrap sort bottom sheet in GlassCard
+- [x] Refactor `settings.dart` — wrap settings list blocks in GlassCard
+- [x] Refactor `favorites_list_screen.dart` — wrap list tiles in GlassCard
+- [x] Refactor `main.dart` home screen with Aurora Frost styling
+- [x] Screenshot light + dark mode for Captain
+
+---
+
+## Phase 12 — Testing, QA & Accessibility ✅
+- [x] Unit tests for filter logic
+- [x] Unit tests for location distance / Haversine formula
+- [x] Unit tests for restaurant data parsing edge cases
+- [x] Widget tests for onboarding flow
+- [x] Widget tests for Settings save/restore cycle
+- [x] CI `flutter analyze` + `flutter test` workflow
+- [x] PR #17 updated and all checks green
 
 ---
 
