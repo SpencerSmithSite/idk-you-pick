@@ -188,6 +188,12 @@
 - **QA:** `flutter build ios --simulator` — builds successfully
 - Branch: `data/aurora-frost-theme`
 
+## [0.3.2] — 2026-05-12
+### Phase 12 Complete: CI Enhancement & Final QA
+- **ci:** Enhanced `.github/workflows/flutter-test.yml` with `flutter analyze` lint gate and macOS `build-ios --simulator --no-codesign` job to prevent iOS build regressions
+- **docs(TODO):** Marked Phases 10, 11, and 12 as complete; promoted Phase 12 remaining items (Settings widget tests, text scaling, screen reader audit) into Phase 13: Store Prep & Polish
+- **chore:** Updated branch `data/aurora-frost-theme` commit `5f2ce52`; PR #17 updated
+
 ## [0.3.1] — 2026-05-12
 ### Phase 12: Testing, QA & Accessibility (Incremental)
 - **test(unit):** Added `test/unit/restaurant_data_test.dart` — validates all 54 JSON records: required-field presence, unique non-empty names, lat/lng within US bounds, allowed cuisine/type/priceTier values, non-empty string tag lists, optional website/phone null-or-valid checks
