@@ -880,16 +880,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(color: colors.textSecondary, fontSize: 16),
                 ),
                 const SizedBox(height: 28),
-                GradientButton(
-                  isSecondary: true,
-                  label: "Choose For Me",
-                  onPressed: _chooseRandom,
+                Semantics(
+                  button: true,
+                  label: 'Choose a random restaurant',
+                  child: GradientButton(
+                    isSecondary: true,
+                    label: "Choose For Me",
+                    onPressed: _chooseRandom,
+                  ),
                 ),
                 const SizedBox(height: 16),
-                GradientButton(
-                  isSecondary: true,
-                  label: "Help Me Decide",
-                  onPressed: _startHeadToHead,
+                Semantics(
+                  button: true,
+                  label: 'Compare two restaurants head to head',
+                  child: GradientButton(
+                    isSecondary: true,
+                    label: "Help Me Decide",
+                    onPressed: _startHeadToHead,
+                  ),
                 ),
               ],
             ),
