@@ -176,7 +176,17 @@
 
 ## [0.2.2] — 2026-05-11
 ### Bug Fixes: Location Opt-In, AppBar Title, Empty Pool Messages
----
+- **fix:** `lib/main.dart` `_initializeApp()` — checks `Geolocator.checkPermission()` *before* calling `determinePosition()` to avoid requesting permission on every cold launch; silently sets `_useLocation = false` and persists to SharedPreferences (`use_location`) if denied or deniedForever
+- **fix:** `_filteredPool` now correctly gated by `_useLocation == true` AND `_userPosition != null`; custom restaurants with `null` lat/lng are always retained (not subject to distance filtering)
+- **fix:** `_getEmptyPoolMessage()` distinguishes three causes: all restaurants disabled, no restaurants within distance, and filters too restrictive
+- **fix:** `lib/settings.dart` `Use My Location` toggle persists to SharedPreferences; `onLocationChanged` callback wired in `main.dart` to clear `_userPosition` when disabled and re-acquire when enabled
+- **fix:** `FilterScreen` hides distance slider and shows italic "Enable location to filter by distance" when `useLocation == false`
+- **fix:** `SearchScreen` distance sort/filter respects `useLocation` state and retains null-coord custom restaurants
+- **fix:** AppBar title truncation in `main.dart`, `settings.dart`, `filter_screen.dart` resolved with `FittedBox(fit: BoxFit.scaleDown)` + `fontSize: 20`
+- **QA:** `flutter analyze` — zero new errors
+- **QA:** `flutter test` — 13/13 passing
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/aurora-frost-theme`
 
 ## [0.3.0] — 2026-05-11 (proactive)
 ### Aurora Frost Theme Foundation
@@ -194,17 +204,6 @@
 - **QA:** `flutter analyze` — zero issues across all 15 Dart source files
 - **QA:** `flutter build ios --simulator` — builds successfully
 - Branch: `data/aurora-frost-theme`, PR #17 opened
-- **fix:** Added `Use My Location` toggle in Settings; persists to SharedPreferences (`use_location`)
-- **fix:** `_filteredPool` now only applies distance filtering when `_useLocation == true` AND `_userPosition != null`
-- **fix:** Silenced location permission denial — app silently falls back to all restaurants instead of crashing
-- **fix:** Custom restaurants now merged into `_restaurantDetails` on app init with null lat/lng (kept by distance filter)
-- **fix:** Improved empty pool error messages — distinguishes distance-caused, filter-caused, and preference-caused emptiness
-- **fix:** AppBar title truncation resolved with `FittedBox` + reduced fontSize (20) in `main.dart`, `settings.dart`, and `filter_screen.dart`
-- **fix:** `FilterScreen` hides distance slider when `useLocation == false`
-- **fix:** `SearchScreen` distance filter respects `_useLocation` and keeps null-coord items
-- **QA:** `flutter analyze` — zero new errors
-- **QA:** `flutter build ios --simulator` — builds successfully
-- Branch: `data/phase-10-search-sort`, commit `106f7d7` (pushed to PR #16)
 
 ---
 
