@@ -72,4 +72,24 @@
 
 ---
 
+## [0.1.6] — 2026-05-09
+### Phase 5: History / Seen Tracking
+- **feat:** Added `_history` (Map<String, DateTime>) and `_avoidRepeats` (bool) state fields in `_MyHomePageState`
+- **feat:** `_loadHistory()` — restores `_history` from SharedPreferences JSON string on app start
+- **feat:** `_saveHistory()` — persists `_history` as ISO-8601 encoded JSON keyed by `restaurant_history`; also saves `_avoidRepeats`
+- **feat:** Modified `_filteredPool` getter — when `_avoidRepeats` is on and `_history` is non-empty, excludes tried restaurants from random choice and head-to-head pools
+- **feat:** `_markTried(name)` — adds restaurant to `_history` with current timestamp, persists, and returns to home view
+- **feat:** `_showHistorySheet()` — opens a bottom sheet listing all tried restaurants sorted newest→oldest, with mm/dd/yyyy subtitle and an X icon to remove individual items
+- **feat:** `_removeFromHistory(name)` — removes a single restaurant from history and refreshes persistence
+- **feat:** `_clearHistory()` — wipes entire history and refreshes persistence
+- **feat:** Added history icon (`Icons.history`) to AppBar actions, taps to open `_showHistorySheet()`
+- **feat:** Added "Tried it" button (dark gray, `Icons.check_circle`) on random choice winner card
+- **feat:** Added "Tried it" button on head-to-head winner card — both reset to home after marking
+- **docs:** Updated `CHANGELOG.md` with [0.1.6] entry
+- **docs:** Updated `TODO.md` — Phase 5 items all `[x]`, added Phase 6 header
+- Verified: `flutter analyze` — no NEW issues introduced (11 total: all pre-existing)
+- Branch: `data/phase-5-history-seen`
+
+---
+
 *End of changelog.*

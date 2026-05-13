@@ -52,6 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _optionB;
   String? _errorMessage;
 
+  // History state
+  Map<String, DateTime> _history = {};
+  bool _avoidRepeats = true;
+
   // Filter state
   Set<String> _activeCuisines = {};
   Set<String> _activeTypes = {};
@@ -76,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
       await _loadRestaurants();
       await _loadFilters();
       await _loadDistanceFilter();
+      await _loadHistory();
       _userPosition = await LocationService.determinePosition();
       setState(() {
         _restaurantPreferences = {
@@ -170,7 +175,122 @@ class _MyHomePageState extends State<MyHomePage> {
       }).toList();
     }
 
-    return pool.map((r) => r['name'] as String).toList();
+    final names = pool.map((r) => r['name'] as String).toList();
+    if (_avoidRepeats && _history.isNotEmpty) {
+      return names.where((n) => !_history.containsKey(n)).toList();
+    }
+    return names;
+  }
+
+  Future<void> _loadHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = prefs.getString('restaurant_history');
+    if (jsonStr != null && jsonStr.isNotEmpty) {
+      try {
+        final Map<String, dynamic> decoded = json.decode(jsonStr);
+        setState(() {
+          _history = {
+            for (var entry in decoded.entries)
+              entry.key: DateTime.parse(entry.value as String),
+          };
+        });
+      } catch (_) {
+        _history = {};
+      }
+    }
+    final avoid = prefs.getBool('avoid_repeats');
+    if (avoid != null) _avoidRepeats = avoid;
+  }
+
+  Future<void> _saveHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final encoded = { for (var e in _history.entries) e.key: e.value.toIso8601String() };
+    await prefs.setString('restaurant_history', json.encode(encoded));
+    await prefs.setBool('avoid_repeats', _avoidRepeats);
+  }
+
+  Future<void> _markTried(String name) async {
+    setState(() {
+      _history[name] = DateTime.now();
+    });
+    await _saveHistory();
+    _resetApp();
+  }
+
+  Future<void> _removeFromHistory(String name) async {
+    setState(() {
+      _history.remove(name);
+    });
+    await _saveHistory();
+  }
+
+  Future<void> _clearHistory() async {
+    setState(() {
+      _history.clear();
+    });
+    await _saveHistory();
+  }
+
+  void _showHistorySheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color.fromARGB(255, 35, 38, 40),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        final entries = _history.entries.toList()
+          ..sort((a, b) => b.value.compareTo(a.value));
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'History (Tried)',
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    TextButton.icon(
+                      onPressed: () { Navigator.pop(ctx); _clearHistory(); },
+                      icon: const Icon(Icons.delete_forever, color: Colors.redAccent, size: 18),
+                      label: const Text('Clear', style: TextStyle(color: Colors.redAccent)),
+                    ),
+                  ],
+                ),
+                if (entries.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24),
+                    child: Text('No restaurants marked as tried yet.', style: TextStyle(color: Colors.white70)),
+                  )
+                else
+                  Flexible(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: entries.length,
+                      itemBuilder: (context, index) {
+                        final e = entries[index];
+                        final dateStr = '${e.value.month}/${e.value.day}/${e.value.year}';
+                        return ListTile(
+                          title: Text(e.key, style: const TextStyle(color: Colors.white)),
+                          subtitle: Text(dateStr, style: const TextStyle(color: Colors.white54)),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.close, color: Colors.white54),
+                            onPressed: () => _removeFromHistory(e.key),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildRestaurantDetailChip(String label, Color bgColor) {
@@ -485,6 +605,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: _showHistorySheet,
+          ),
+          IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
@@ -605,7 +729,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              onPressed: () => _markTried(_chosenRestaurant!),
+              icon: const Icon(Icons.check_circle, size: 18),
+              label: const Text('Tried it'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 72, 80, 85),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
+            ),
+            const SizedBox(height: 12),
             ElevatedButton(
               onPressed: _resetApp,
               style: ElevatedButton.styleFrom(
@@ -804,7 +939,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
             _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              onPressed: () => _markTried(_chosenRestaurant!),
+              icon: const Icon(Icons.check_circle, size: 18),
+              label: const Text('Tried it'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 72, 80, 85),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
+            ),
+            const SizedBox(height: 12),
             ElevatedButton(
               onPressed: _resetApp,
               style: ElevatedButton.styleFrom(
