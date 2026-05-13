@@ -251,4 +251,16 @@
 
 ---
 
+## [0.3.5] — 2026-05-13
+### Phase 13: Store Prep & Polish (Second pass)
+- **chore:** Add `metadata/app_store_description.txt` — full App Store listing copy (description, keywords, categories, support/marketing URLs)
+- **chore:** Add `scripts/take_screenshots.sh` — automated iOS Simulator screenshot pipeline for 6.7in, 6.1in, 5.5in devices; light + dark captures each
+- **docs:** Update README to reference new scripts directory for building App Store graphics
+- **chore:** Update `TODO.md` — mark App Store description and screenshot script complete
+- **QA:** `flutter analyze` — zero issues
+- **QA:** `flutter test` — 41/41 pass
+- Branch: `data/phase-13-store-prep`
+
+---
+
 *End of changelog.*
