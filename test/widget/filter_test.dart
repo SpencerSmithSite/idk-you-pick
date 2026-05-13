@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rest_chooser/filter_screen.dart';
-import 'package:rest_chooser/theme/app_colors.dart';
 
 /// Widget tests for FilterScreen — verifying chip interaction,
 /// clear-all, apply, and slider presence.

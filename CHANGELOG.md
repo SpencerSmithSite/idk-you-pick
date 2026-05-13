@@ -232,4 +232,23 @@
 
 ---
 
+## [0.3.4] — 2026-05-13
+### Phase 13: Store Prep & Polish (First pass)
+- **feat(a11y):** Dynamic Type support — clamped `textScaler` in `MaterialApp` via `MediaQuery` (0.8–1.4x) to respect accessibility while preventing layout breakage
+- **feat(a11y):** Semantics wrappers on main action buttons: "Choose For Me" & "Help Me Decide" with descriptive labels for VoiceOver/TalkBack
+- **feat(legal):** New `lib/privacy_policy.dart` — Aurora Frost themed Privacy Policy screen with on-device data disclosure, location policy, third-party services list
+- **feat(legal):** Settings screen now links to Privacy Policy via a new GlassCard row (App Store compliance for geolocation apps)
+- **test:** 11 new widget tests added:
+  - `test/widget/filter_test.dart` — 4 tests (render, chip tap, clear-all, distance toggle)
+  - `test/widget/search_test.dart` — 5 tests (render, sort, query filter, empty state, clear btn)
+  - `test/widget/favorites_test.dart` — 2 tests (builds, themed container)
+  - Total: **30 → 41 tests**, all passing
+- **chore:** Bump version to `1.0.1+2` in `pubspec.yaml`
+- **QA:** `flutter analyze` — zero issues
+- **QA:** `flutter test` — 41/41 pass
+- **QA:** `flutter build ios --simulator` — builds successfully
+- Branch: `data/phase-13-store-prep`
+
+---
+
 *End of changelog.*
