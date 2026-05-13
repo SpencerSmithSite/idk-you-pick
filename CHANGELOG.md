@@ -19,7 +19,28 @@
 
 ---
 
-## Format
-### Date — Title
-- What changed
-- Commits: `abc123`
+## [0.1.2] — 2026-05-08
+### Phase 2: Filter UI
+- **feat:** Added `lib/filter_screen.dart` with multi-select chip groups for Cuisine, Type, and Price Tier
+- **feat:** Wired `_filteredPool` getter into `lib/main.dart` — applies preferences + active filters to random choice and head-to-head pools
+- **feat:** Filter state persisted in SharedPreferences (`filter_cuisines`, `filter_types`, `filter_prices`)
+- **feat:** Added filter icon to AppBar; settings icon moved alongside
+- **feat:** Dynamic filter pool rebuilds when user returns from FilterScreen
+- **fix:** Resolved `use_build_context_synchronously` lint in filter_screen.dart by capturing `Navigator.of(context)` before async gaps
+- Verified: `flutter analyze` — no NEW issues introduced (11 total, same 6 pre-existing dataconnect errors + 2 pre-existing lints + 1 asset warning)
+- Branch: `data/phase-2-filter-ui`
+
+---
+
+## [0.1.3] — 2026-05-08
+### Phase 2: Filter UI (Completion)
+- **feat:** Added active filter indicator dot on filter icon when any filter is applied
+- **feat:** "No restaurants match your filters" empty state with clear-filters button on both random choice and head-to-head views
+- **fix:** Replaced `_restaurants.remove(loser)` in `_pickWinner()` with bracket progression using `_filteredPool` — prevents accidentally deleting a restaurant permanently in head-to-head mode
+- **fix:** Consolidated two duplicate "no results" views into a single reusable widget; corrected `setState()` to reset both `_helpMeDecideMode` and `chosenRestaurant`/`_optionA`/`_optionB`
+- Verified: `flutter analyze` — no NEW issues introduced (10 total: 7 pre-existing dataconnect errors + 1 pre-existing lint + 1 asset warning)
+- Branch: `data/phase-2-filter-ui`
+
+---
+
+*End of changelog.*
