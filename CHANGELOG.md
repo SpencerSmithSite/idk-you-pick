@@ -43,4 +43,20 @@
 
 ---
 
+## [0.1.4] — 2026-05-09
+### Phase 3: Location Mode
+- **feat:** Added `geolocator` & `geocoding` dependencies; updated `pubspec.yaml`
+- **feat:** Added deterministic lat/lng coordinates to all 54 restaurants in `assets/restaurants.json`
+- **feat:** Created `lib/location_service.dart` — permission handling, position caching, Haversine distance in miles
+- **feat:** Added iOS location usage strings to `Info.plist`
+- **feat:** `_filteredPool` now respects distance filter (`_maxDistanceMiles`) when user location available
+- **feat:** Added distance chip (`_buildDistanceMeta`) on random choice and head-to-head cards
+- **feat:** Added distance slider (1–25 mi) to `FilterScreen` with persistence via SharedPreferences
+- **fix:** Wrapped `_filteredPool` shuffle in `List.from()` to avoid mutating the underlying list
+- **fix:** `FilterScreen` now accepts `maxDistance` and `onDistanceChanged` callbacks
+- Verified: `flutter analyze` passes (1 deprecated `desiredAccuracy` info on `location_service.dart`)
+- Branch: `data/phase-3-location-mode`
+
+---
+
 *End of changelog.*

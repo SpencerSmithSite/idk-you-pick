@@ -16,8 +16,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # Used for persisting user preferences and restaurant data
-  shared_preferences: ^2.1.0
+  # Used for persisting filter preferences and restaurant data across app sessions
+  shared_preferences: ^2.5.3
+  # Location services for distance-based filtering
+  geolocator: ^13.0.0
+  # Address-to-coordinates (used only for geocoding display if needed)
+  geocoding: ^3.0.0
 
   # iOS-style icons for the app
   cupertino_icons: ^1.0.8

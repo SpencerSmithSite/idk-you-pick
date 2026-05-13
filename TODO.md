@@ -1,49 +1,36 @@
 # TODO — IDK You Pick
 
-## Current Phase: 1 — Data Overhaul
+## Done
+- [x] Phase 1 — Data Overhaul (restaurant metadata, chips in UI)
+- [x] Phase 2 — Filter UI (cuisine, type, priceTier chips, SharedPreferences persistence, indicator, empty state)
+- [x] Phase 3 — Location Mode (geolocator, distance filter, lat/lng data, distance chips)
 
-### Done
-- [x] 1.1 Recreate `restaurants.json` with rich metadata
-- [x] 1.2 Add new fields: cuisine, type, priceTier, tags[]
-- [x] 1.3 Update `main.dart` loader/parser
-- [x] 1.4 Wire metadata into UI (random choice, head-to-head, winner views)
-- [x] 1.5 Commit Phase 1 work
-- [x] 1.6 Update PR #7 with latest changes
+Prs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3)
 
-### Current Phase: 2 — Filter UI
-- [x] 2.1 Design filter UI layout (bottom sheet or settings page)
-- [x] 2.2 Add cuisine filter chips (multi-select)
-- [x] 2.3 Add type filter chips (multi-select)
-- [x] 2.4 Add priceTier filter chips
-- [x] 2.5 Wire filters into random-choice generator
-- [x] 2.6 Wire filters into head-to-head pool
-- [x] 2.7 Persist filter state in SharedPreferences
-- [x] 2.8 Add filter indicator on home screen when filters active
-- [x] 2.9 Show "no results" state when all filters deselect everything
-- [x] 2.10 QA: verify flutter analyze passes (no new issues)
-- [x] 2.11 Commit & push Phase 2
+---
+
+## Current Phase: 4 — Action Links
+- [ ] 4.1 Add `url_launcher` dependency to `pubspec.yaml`
+- [ ] 4.2 Generate Google Maps URL for each restaurant (lat/lng based)
+- [ ] 4.3 Generate DoorDash search URL (or fallback web search)
+- [ ] 4.4 Add action buttons / chips on restaurant detail / winner view
+  - Open in Maps
+  - Search on DoorDash
+  - Call restaurant (if phone available)
+  - Visit website (if URL available)
+- [ ] 4.5 Add action buttons on random choice card (Maps, DoorDash)
+- [ ] 4.6 Add action buttons on head-to-head winner card
+- [ ] 4.7 QA: `flutter analyze` clean
+- [ ] 4.8 Commit & push Phase 4
+- [ ] 4.9 Open PR for Phase 4
 
 ### Blocked
 - None
 
 ### Backlog
-- Phase 3: Location Mode
-
----
-
-## [Phase 3] — Location Mode
-- [ ] 3.1 Add `geolocator` dependency to `pubspec.yaml`
-- [ ] 3.2 Detect user location on app start with permission handling
-- [ ] 3.3 Add lat/lng fields to `restaurants.json` (or query Google Places API)
-- [ ] 3.4 Compute distance from user to each restaurant
-- [ ] 3.5 Add distance filter slider to FilterScreen
-- [ ] 3.6 Sort random choice / head-to-head pool by nearest first
-- [ ] 3.7 Show distance chip on restaurant cards
-- [ ] 3.8 QA: test on device with real location
-- [ ] 3.9 Commit & push Phase 3
-
-### Blocked
-- Phase 5: Action Links
+- Phase 5: History / Seen Tracking (mark restaurants as tried, avoid repeats)
+- Phase 6: Share / Invite (share winner to Messages, generate invite link)
+- Phase 7: Onboarding / tutorial for first-time user
 
 ---
 
