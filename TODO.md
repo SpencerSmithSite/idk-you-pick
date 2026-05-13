@@ -23,34 +23,6 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
----
-
-## Current Phase: 12 — Testing, QA & Accessibility
-- [ ] Unit tests for filter logic (✅ done)
-- [x] Unit tests for location distance / Haversine formula
-- [ ] Unit tests for restaurant data parsing edge cases
-- [ ] Widget tests for onboarding flow
-- [ ] Widget tests for Settings save/restore cycle
-- [x] Semantic labels for all IconButtons and actionable chips
-- [x] Tooltip coverage for GradientButtons across all screens
-- [x] CI workflow: run `flutter test` on every PR
-- [ ] Dynamic type / text scaling sanity check
-- [ ] Screen reader audit (VoiceOver / TalkBack)
-
----
-
-## Legend
-- [ ] = Not started  |  [-] = In progress  |  [x] = Done
-
-### Workflow Notes
-- **Main branch is protected** — changes must go through PRs
-- **Branch naming:** `data/phase-{N}-{description}` or `data/feature-{name}`
-- **Commit format:** `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`
-- **After work session:** commit, push branch, open PR or update existing PR
-- **Tick summary format:** "[IDK P{N}] {what got done} — branch: data/..."
-
----
-
 ## Current Phase: 11 — Aurora Frost Theme
 - [x] Create `lib/theme/` — color tokens, ThemeData provider, theme switching
 - [x] Create `lib/widgets/` — GlassCard, GradientButton, GradientText, GlowOrb
@@ -65,3 +37,24 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 - [x] Screenshot light + dark mode for Captain
 
 ---
+
+## Current Phase: 12 — Testing, QA & Accessibility
+- [x] Unit tests for filter logic
+- [x] Unit tests for location distance / Haversine formula
+- [x] Unit tests for restaurant data parsing edge cases
+- [x] Widget tests for onboarding flow
+- [ ] Widget tests for Settings save/restore cycle
+- [ ] Dynamic type / text scaling sanity check
+- [ ] Screen reader audit (VoiceOver / TalkBack)
+
+---
+
+## Legend
+- [ ] = Not started  |  [-] = In progress  |  [x] = Done
+
+### Workflow Notes
+- **Main branch is protected** — changes must go through PRs
+- **Branch naming:** `data/phase-{N}-{description}` or `data/feature-{name}`
+- **Commit format:** `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`
+- **After work session:** commit, push branch, open PR or update existing PR
+- **Tick summary format:** "[IDK P{N}] {what got done} — branch: data/..."
