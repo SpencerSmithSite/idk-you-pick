@@ -69,6 +69,7 @@ class _MyAppState extends State<MyApp> {
               themeMode: widget.themeProvider.themeMode,
               theme: AppTheme.lightTheme(),
               darkTheme: AppTheme.darkTheme(),
+              scrollBehavior: const _AppScrollBehavior(),
               home: FutureBuilder<bool>(
                 future: _onboardingFuture,
                 builder: (context, snapshot) {
@@ -713,10 +714,10 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Picks a random restaurant from the filtered list and shows it.
   void _chooseRandom() {
     final pool = List<String>.from(_filteredPool);
+    pool.shuffle();
     setState(() {
       _helpMeDecideMode = false;
       _randomChoiceMode = true;
-      pool.shuffle();
       _chosenRestaurant = pool.isNotEmpty ? pool.first : null;
       _optionA = null;
       _optionB = null;
@@ -727,11 +728,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Sets the screen to show head-to-head mode (two restaurants to compare).
   void _startHeadToHead() {
-    final pool = _filteredPool;
+    final pool = List<String>.from(_filteredPool);
+    pool.shuffle();
     setState(() {
       _randomChoiceMode = false;
       _helpMeDecideMode = true;
-      pool.shuffle();
 
       if (pool.length >= 2) {
         _optionA = pool[0];
@@ -1376,5 +1377,25 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+}
+
+/// Global scroll behavior: smooth bouncing on both iOS and Android,
+/// suppresses overscroll glow to match Aurora Frost aesthetic.
+class _AppScrollBehavior extends ScrollBehavior {
+  const _AppScrollBehavior();
+
+  @override
+  Widget buildOverscrollIndicator(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child;
+  }
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast);
   }
 }

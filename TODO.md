@@ -70,7 +70,8 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 - [x] Add haptic feedback on "Choose For Me" and "Help Me Decide" winner reveal
 - [x] Add haptic on filter chip tap, favorite toggle, history add/remove
 - [x] Review prompt integration (in_app_review package, ReviewService with pick-count threshold, 30-day cooldown, rated flag)
-- [ ] Subtle scroll physics / overscroll glow tuning
+- [x] Subtle scroll physics — `_AppScrollBehavior` with `BouncingScrollPhysics` on both iOS & Android, no overscroll glow
+- [x] Reduce unnecessary `setState` — shuffle pool outside `setState` in `_chooseRandom()` and `_startHeadToHead()`
 
 ### App Store Review Prompt
 - [x] Integrate `in_app_review` package
@@ -83,8 +84,7 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ### Performance & Polish ✅
 - [x] Debounce search query (300ms) to reduce rebuilds
-- [ ] Image asset placeholders / lazy loading for restaurant photos (if added later)
-- [ ] Reduce unnecessary `setState` calls in main view rebuilds
+- [x] Reduce unnecessary `setState` calls in main view rebuilds
 
 ---
 
