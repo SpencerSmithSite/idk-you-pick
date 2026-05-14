@@ -1,3 +1,26 @@
+## [0.4.1] — 2026-05-13
+### Phase 14: Post-Launch Polish (Part 2 — App Store Review Prompt)
+- **feat:** Integrated `in_app_review` package (v2.0.11)
+- **feat:** Created `lib/services/review_service.dart` — `ReviewService` with:
+  - Pick counter (`recordSuccessfulPick`)
+  - 3-pick minimum threshold (`shouldPrompt`)
+  - 30-day cooldown (`markPrompted`)
+  - Permanent rated flag (`markRated`)
+  - Reset helper for testing / diagnostics
+- **feat:** Created `lib/services/review_prompt.dart` — `ReviewPrompt.maybeShow()` wrapper that:
+  - Records a pick → checks eligibility → requests OS review prompt if available
+  - `openStoreListing()` for manual "Rate us" flows
+- **feat:** Wired `ReviewPrompt.maybeShow()` into `main.dart` after:
+  - `_chooseRandom()` (Choose For Me winner reveal)
+  - `_pickWinner()` (Help Me Decide bracket winner)
+- **test:** Added `test/unit/review_service_test.dart` (7 tests)
+  - Pick count, threshold gating, cooldown, rated flag, reset
+- **ci:** `flutter analyze` clean, `flutter test` 53/53 passing, iOS sim build success
+- Branch: `data/phase-14-post-launch-polish` (continued)
+- PR: #19 (updated)
+
+---
+
 ## [0.4.0] — 2026-05-13
 ### Phase 14: Post-Launch Polish (Part 1)
 - **feat:** Added `lib/services/haptics_service.dart` with 5 semantic flavors (light, medium, heavy, selection, success)

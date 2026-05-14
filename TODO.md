@@ -69,12 +69,13 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 ### Haptics & Micro-interactions ✅
 - [x] Add haptic feedback on "Choose For Me" and "Help Me Decide" winner reveal
 - [x] Add haptic on filter chip tap, favorite toggle, history add/remove
+- [x] Review prompt integration (in_app_review package, ReviewService with pick-count threshold, 30-day cooldown, rated flag)
 - [ ] Subtle scroll physics / overscroll glow tuning
 
 ### App Store Review Prompt
-- [ ] Integrate `in_app_review` package
-- [ ] Show review prompt after 3+ successful "Choose For Me" picks
-- [ ] Rate-limit: max once per 30 days, only if user hasn't rated
+- [x] Integrate `in_app_review` package
+- [x] Show review prompt after 3+ successful "Choose For Me" picks
+- [x] Rate-limit: max once per 30 days, only if user hasn't rated
 
 ### Version & Build Info
 - [ ] Add "About" tile in Settings showing version, build number, and Git commit

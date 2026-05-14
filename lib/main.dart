@@ -12,6 +12,7 @@ import 'share_service.dart';
 import 'onboarding.dart';
 import 'how_it_works.dart';
 import 'services/haptics_service.dart';
+import 'services/review_prompt.dart';
 import 'demo_service.dart';
 import 'restaurant_detail.dart';
 import 'favorites_list_screen.dart';
@@ -721,6 +722,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _optionB = null;
     });
     HapticsService.medium();
+    ReviewPrompt.maybeShow();
   }
 
   /// Sets the screen to show head-to-head mode (two restaurants to compare).
@@ -767,6 +769,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _optionB = null;
       }
     });
+    ReviewPrompt.maybeShow();
   }
 
   @override
