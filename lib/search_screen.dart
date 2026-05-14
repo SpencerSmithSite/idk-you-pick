@@ -5,6 +5,7 @@ import 'restaurant_detail.dart';
 import 'favorites_service.dart';
 import 'location_service.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:async';
 
 enum SortMode { name, distance, priceLow, cuisine, random }
 
@@ -37,9 +38,11 @@ class _SearchScreenState extends State<SearchScreen> {
   SortMode _sortMode = SortMode.name;
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  Timer? _debounceTimer;
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -218,7 +221,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(vertical: 14),
               ),
-              onChanged: (v) => setState(() => _query = v),
+              onChanged: (v) {
+                _debounceTimer?.cancel();
+                _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+                  if (mounted) setState(() => _query = v);
+                });
+              },
             ),
           ),
           if (_query.isNotEmpty)

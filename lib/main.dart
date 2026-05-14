@@ -11,6 +11,8 @@ import 'location_service.dart';
 import 'share_service.dart';
 import 'onboarding.dart';
 import 'how_it_works.dart';
+import 'services/haptics_service.dart';
+import 'services/review_prompt.dart';
 import 'demo_service.dart';
 import 'restaurant_detail.dart';
 import 'favorites_list_screen.dart';
@@ -67,6 +69,7 @@ class _MyAppState extends State<MyApp> {
               themeMode: widget.themeProvider.themeMode,
               theme: AppTheme.lightTheme(),
               darkTheme: AppTheme.darkTheme(),
+              scrollBehavior: const _AppScrollBehavior(),
               home: FutureBuilder<bool>(
                 future: _onboardingFuture,
                 builder: (context, snapshot) {
@@ -698,6 +701,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Resets the app state.
   void _resetApp() {
+    HapticsService.light();
     setState(() {
       _helpMeDecideMode = false;
       _randomChoiceMode = false;
@@ -710,23 +714,25 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Picks a random restaurant from the filtered list and shows it.
   void _chooseRandom() {
     final pool = List<String>.from(_filteredPool);
+    pool.shuffle();
     setState(() {
       _helpMeDecideMode = false;
       _randomChoiceMode = true;
-      pool.shuffle();
       _chosenRestaurant = pool.isNotEmpty ? pool.first : null;
       _optionA = null;
       _optionB = null;
     });
+    HapticsService.medium();
+    ReviewPrompt.maybeShow();
   }
 
   /// Sets the screen to show head-to-head mode (two restaurants to compare).
   void _startHeadToHead() {
-    final pool = _filteredPool;
+    final pool = List<String>.from(_filteredPool);
+    pool.shuffle();
     setState(() {
       _randomChoiceMode = false;
       _helpMeDecideMode = true;
-      pool.shuffle();
 
       if (pool.length >= 2) {
         _optionA = pool[0];
@@ -741,10 +747,12 @@ class _MyHomePageState extends State<MyHomePage> {
         _optionB = null;
       }
     });
+    if (pool.isNotEmpty) HapticsService.medium();
   }
 
   /// Picks a winner between two restaurants and continues the bracket with a new challenger.
   void _pickWinner(String winner, String loser) {
+    HapticsService.medium();
     setState(() {
       _chosenRestaurant = winner;
 
@@ -762,6 +770,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _optionB = null;
       }
     });
+    ReviewPrompt.maybeShow();
   }
 
   @override
@@ -987,6 +996,7 @@ class _MyHomePageState extends State<MyHomePage> {
           isSecondary: true,
           label: "Clear Filters",
           onPressed: () async {
+            HapticsService.light();
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('filter_cuisines');
             await prefs.remove('filter_types');
@@ -1190,6 +1200,7 @@ class _MyHomePageState extends State<MyHomePage> {
           isSecondary: true,
           label: "Clear Filters",
           onPressed: () async {
+            HapticsService.light();
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('filter_cuisines');
             await prefs.remove('filter_types');
@@ -1366,5 +1377,25 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+}
+
+/// Global scroll behavior: smooth bouncing on both iOS and Android,
+/// suppresses overscroll glow to match Aurora Frost aesthetic.
+class _AppScrollBehavior extends ScrollBehavior {
+  const _AppScrollBehavior();
+
+  @override
+  Widget buildOverscrollIndicator(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child;
+  }
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast);
   }
 }

@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'theme/app_colors.dart';
 import 'widgets/glass_card.dart';
 import 'favorites_service.dart';
+import 'services/haptics_service.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
   final Map<String, dynamic> restaurant;
@@ -28,6 +29,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   }
 
   Future<void> _toggleFavorite() async {
+    HapticsService.light();
     await FavoritesService.toggleFavorite(widget.restaurant['name'] as String);
     await _loadFavorite();
   }

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/app_colors.dart';
 import 'widgets/glass_card.dart';
 import 'widgets/gradient_button.dart';
+import 'services/haptics_service.dart';
 
 class FilterScreen extends StatefulWidget {
   final List<Map<String, dynamic>> restaurants;
@@ -102,9 +103,12 @@ class _FilterScreenState extends State<FilterScreen> {
                       : colors.chipDefaultBorder,
                 ),
               ),
-              onSelected: (_) => setState(() {
-                toggle(value);
-              }),
+              onSelected: (_) {
+                HapticsService.light();
+                setState(() {
+                  toggle(value);
+                });
+              },
             );
           }).toList(),
         ),
@@ -142,6 +146,7 @@ class _FilterScreenState extends State<FilterScreen> {
         actions: [
           TextButton(
             onPressed: () async {
+              HapticsService.light();
               final navigator = Navigator.of(context);
               await _saveFilters();
               await widget.onSave();

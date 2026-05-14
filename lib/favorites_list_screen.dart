@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'favorites_service.dart';
+import 'services/haptics_service.dart';
 import 'restaurant_detail.dart';
 import 'theme/app_colors.dart';
 import 'widgets/glass_card.dart';
@@ -34,6 +35,7 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
   }
 
   Future<void> _removeFavorite(String name) async {
+    HapticsService.light();
     await FavoritesService.removeFavorite(name);
     await _loadFavorites();
   }

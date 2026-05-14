@@ -1,3 +1,69 @@
+## [0.4.3] — 2026-05-14
+### Phase 14: Post-Launch Polish (Part 4 — Scroll Physics + setState Cleanup)
+- **feat:** Global `_AppScrollBehavior` applied to `MaterialApp`:
+  - `BouncingScrollPhysics` with fast deceleration on both iOS and Android
+  - `buildOverscrollIndicator` returns child directly → no Android overscroll glow (matches Aurora Frost aesthetic)
+- **refactor:** Move `pool.shuffle()` outside `setState` in `_chooseRandom()` and `_startHeadToHead()` — avoids mutating list during render
+- **docs:** Marked all Phase 14 TODO items complete
+- **QA:** `flutter analyze` clean, `flutter test` 54/54 passing, iOS sim build success
+- Branch: `data/phase-14-post-launch-polish` (updated)
+- PR: #19 (updated)
+
+---
+
+## [0.4.2] — 2026-05-13
+### Phase 14: Post-Launch Polish (Part 3 — About Tile + Search Debounce)
+- **feat:** Added `package_info_plus` and `clipboard` dependencies
+- **feat:** Created `AboutTile` widget in `lib/settings.dart`:
+  - Displays app version + build number from `PackageInfo`
+  - Tap / copy button to copy support info (version, build, package name) to clipboard
+  - Snackbar confirmation with themed colors
+- **feat:** Implemented 300ms debounce on `SearchScreen` query input to reduce rebuilds
+- **test:** Added `test/unit/search_debounce_test.dart` (1 test)
+- **ci:** `flutter analyze` clean, `flutter test` 54/54 passing, iOS sim build success
+- Branch: `data/phase-14-post-launch-polish` (continued)
+- PR: #19 (updated)
+
+---
+
+## [0.4.1] — 2026-05-13
+### Phase 14: Post-Launch Polish (Part 2 — App Store Review Prompt)
+- **feat:** Integrated `in_app_review` package (v2.0.11)
+- **feat:** Created `lib/services/review_service.dart` — `ReviewService` with:
+  - Pick counter (`recordSuccessfulPick`)
+  - 3-pick minimum threshold (`shouldPrompt`)
+  - 30-day cooldown (`markPrompted`)
+  - Permanent rated flag (`markRated`)
+  - Reset helper for testing / diagnostics
+- **feat:** Created `lib/services/review_prompt.dart` — `ReviewPrompt.maybeShow()` wrapper that:
+  - Records a pick → checks eligibility → requests OS review prompt if available
+  - `openStoreListing()` for manual "Rate us" flows
+- **feat:** Wired `ReviewPrompt.maybeShow()` into `main.dart` after:
+  - `_chooseRandom()` (Choose For Me winner reveal)
+  - `_pickWinner()` (Help Me Decide bracket winner)
+- **test:** Added `test/unit/review_service_test.dart` (7 tests)
+  - Pick count, threshold gating, cooldown, rated flag, reset
+- **ci:** `flutter analyze` clean, `flutter test` 53/53 passing, iOS sim build success
+- Branch: `data/phase-14-post-launch-polish` (continued)
+- PR: #19 (updated)
+
+---
+
+## [0.4.0] — 2026-05-13
+### Phase 14: Post-Launch Polish (Part 1)
+- **feat:** Added `lib/services/haptics_service.dart` with 5 semantic flavors (light, medium, heavy, selection, success)
+- **feat:** Wired haptic feedback into all major interactions:
+  - Winner reveal (Choose For Me, Help Me Decide, bracket picks)
+  - Filter chip tap, Apply button, Clear filters
+  - Favorite toggle (RestaurantDetail) and remove (FavoritesList swipe)
+  - Tried-it, Start Over, Reset, external-link share taps
+- **test:** Added `test/unit/haptics_service_test.dart` (5 tests)
+- **ci:** `flutter analyze` clean, `flutter test` 46/46 passing, iOS sim build success
+- Branch: `data/phase-14-post-launch-polish`
+- PR: #19
+
+---
+
 # Changelog — IDK You Pick
 
 ## [0.1.0] — 2026-05-08
