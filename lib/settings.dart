@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'demo_service.dart';
 import 'onboarding.dart';
@@ -287,6 +291,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const Divider(),
             GlassCard(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(16),
+              child: const AboutTile(),
+            ),
+            const Divider(),
+            GlassCard(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -478,6 +489,70 @@ class _DemoModeTileState extends State<DemoModeTile> {
         }),
         onChanged: _toggle,
       ),
+    );
+  }
+}
+
+/// About tile displaying version, build number, and tap-to-copy support info.
+class AboutTile extends StatefulWidget {
+  const AboutTile({super.key});
+
+  @override
+  State<AboutTile> createState() => _AboutTileState();
+}
+
+class _AboutTileState extends State<AboutTile> {
+  PackageInfo? _info;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final info = await PackageInfo.fromPlatform();
+    if (!mounted) return;
+    setState(() => _info = info);
+  }
+
+  void _copySupportInfo(BuildContext context, AppColors colors) {
+    final info = _info;
+    if (info == null) return;
+    final text = 'IDK You Pick\nVersion: ${info.version}\nBuild: ${info.buildNumber}\nPackage: ${info.packageName}';
+    FlutterClipboard.copy(text);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Support info copied to clipboard', style: TextStyle(color: colors.chipTextDark)),
+        backgroundColor: colors.secondary,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
+    final info = _info;
+
+    return ListTile(
+      leading: Icon(Icons.info_outline, color: colors.textSecondary),
+      title: Text(
+        'About',
+        style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+      ),
+      subtitle: info == null
+          ? Text('Loading...', style: TextStyle(color: colors.textSecondary, fontSize: 12))
+          : Text(
+              'v${info.version} (${info.buildNumber})',
+              style: TextStyle(color: colors.textSecondary, fontSize: 12),
+            ),
+      trailing: IconButton(
+        icon: Icon(Icons.content_copy, color: colors.textMuted, size: 20),
+        tooltip: 'Copy support info',
+        onPressed: () => _copySupportInfo(context, colors),
+      ),
+      onTap: () => _copySupportInfo(context, colors),
     );
   }
 }

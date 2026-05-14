@@ -1,3 +1,18 @@
+## [0.4.2] — 2026-05-13
+### Phase 14: Post-Launch Polish (Part 3 — About Tile + Search Debounce)
+- **feat:** Added `package_info_plus` and `clipboard` dependencies
+- **feat:** Created `AboutTile` widget in `lib/settings.dart`:
+  - Displays app version + build number from `PackageInfo`
+  - Tap / copy button to copy support info (version, build, package name) to clipboard
+  - Snackbar confirmation with themed colors
+- **feat:** Implemented 300ms debounce on `SearchScreen` query input to reduce rebuilds
+- **test:** Added `test/unit/search_debounce_test.dart` (1 test)
+- **ci:** `flutter analyze` clean, `flutter test` 54/54 passing, iOS sim build success
+- Branch: `data/phase-14-post-launch-polish` (continued)
+- PR: #19 (updated)
+
+---
+
 ## [0.4.1] — 2026-05-13
 ### Phase 14: Post-Launch Polish (Part 2 — App Store Review Prompt)
 - **feat:** Integrated `in_app_review` package (v2.0.11)
