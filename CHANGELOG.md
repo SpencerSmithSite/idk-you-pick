@@ -1,3 +1,16 @@
+## [0.4.3] — 2026-05-14
+### Phase 14: Post-Launch Polish (Part 4 — Scroll Physics + setState Cleanup)
+- **feat:** Global `_AppScrollBehavior` applied to `MaterialApp`:
+  - `BouncingScrollPhysics` with fast deceleration on both iOS and Android
+  - `buildOverscrollIndicator` returns child directly → no Android overscroll glow (matches Aurora Frost aesthetic)
+- **refactor:** Move `pool.shuffle()` outside `setState` in `_chooseRandom()` and `_startHeadToHead()` — avoids mutating list during render
+- **docs:** Marked all Phase 14 TODO items complete
+- **QA:** `flutter analyze` clean, `flutter test` 54/54 passing, iOS sim build success
+- Branch: `data/phase-14-post-launch-polish` (updated)
+- PR: #19 (updated)
+
+---
+
 ## [0.4.2] — 2026-05-13
 ### Phase 14: Post-Launch Polish (Part 3 — About Tile + Search Debounce)
 - **feat:** Added `package_info_plus` and `clipboard` dependencies
