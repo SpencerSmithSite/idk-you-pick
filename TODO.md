@@ -65,7 +65,7 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
-## Phase 14 — Post-Launch Polish 🔄 (Current)
+## Phase 14 — Post-Launch Polish ✅
 ### Haptics & Micro-interactions ✅
 - [x] Add haptic feedback on "Choose For Me" and "Help Me Decide" winner reveal
 - [x] Add haptic on filter chip tap, favorite toggle, history add/remove
@@ -85,6 +85,16 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 ### Performance & Polish ✅
 - [x] Debounce search query (300ms) to reduce rebuilds
 - [x] Reduce unnecessary `setState` calls in main view rebuilds
+
+---
+
+## Phase 15 — Next Feature 🔄 (Current)
+_To be defined — awaiting Captain's direction. Potential themes:_
+- _Push notifications (lunchtime suggestions, weekly recap)_
+- _Deep linking / shareable restaurant URLs_
+- _Social features (group voting, activity feed)_
+- _Monetization (in-app tips, premium themes, remove-ads)_
+- _New game modes (team picker, price bracket battle)_
 
 ---
 
