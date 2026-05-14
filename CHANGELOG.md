@@ -1,3 +1,18 @@
+## [0.4.0] — 2026-05-13
+### Phase 14: Post-Launch Polish (Part 1)
+- **feat:** Added `lib/services/haptics_service.dart` with 5 semantic flavors (light, medium, heavy, selection, success)
+- **feat:** Wired haptic feedback into all major interactions:
+  - Winner reveal (Choose For Me, Help Me Decide, bracket picks)
+  - Filter chip tap, Apply button, Clear filters
+  - Favorite toggle (RestaurantDetail) and remove (FavoritesList swipe)
+  - Tried-it, Start Over, Reset, external-link share taps
+- **test:** Added `test/unit/haptics_service_test.dart` (5 tests)
+- **ci:** `flutter analyze` clean, `flutter test` 46/46 passing, iOS sim build success
+- Branch: `data/phase-14-post-launch-polish`
+- PR: #19
+
+---
+
 # Changelog — IDK You Pick
 
 ## [0.1.0] — 2026-05-08

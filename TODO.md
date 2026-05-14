@@ -66,9 +66,9 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 ---
 
 ## Phase 14 — Post-Launch Polish 🔄 (Current)
-### Haptics & Micro-interactions
-- [ ] Add haptic feedback on "Choose For Me" and "Help Me Decide" winner reveal
-- [ ] Add haptic on filter chip tap, favorite toggle, history add/remove
+### Haptics & Micro-interactions ✅
+- [x] Add haptic feedback on "Choose For Me" and "Help Me Decide" winner reveal
+- [x] Add haptic on filter chip tap, favorite toggle, history add/remove
 - [ ] Subtle scroll physics / overscroll glow tuning
 
 ### App Store Review Prompt
