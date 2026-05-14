@@ -11,6 +11,7 @@ import 'location_service.dart';
 import 'share_service.dart';
 import 'onboarding.dart';
 import 'how_it_works.dart';
+import 'services/haptics_service.dart';
 import 'demo_service.dart';
 import 'restaurant_detail.dart';
 import 'favorites_list_screen.dart';
@@ -698,6 +699,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Resets the app state.
   void _resetApp() {
+    HapticsService.light();
     setState(() {
       _helpMeDecideMode = false;
       _randomChoiceMode = false;
@@ -718,6 +720,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _optionA = null;
       _optionB = null;
     });
+    HapticsService.medium();
   }
 
   /// Sets the screen to show head-to-head mode (two restaurants to compare).
@@ -741,10 +744,12 @@ class _MyHomePageState extends State<MyHomePage> {
         _optionB = null;
       }
     });
+    if (pool.isNotEmpty) HapticsService.medium();
   }
 
   /// Picks a winner between two restaurants and continues the bracket with a new challenger.
   void _pickWinner(String winner, String loser) {
+    HapticsService.medium();
     setState(() {
       _chosenRestaurant = winner;
 
@@ -987,6 +992,7 @@ class _MyHomePageState extends State<MyHomePage> {
           isSecondary: true,
           label: "Clear Filters",
           onPressed: () async {
+            HapticsService.light();
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('filter_cuisines');
             await prefs.remove('filter_types');
@@ -1190,6 +1196,7 @@ class _MyHomePageState extends State<MyHomePage> {
           isSecondary: true,
           label: "Clear Filters",
           onPressed: () async {
+            HapticsService.light();
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('filter_cuisines');
             await prefs.remove('filter_types');
