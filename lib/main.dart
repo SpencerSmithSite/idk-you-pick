@@ -133,6 +133,9 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _helpMeDecideMode = false;
   bool _randomChoiceMode = false;
 
+  // Track eliminated restaurants in Help Me Decide bracket
+  final Set<String> _eliminated = {};
+
   // Onboarding / first-run tooltip
   bool _hasSeenHowItWorks = false;
 
@@ -708,6 +711,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _chosenRestaurant = null;
       _optionA = null;
       _optionB = null;
+      _eliminated.clear();
     });
   }
 
@@ -721,6 +725,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _chosenRestaurant = pool.isNotEmpty ? pool.first : null;
       _optionA = null;
       _optionB = null;
+      _eliminated.clear();
     });
     HapticsService.medium();
     ReviewPrompt.maybeShow();
@@ -733,6 +738,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _randomChoiceMode = false;
       _helpMeDecideMode = true;
+      _eliminated.clear();
 
       if (pool.length >= 2) {
         _optionA = pool[0];
@@ -755,18 +761,16 @@ class _MyHomePageState extends State<MyHomePage> {
     HapticsService.medium();
     setState(() {
       _chosenRestaurant = winner;
+      _eliminated.add(loser);
 
       final pool = _filteredPool;
-      if (pool.length >= 2) {
+      final challengers = pool.where((r) => r != winner && !_eliminated.contains(r)).toList();
+      if (challengers.isNotEmpty) {
+        challengers.shuffle();
         _optionA = winner;
-        final nextIndex = pool.indexWhere((r) => r != winner);
-        if (nextIndex != -1) {
-          _optionB = pool[nextIndex];
-        } else {
-          _optionB = null;
-        }
+        _optionB = challengers.first;
       } else {
-        _optionA = null;
+        _optionA = winner;
         _optionB = null;
       }
     });
@@ -1038,58 +1042,66 @@ class _MyHomePageState extends State<MyHomePage> {
           GradientButton(
             isSecondary: true,
             onPressed: () => _pickWinner(_optionA!, _optionB!),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  _optionA!,
-                  style: const TextStyle(fontSize: 20),
-                ),
-                _buildRestaurantMeta(_getRestaurantDetails(_optionA!)),
-                TextButton(
-                  onPressed: () {
-                    final details = _getRestaurantDetails(_optionA!);
-                    if (details != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => RestaurantDetailScreen(restaurant: details),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('View Details', style: TextStyle(fontSize: 12)),
-                ),
-              ],
+            child: SizedBox(
+              width: 320,
+              height: 180,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _optionA!,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  _buildRestaurantMeta(_getRestaurantDetails(_optionA!)),
+                  TextButton(
+                    onPressed: () {
+                      final details = _getRestaurantDetails(_optionA!);
+                      if (details != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => RestaurantDetailScreen(restaurant: details),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('View Details', style: TextStyle(fontSize: 12)),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 10),
           GradientButton(
             isSecondary: true,
             onPressed: () => _pickWinner(_optionB!, _optionA!),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  _optionB!,
-                  style: const TextStyle(fontSize: 20),
-                ),
-                _buildRestaurantMeta(_getRestaurantDetails(_optionB!)),
-                TextButton(
-                  onPressed: () {
-                    final details = _getRestaurantDetails(_optionB!);
-                    if (details != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => RestaurantDetailScreen(restaurant: details),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('View Details', style: TextStyle(fontSize: 12)),
-                ),
-              ],
+            child: SizedBox(
+              width: 320,
+              height: 180,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _optionB!,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  _buildRestaurantMeta(_getRestaurantDetails(_optionB!)),
+                  TextButton(
+                    onPressed: () {
+                      final details = _getRestaurantDetails(_optionB!);
+                      if (details != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => RestaurantDetailScreen(restaurant: details),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('View Details', style: TextStyle(fontSize: 12)),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 30),
@@ -1123,13 +1135,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (_chosenRestaurant != null) {
       final colors = AppColors.of(context);
+      final isFinalWinner = _optionA != null && _optionB == null;
       return Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "The winner is:",
+              isFinalWinner ? "Final Winner!" : "The winner is:",
               style: TextStyle(color: colors.textPrimary, fontSize: 20),
             ),
             const SizedBox(height: 10),
@@ -1211,6 +1224,7 @@ class _MyHomePageState extends State<MyHomePage> {
               _chosenRestaurant = null;
               _optionA = null;
               _optionB = null;
+              _eliminated.clear();
             });
           },
         ),
