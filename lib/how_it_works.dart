@@ -15,7 +15,7 @@ class HowItWorksOverlay extends StatelessWidget {
     return GestureDetector(
       onTap: onDismiss,
       child: Container(
-        color: colors.scrim,
+        color: colors.backgroundGradient.first,
         child: Center(
           child: GestureDetector(
             onTap: () {}, // prevent tap-through to background
@@ -23,7 +23,7 @@ class HowItWorksOverlay extends StatelessWidget {
               margin: const EdgeInsets.all(32),
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: colors.surface,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: colors.primary, width: 1),
               ),
