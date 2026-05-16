@@ -378,14 +378,6 @@ class _MyHomePageState extends State<MyHomePage> {
     await prefs.setBool('avoid_repeats', _avoidRepeats);
   }
 
-  Future<void> _markTried(String name) async {
-    setState(() {
-      _history[name] = DateTime.now();
-    });
-    await _saveHistory();
-    _resetApp();
-  }
-
   Future<void> _removeFromHistory(String name) async {
     setState(() {
       _history.remove(name);
@@ -554,74 +546,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildRestaurantDetailChip(String label, Color bgColor, Color textColor) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRestaurantMeta(Map<String, dynamic>? details) {
-    if (details == null || details.isEmpty) return const SizedBox.shrink();
-    final cuisine = details['cuisine'] as String?;
-    final type = details['type'] as String?;
-    final priceTier = details['priceTier'] as String?;
-    final tags = (details['tags'] as List<dynamic>?)?.cast<String>() ?? <String>[];
-    final colors = AppColors.of(context);
-
-    return Column(
-      children: [
-        const SizedBox(height: 6),
-        Wrap(
-          spacing: 6,
-          runSpacing: 4,
-          alignment: WrapAlignment.center,
-          children: [
-            if (cuisine != null && cuisine.isNotEmpty)
-              _buildRestaurantDetailChip(cuisine, colors.primary, colors.chipTextLight),
-            if (type != null && type.isNotEmpty)
-              _buildRestaurantDetailChip(type, colors.primary, colors.chipTextLight),
-            if (priceTier != null && priceTier.isNotEmpty)
-              _buildRestaurantDetailChip(priceTier, colors.secondary, colors.chipTextLight),
-            ...tags.map((t) => _buildRestaurantDetailChip(t, colors.chipDefaultBg, colors.textPrimary)),
-            _buildDistanceMeta(details),
-          ],
-        ),
-      ],
-    );
-  }
-
-  /// Compute distance from user to this restaurant and return a chip, or nothing if no location.
-  Widget _buildDistanceMeta(Map<String, dynamic>? details) {
-    if (details == null || _userPosition == null) return const SizedBox.shrink();
-    final rLat = details['lat'] as double?;
-    final rLng = details['lng'] as double?;
-    if (rLat == null || rLng == null) return const SizedBox.shrink();
-    final d = LocationService.distanceInMiles(
-      _userPosition!.latitude,
-      _userPosition!.longitude,
-      rLat,
-      rLng,
-    );
-    final colors = AppColors.of(context);
-    return _buildRestaurantDetailChip(
-      '${d.toStringAsFixed(1)} mi',
-      colors.primary,
-      colors.chipTextLight,
-    );
-  }
-
   /// Action URL helpers
   Future<void> _openMaps(Map<String, dynamic> details) async {
     final lat = details['lat'] as double?;
@@ -635,71 +559,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final name = details['name'] as String? ?? '';
     final uri = Uri.parse('https://www.doordash.com/search/store/$name/');
     if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  Future<void> _callRestaurant(Map<String, dynamic> details) async {
-    final phone = details['phone'] as String?;
-    if (phone == null || phone.isEmpty) return;
-    final uri = Uri.parse('tel:$phone');
-    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  Future<void> _openWebsite(Map<String, dynamic> details) async {
-    final url = details['website'] as String?;
-    if (url == null || url.isEmpty) return;
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  /// Build action button chips: Maps, DoorDash, Call, Website
-  Widget _buildActionButtons(Map<String, dynamic>? details) {
-    if (details == null) return const SizedBox.shrink();
-    final hasCoords = details['lat'] != null && details['lng'] != null;
-    final hasPhone = (details['phone'] as String?)?.isNotEmpty ?? false;
-    final hasWebsite = (details['website'] as String?)?.isNotEmpty ?? false;
-    final colors = AppColors.of(context);
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      alignment: WrapAlignment.center,
-      children: [
-        if (hasCoords)
-          GradientButton(
-            isSecondary: false,
-            icon: Icons.map,
-            label: 'Maps',
-            onPressed: () => _openMaps(details),
-          ),
-        GradientButton(
-          isSecondary: true,
-          icon: Icons.delivery_dining,
-          label: 'DoorDash',
-          onPressed: () => _openDoorDash(details),
-        ),
-        if (hasPhone)
-          ElevatedButton.icon(
-            onPressed: () => _callRestaurant(details),
-            icon: const Icon(Icons.phone, size: 16),
-            label: const Text('Call'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colors.chipDefaultBg,
-              foregroundColor: colors.textPrimary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            ),
-          ),
-        if (hasWebsite)
-          ElevatedButton.icon(
-            onPressed: () => _openWebsite(details),
-            icon: const Icon(Icons.language, size: 16),
-            label: const Text('Website'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colors.chipDefaultBg,
-              foregroundColor: colors.textPrimary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            ),
-          ),
-      ],
-    );
   }
 
   /// Resets the app state.
@@ -925,62 +784,87 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildRandomChoiceView() {
     if (_chosenRestaurant != null) {
       final colors = AppColors.of(context);
+      final details = _getRestaurantDetails(_chosenRestaurant!);
+      final hasCoords = details != null && details['lat'] != null && details['lng'] != null;
       return GlassCard(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
+            const SizedBox(height: 40),
             Text(
               "Random choice:",
               style: TextStyle(color: colors.textPrimary, fontSize: 20),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             GradientText(
               text: _chosenRestaurant!,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
-            _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
-            const SizedBox(height: 12),
-            GradientButton(
-              isSecondary: false,
-              icon: Icons.info_outline,
-              label: "View Details",
-              onPressed: () {
-                final details = _getRestaurantDetails(_chosenRestaurant!);
-                if (details != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => RestaurantDetailScreen(restaurant: details),
-                    ),
-                  );
-                }
-              },
+            const Spacer(flex: 3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: GradientButton(
+                    isSecondary: false,
+                    icon: Icons.info_outline,
+                    label: "View Details",
+                    onPressed: () {
+                      if (details != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => RestaurantDetailScreen(restaurant: details),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Flexible(
+                  child: GradientButton(
+                    isSecondary: true,
+                    icon: Icons.share,
+                    label: "Share Winner",
+                    onPressed: _handleShareWinner,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            GradientButton(
-              isSecondary: true,
-              icon: Icons.share,
-              label: "Share Winner",
-              onPressed: _handleShareWinner,
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              onPressed: () => _markTried(_chosenRestaurant!),
-              icon: const Icon(Icons.check_circle, size: 18),
-              label: const Text('Tried it'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colors.chipDefaultBg,
-                foregroundColor: colors.textPrimary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 80),
             GradientButton(
               isSecondary: true,
               label: "Start Over",
               onPressed: _resetApp,
             ),
+            const Spacer(flex: 2),
+            if (details != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (hasCoords)
+                    Flexible(
+                      child: GradientButton(
+                        isSecondary: false,
+                        icon: Icons.map,
+                        label: 'Maps',
+                        onPressed: () => _openMaps(details),
+                      ),
+                    ),
+                  if (hasCoords)
+                    const SizedBox(width: 12),
+                  Flexible(
+                    child: GradientButton(
+                      isSecondary: true,
+                      icon: Icons.delivery_dining,
+                      label: 'DoorDash',
+                      onPressed: () => _openDoorDash(details),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 16),
           ],
         ),
       );
@@ -1052,7 +936,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     _optionA!,
                     style: const TextStyle(fontSize: 20),
                   ),
-                  _buildRestaurantMeta(_getRestaurantDetails(_optionA!)),
                   TextButton(
                     onPressed: () {
                       final details = _getRestaurantDetails(_optionA!);
@@ -1085,7 +968,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     _optionB!,
                     style: const TextStyle(fontSize: 20),
                   ),
-                  _buildRestaurantMeta(_getRestaurantDetails(_optionB!)),
                   TextButton(
                     onPressed: () {
                       final details = _getRestaurantDetails(_optionB!);
@@ -1136,63 +1018,88 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_chosenRestaurant != null) {
       final colors = AppColors.of(context);
       final isFinalWinner = _optionA != null && _optionB == null;
+      final details = _getRestaurantDetails(_chosenRestaurant!);
+      final hasCoords = details != null && details['lat'] != null && details['lng'] != null;
       return Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
+            const SizedBox(height: 40),
             Text(
               isFinalWinner ? "Final Winner!" : "The winner is:",
               style: TextStyle(color: colors.textPrimary, fontSize: 20),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             GradientText(
               text: _chosenRestaurant!,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            _buildRestaurantMeta(_getRestaurantDetails(_chosenRestaurant!)),
-            _buildActionButtons(_getRestaurantDetails(_chosenRestaurant!)),
-            const SizedBox(height: 12),
-            GradientButton(
-              isSecondary: false,
-              icon: Icons.info_outline,
-              label: "View Details",
-              onPressed: () {
-                final details = _getRestaurantDetails(_chosenRestaurant!);
-                if (details != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => RestaurantDetailScreen(restaurant: details),
-                    ),
-                  );
-                }
-              },
+            const Spacer(flex: 3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: GradientButton(
+                    isSecondary: false,
+                    icon: Icons.info_outline,
+                    label: "View Details",
+                    onPressed: () {
+                      if (details != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => RestaurantDetailScreen(restaurant: details),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Flexible(
+                  child: GradientButton(
+                    isSecondary: true,
+                    icon: Icons.share,
+                    label: "Share Winner",
+                    onPressed: _handleShareWinner,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            GradientButton(
-              isSecondary: true,
-              icon: Icons.share,
-              label: "Share Winner",
-              onPressed: _handleShareWinner,
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              onPressed: () => _markTried(_chosenRestaurant!),
-              icon: const Icon(Icons.check_circle, size: 18),
-              label: const Text('Tried it'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colors.chipDefaultBg,
-                foregroundColor: colors.textPrimary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 80),
             GradientButton(
               isSecondary: true,
               label: "Start Over",
               onPressed: _resetApp,
             ),
+            const Spacer(flex: 2),
+            if (details != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (hasCoords)
+                    Flexible(
+                      child: GradientButton(
+                        isSecondary: false,
+                        icon: Icons.map,
+                        label: 'Maps',
+                        onPressed: () => _openMaps(details),
+                      ),
+                    ),
+                  if (hasCoords)
+                    const SizedBox(width: 12),
+                  Flexible(
+                    child: GradientButton(
+                      isSecondary: true,
+                      icon: Icons.delivery_dining,
+                      label: 'DoorDash',
+                      onPressed: () => _openDoorDash(details),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 16),
           ],
         ),
       );
