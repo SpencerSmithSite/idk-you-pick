@@ -65,6 +65,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          // consistent gradient background for text contrast
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: colors.backgroundGradient,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+          ),
           // subtle background orbs
           const GlowOrb(size: 300),
           SafeArea(
@@ -101,7 +111,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             Text(
                               slide['body'] as String,
                               style: TextStyle(
-                                color: colors.textSecondary,
+                                color: colors.textSecondarySolid,
                                 fontSize: 16,
                                 height: 1.5,
                               ),

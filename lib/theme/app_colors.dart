@@ -53,11 +53,17 @@ class AppColors {
   Color get textPrimary =>
       isDark ? const Color(0xFFFFFFFF) : const Color(0xFF1A1A2E);
 
-  /// Secondary/body text color.
+  /// Secondary/body text color (semi-transparent, for subtle contexts).
   Color get textSecondary =>
       isDark
           ? const Color.fromRGBO(255, 255, 255, 0.6)
           : const Color.fromRGBO(0, 0, 0, 0.5);
+
+  /// Solid secondary text color for walkthroughs and high-contrast contexts.
+  Color get textSecondarySolid =>
+      isDark
+          ? const Color(0xFFB0C4DE)
+          : const Color(0xFF4A5568);
 
   /// Muted/hint text color.
   Color get textMuted =>
