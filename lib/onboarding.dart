@@ -63,11 +63,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     return Scaffold(
-      body: Stack(
-        children: [
-          // subtle background orbs
-          const GlowOrb(size: 300),
-          SafeArea(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: colors.backgroundGradient,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Stack(
+          children: [
+            // subtle background orbs
+            const GlowOrb(size: 300),
+            SafeArea(
             child: Column(
               children: [
                 Expanded(
@@ -151,6 +159,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
         ],
+      ),
       ),
     );
   }
