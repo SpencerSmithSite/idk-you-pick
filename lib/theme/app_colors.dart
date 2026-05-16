@@ -17,17 +17,27 @@ class AppColors {
           ? [const Color(0xFF0A0F14), const Color(0xFF141E26)]
           : [const Color(0xFFF8FBFC), const Color(0xFFEEF4F6)];
 
-  /// Surface color for glass cards, sheets, app bars.
-  Color get surface =>
-      isDark
-          ? const Color.fromRGBO(20, 30, 40, 0.7)
-          : const Color.fromRGBO(255, 255, 255, 0.6);
+// NEW (Liquid Glass - CORRECT)
+  // Glass surface (very transparent)
+  Color get glassSurface => isDark 
+      ? Colors.white.withValues(alpha: 0.06) 
+      : Colors.black.withValues(alpha: 0.04);
 
-  /// Border color for glass surfaces.
-  Color get surfaceBorder =>
-      isDark
-          ? const Color.fromRGBO(255, 255, 255, 0.08)
-          : const Color.fromRGBO(255, 255, 255, 0.8);
+  // Glass edge highlight (refraction)
+  Color get glassEdge => isDark
+      ? Colors.white.withValues(alpha: 0.15)
+      : Colors.white.withValues(alpha: 0.35);
+
+  // Blur levels
+  double get glassBlurLight => 12.0;   // Small elements
+  double get glassBlurMedium => 25.0;  // Cards, panels
+  double get glassBlurHeavy => 45.0;   // Background, overlays
+
+  // Overlay (nearly transparent with heavy blur)
+  Color get glassOverlay => isDark
+      ? Colors.black.withValues(alpha: 0.12)
+      : Colors.white.withValues(alpha: 0.08);
+
 
   /// Primary teal.
   Color get primary =>

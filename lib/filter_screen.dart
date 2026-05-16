@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/app_colors.dart';
-import 'widgets/glass_card.dart';
-import 'widgets/gradient_button.dart';
+import 'widgets/liquid_glass.dart';
+import 'widgets/liquid_glass_app_bar.dart';
+import 'widgets/liquid_glass_button.dart';
 import 'services/haptics_service.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -76,7 +77,7 @@ class _FilterScreenState extends State<FilterScreen> {
           style: TextStyle(
             color: colors.textPrimary,
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 8),
@@ -121,27 +122,11 @@ class _FilterScreenState extends State<FilterScreen> {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            "Filters",
-            style: TextStyle(
-              color: colors.appBarText,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              fontFamily: 'Arial',
-            ),
-          ),
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: colors.appBarGradient,
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
+      appBar: LiquidGlassAppBar(
+        title: const Text('Filters'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           TextButton(
@@ -157,7 +142,7 @@ class _FilterScreenState extends State<FilterScreen> {
               "Apply",
               style: TextStyle(
                 color: colors.chipTextDark,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 fontSize: 16,
               ),
             ),
@@ -172,7 +157,9 @@ class _FilterScreenState extends State<FilterScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: GlassCard(
+        child: LiquidGlass(
+          blurSigma: 20,
+          opacity: 0.15,
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +192,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   style: TextStyle(
                     color: colors.textPrimary,
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -252,8 +239,7 @@ class _FilterScreenState extends State<FilterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GradientButton(
-                    isSecondary: true,
+                  LiquidGlassButton(
                     label: 'Select All',
                     tooltip: 'Select all cuisines, types, and price tiers',
                     onPressed: () {

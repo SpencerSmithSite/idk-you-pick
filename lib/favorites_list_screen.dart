@@ -3,7 +3,8 @@ import 'favorites_service.dart';
 import 'services/haptics_service.dart';
 import 'restaurant_detail.dart';
 import 'theme/app_colors.dart';
-import 'widgets/glass_card.dart';
+import 'widgets/liquid_glass.dart';
+import 'widgets/liquid_glass_app_bar.dart';
 
 class FavoritesListScreen extends StatefulWidget {
   final List<Map<String, dynamic>> restaurants;
@@ -72,27 +73,12 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
     final colors = AppColors.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Favorites',
-          style: TextStyle(
-            color: colors.appBarText,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
+      appBar: LiquidGlassAppBar(
+        title: const Text('Favorites'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: colors.appBarGradient,
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(color: colors.appBarText),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -175,7 +161,9 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                               ),
                             );
                           },
-                          child: GlassCard(
+                          child: LiquidGlass(
+                            blurSigma: 20,
+                            opacity: 0.15,
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.all(14),
                             borderRadius: BorderRadius.circular(16),
@@ -190,7 +178,7 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                                         style: TextStyle(
                                           color: colors.textPrimary,
                                           fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                       const SizedBox(height: 8),

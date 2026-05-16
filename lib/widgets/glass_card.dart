@@ -1,12 +1,11 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
+import 'liquid_glass.dart';
 
-/// Reusable glassmorphism card.
+/// Deprecated — use [LiquidGlass] directly.
 ///
-/// Uses BackdropFilter blur + a semi-transparent surface color for a frosted
-/// glass effect. This is a replacement for the old `GlassCard` that relied
-/// solely on opacity. Now it actually blurs whatever sits behind it.
+/// This class now delegates to [LiquidGlass] for backwards compatibility
+/// and will be removed in a future release.
+@Deprecated('Use LiquidGlass instead')
 class GlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -25,30 +24,12 @@ class GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppColors.of(context);
-    final sigma = blurSigma ?? colors.backdropBlur;
-    return ClipRRect(
-      borderRadius: borderRadius ?? BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
-        child: Container(
-          margin: margin ?? const EdgeInsets.all(12),
-          padding: padding ?? const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: colors.surface,
-            borderRadius: borderRadius ?? BorderRadius.circular(20),
-            border: Border.all(color: colors.surfaceBorder, width: 1),
-            boxShadow: [
-              BoxShadow(
-                color: colors.shadow,
-                blurRadius: 20,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: child,
-        ),
-      ),
+    return LiquidGlass(
+      blurSigma: blurSigma ?? 20.0,
+      padding: padding,
+      margin: margin,
+      borderRadius: borderRadius,
+      child: child,
     );
   }
 }
