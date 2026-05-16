@@ -63,104 +63,103 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     return Scaffold(
-      body: Stack(
-        children: [
-          // consistent gradient background for text contrast
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: colors.backgroundGradient,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: colors.backgroundGradient,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          // subtle background orbs
-          const GlowOrb(size: 300),
-          SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: PageView.builder(
-                    controller: _pageController,
-                    onPageChanged: (i) => setState(() => _currentPage = i),
-                    itemCount: _slides.length,
-                    itemBuilder: (ctx, index) {
-                      final slide = _slides[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              slide['icon'] as IconData,
-                              size: 80,
-                              color: colors.primary,
-                            ),
-                            const SizedBox(height: 32),
-                            Text(
-                              slide['title'] as String,
-                              style: TextStyle(
-                                color: colors.textPrimary,
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
+        ),
+        child: Stack(
+          children: [
+            // subtle background orbs
+            const GlowOrb(size: 300),
+            SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: PageView.builder(
+                      controller: _pageController,
+                      onPageChanged: (i) => setState(() => _currentPage = i),
+                      itemCount: _slides.length,
+                      itemBuilder: (ctx, index) {
+                        final slide = _slides[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(32.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                slide['icon'] as IconData,
+                                size: 80,
+                                color: colors.primary,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              slide['body'] as String,
-                              style: TextStyle(
-                                color: colors.textSecondarySolid,
-                                fontSize: 16,
-                                height: 1.5,
+                              const SizedBox(height: 32),
+                              Text(
+                                slide['title'] as String,
+                                style: TextStyle(
+                                  color: colors.textPrimary,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                // dot indicator
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(_slides.length, (i) {
-                    final active = i == _currentPage;
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: active ? 24 : 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: active ? colors.primary : colors.chipDefaultBg,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    );
-                  }),
-                ),
-                const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                  child: GradientButton(
-                    label: _currentPage == _slides.length - 1 ? 'Get Started' : 'Next',
-                    onPressed: _next,
-                  ),
-                ),
-                if (_currentPage < _slides.length - 1)
-                  TextButton(
-                    onPressed: widget.onComplete,
-                    child: Text(
-                      'Skip',
-                      style: TextStyle(color: colors.textMuted, fontSize: 14),
+                              const SizedBox(height: 16),
+                              Text(
+                                slide['body'] as String,
+                                style: TextStyle(
+                                  color: colors.textSecondarySolid,
+                                  fontSize: 16,
+                                  height: 1.5,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                   ),
-                const SizedBox(height: 32),
-              ],
+                  // dot indicator
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(_slides.length, (i) {
+                      final active = i == _currentPage;
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: active ? 24 : 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: active ? colors.primary : colors.chipDefaultBg,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: GradientButton(
+                      label: _currentPage == _slides.length - 1 ? 'Get Started' : 'Next',
+                      onPressed: _next,
+                    ),
+                  ),
+                  if (_currentPage < _slides.length - 1)
+                    TextButton(
+                      onPressed: widget.onComplete,
+                      child: Text(
+                        'Skip',
+                        style: TextStyle(color: colors.textMuted, fontSize: 14),
+                      ),
+                    ),
+                  const SizedBox(height: 32),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
