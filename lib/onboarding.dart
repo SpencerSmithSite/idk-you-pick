@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/app_colors.dart';
-import 'widgets/gradient_button.dart';
-import 'widgets/glow_orb.dart';
+import 'widgets/liquid_glass.dart';
+import 'widgets/liquid_glass_button.dart';
 
 /// Onboarding screen walkthrough (4 slides).
 /// Shown on first app launch.
@@ -71,24 +71,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Stack(
-          children: [
-            // subtle background orbs
-            const GlowOrb(size: 300),
-            SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: (i) => setState(() => _currentPage = i),
-                      itemCount: _slides.length,
-                      itemBuilder: (ctx, index) {
-                        final slide = _slides[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(32.0),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (i) => setState(() => _currentPage = i),
+                  itemCount: _slides.length,
+                  itemBuilder: (ctx, index) {
+                    final slide = _slides[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: Center(
+                        child: LiquidGlass(
+                          blurSigma: 25,
+                          opacity: 0.18,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
                                 slide['icon'] as IconData,
@@ -101,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 style: TextStyle(
                                   color: colors.textPrimary,
                                   fontSize: 28,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -117,48 +117,48 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                             ],
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  // dot indicator
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(_slides.length, (i) {
-                      final active = i == _currentPage;
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: active ? 24 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: active ? colors.primary : colors.chipDefaultBg,
-                          borderRadius: BorderRadius.circular(4),
                         ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: GradientButton(
-                      label: _currentPage == _slides.length - 1 ? 'Get Started' : 'Next',
-                      onPressed: _next,
-                    ),
-                  ),
-                  if (_currentPage < _slides.length - 1)
-                    TextButton(
-                      onPressed: widget.onComplete,
-                      child: Text(
-                        'Skip',
-                        style: TextStyle(color: colors.textMuted, fontSize: 14),
                       ),
-                    ),
-                  const SizedBox(height: 32),
-                ],
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+              // dot indicator
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(_slides.length, (i) {
+                  final active = i == _currentPage;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: active ? 24 : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: active ? colors.primary : colors.chipDefaultBg,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  );
+                }),
+              ),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: LiquidGlassButton(
+                  label: _currentPage == _slides.length - 1 ? 'Get Started' : 'Next',
+                  onPressed: _next,
+                ),
+              ),
+              if (_currentPage < _slides.length - 1)
+                TextButton(
+                  onPressed: widget.onComplete,
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(color: colors.textMuted, fontSize: 14),
+                  ),
+                ),
+              const SizedBox(height: 32),
+            ],
+          ),
         ),
       ),
     );

@@ -17,17 +17,15 @@ class AppTheme {
         onSecondary: Color(0xFF1A1A2E),
         onSurface: Color(0xFF1A1A2E),
       ),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
-          color: colors.appBarText,
-          fontWeight: FontWeight.bold,
-          fontSize: 28,
-          fontFamily: 'Arial',
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
         ),
-        iconTheme: IconThemeData(color: colors.appBarText),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       textTheme: TextTheme(
         bodyLarge: TextStyle(color: colors.textPrimary),
@@ -105,17 +103,15 @@ class AppTheme {
         onSecondary: Color(0xFF1A1A2E),
         onSurface: Colors.white,
       ),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
-          color: colors.appBarText,
-          fontWeight: FontWeight.bold,
-          fontSize: 28,
-          fontFamily: 'Arial',
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
         ),
-        iconTheme: IconThemeData(color: colors.appBarText),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       textTheme: TextTheme(
         bodyLarge: TextStyle(color: colors.textPrimary),

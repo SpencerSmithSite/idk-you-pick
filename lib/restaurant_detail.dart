@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'theme/app_colors.dart';
-import 'widgets/glass_card.dart';
+import 'widgets/liquid_glass.dart';
+import 'widgets/liquid_glass_button.dart';
 import 'favorites_service.dart';
 import 'services/haptics_service.dart';
 
@@ -88,56 +89,6 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     );
   }
 
-  Widget _buildActionButton({
-    required IconData icon,
-    required String label,
-    required List<Color> gradient,
-    required VoidCallback onTap,
-    Color shadowColor = const Color.fromRGBO(0, 0, 0, 0.1),
-    Color foregroundColor = Colors.white,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: gradient,
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: shadowColor,
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          foregroundColor: foregroundColor,
-          textStyle: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: foregroundColor),
-            const SizedBox(width: 8),
-            Text(label),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final name = widget.restaurant['name'] as String? ?? 'Restaurant';
@@ -151,6 +102,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     final tags = (widget.restaurant['tags'] as List<dynamic>?)?.cast<String>() ?? [];
     final rating = widget.restaurant['rating'] as num?;
     final hours = widget.restaurant['hours'] as Map<String, dynamic>?;
+    final image = widget.restaurant['image'] as String?;
 
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -163,6 +115,12 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context),
+            ),
             actions: [
               IconButton(
                 icon: Icon(
@@ -172,11 +130,17 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                 onPressed: _toggleFavorite,
                 tooltip: _isFavorite ? 'Remove from favorites' : 'Add to favorites',
               ),
+              IconButton(
+                icon: Icon(Icons.share, color: colors.surfaceIcon),
+                onPressed: () {
+                  // placeholder for share action
+                },
+              ),
             ],
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 name,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               background: Container(
                 decoration: BoxDecoration(
@@ -187,17 +151,36 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   ),
                 ),
                 child: Center(
-                  child: Icon(
-                    Icons.restaurant,
-                    size: 64,
-                    color: colors.surfaceIcon,
+                  child: Hero(
+                    tag: 'restaurant_image_$name',
+                    child: image != null
+                        ? ClipOval(
+                            child: Image.network(
+                              image,
+                              width: 120,
+                              height: 120,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Icon(
+                                Icons.restaurant,
+                                size: 64,
+                                color: colors.surfaceIcon,
+                              ),
+                            ),
+                          )
+                        : Icon(
+                            Icons.restaurant,
+                            size: 64,
+                            color: colors.surfaceIcon,
+                          ),
                   ),
                 ),
               ),
             ),
           ),
           SliverToBoxAdapter(
-            child: GlassCard(
+            child: LiquidGlass(
+              blurSigma: 20,
+              opacity: 0.15,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -210,7 +193,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                         Text(
                           '$rating',
                           style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(width: 4),
@@ -305,7 +288,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                               Text(
                                 'Hours',
                                 style: theme.textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -330,7 +313,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                     Text(
                       'Tags',
                       style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -354,38 +337,34 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   Text(
                     'Actions',
                     style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildActionButton(
+                  LiquidGlassButton(
                     icon: Icons.map,
                     label: 'Open in Maps',
-                    gradient: colors.primaryGradient,
-                    onTap: _openMaps,
+                    onPressed: _openMaps,
                   ),
                   const SizedBox(height: 8),
-                  _buildActionButton(
+                  LiquidGlassButton(
                     icon: Icons.delivery_dining,
                     label: 'Order on DoorDash',
-                    gradient: colors.secondaryGradient,
-                    onTap: _openDoorDash,
+                    onPressed: _openDoorDash,
                   ),
                   const SizedBox(height: 8),
                   if (phone != null)
-                    _buildActionButton(
+                    LiquidGlassButton(
                       icon: Icons.phone,
                       label: 'Call Restaurant',
-                      gradient: colors.neutralGradient,
-                      onTap: _callRestaurant,
+                      onPressed: _callRestaurant,
                     ),
                   if (phone != null) const SizedBox(height: 8),
                   if (website != null)
-                    _buildActionButton(
+                    LiquidGlassButton(
                       icon: Icons.language,
                       label: 'Visit Website',
-                      gradient: colors.neutralGradient,
-                      onTap: _openWebsite,
+                      onPressed: _openWebsite,
                     ),
                 ],
               ),

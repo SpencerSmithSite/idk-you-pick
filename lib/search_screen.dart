@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'theme/app_colors.dart';
-import 'widgets/glass_card.dart';
+import 'widgets/liquid_glass.dart';
+import 'widgets/liquid_glass_app_bar.dart';
 import 'restaurant_detail.dart';
 import 'favorites_service.dart';
 import 'location_service.dart';
@@ -160,7 +161,7 @@ class _SearchScreenState extends State<SearchScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (ctx) {
-        return GlassCard(
+        return LiquidGlass(
           margin: EdgeInsets.zero,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           padding: const EdgeInsets.all(20),
@@ -169,7 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Sort by', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                Text('Sort by', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600)),
                 const SizedBox(height: 16),
                 _sortTile(ctx, SortMode.name, 'Name (A–Z)', Icons.sort_by_alpha),
                 _sortTile(ctx, SortMode.distance, 'Distance (nearest)', Icons.near_me),
@@ -198,16 +199,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildSearchBar() {
     final colors = AppColors.of(context);
-    return Container(
+    return LiquidGlass(
+      blurSigma: 12,
+      opacity: 0.10,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: colors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colors.surfaceBorder),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         children: [
-          const SizedBox(width: 12),
           Icon(Icons.search, color: colors.textMuted),
           const SizedBox(width: 8),
           Expanded(
@@ -239,13 +237,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 _focusNode.requestFocus();
               },
             ),
-          const SizedBox(width: 4),
         ],
       ),
     );
   }
 
-  Widget _buildResultTile(Map<String, dynamic> r) {
+  Widget _buildResultTile(Map<String, dynamic> r, int index) {
     final colors = AppColors.of(context);
     final name = r['name'] as String? ?? 'Restaurant';
     final cuisine = r['cuisine'] as String?;
@@ -253,20 +250,34 @@ class _SearchScreenState extends State<SearchScreen> {
     final price = r['priceTier'] as String?;
     final distance = r['distance'] as String?;
     final tags = (r['tags'] as List<dynamic>? ?? []).cast<String>();
+    final image = r['image'] as String?;
 
     return FutureBuilder<bool>(
       future: FavoritesService.isFavorite(name),
       builder: (ctx, snap) {
         final isFav = snap.data ?? false;
-        return Container(
+        return LiquidGlass(
+          blurSigma: 20,
+          opacity: 0.15,
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            color: colors.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: colors.surfaceBorder),
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            contentPadding: EdgeInsets.zero,
+            leading: image != null
+                ? Hero(
+                    tag: 'restaurant_image_$name',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        image,
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Icon(Icons.restaurant, color: colors.primary),
+                      ),
+                    ),
+                  )
+                : Icon(Icons.restaurant, color: colors.primary),
             title: Text(name, style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600)),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 4),
@@ -325,8 +336,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
+      appBar: LiquidGlassAppBar(
         title: const Text('Search'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
           TextButton.icon(
             onPressed: _showSortSheet,
@@ -385,7 +400,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 : ListView.builder(
                     padding: const EdgeInsets.only(top: 8, bottom: 24),
                     itemCount: results.length,
-                    itemBuilder: (_, i) => _buildResultTile(results[i]),
+                    itemBuilder: (_, i) => _buildResultTile(results[i], i),
                   ),
           ),
         ],

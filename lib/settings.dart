@@ -9,8 +9,9 @@ import 'onboarding.dart';
 import 'privacy_policy.dart';
 import 'theme/app_colors.dart';
 import 'theme/theme_provider.dart';
-import 'widgets/gradient_button.dart';
-import 'widgets/glass_card.dart';
+import 'widgets/liquid_glass.dart';
+import 'widgets/liquid_glass_app_bar.dart';
+import 'widgets/liquid_glass_button.dart';
 
 class SettingsScreen extends StatefulWidget {
   final Map<String, bool> restaurantPreferences;
@@ -137,27 +138,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final colors = AppColors.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            "Settings",
-            style: TextStyle(
-              color: colors.appBarText,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              fontFamily: 'Arial',
-            ),
-          ),
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: colors.appBarGradient,
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
+      appBar: LiquidGlassAppBar(
+        title: const Text('Settings'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
@@ -187,7 +172,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               listenable: widget.themeProvider,
               builder: (context, child) {
                 final mode = widget.themeProvider.themeMode;
-                return GlassCard(
+                return LiquidGlass(
+                  blurSigma: 12,
+                  opacity: 0.10,
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   padding: EdgeInsets.zero,
                   borderRadius: BorderRadius.circular(16),
@@ -195,7 +182,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     leading: Icon(Icons.palette, color: colors.textSecondary),
                     title: Text(
                       'Appearance',
-                      style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+                      style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -212,13 +199,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
             const Divider(),
-            GlassCard(
+            LiquidGlass(
+              blurSigma: 12,
+              opacity: 0.10,
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               padding: EdgeInsets.zero,
               borderRadius: BorderRadius.circular(16),
               child: ListTile(
                 leading: Icon(Icons.tour, color: colors.textSecondary),
-                title: Text('Restart Onboarding', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
+                title: Text('Restart Onboarding', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18)),
                 trailing: TextButton(
                   onPressed: () async {
                     await OnboardingService.resetOnboarding();
@@ -232,20 +221,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             const Divider(),
-            GlassCard(
+            LiquidGlass(
+              blurSigma: 12,
+              opacity: 0.10,
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               padding: EdgeInsets.zero,
               borderRadius: BorderRadius.circular(16),
               child: DemoModeTile(colors: colors),
             ),
             const Divider(),
-            GlassCard(
+            LiquidGlass(
+              blurSigma: 12,
+              opacity: 0.10,
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               padding: EdgeInsets.zero,
               borderRadius: BorderRadius.circular(16),
               child: ListTile(
                 leading: Icon(Icons.location_on, color: colors.textSecondary),
-                title: Text('Use My Location', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
+                title: Text('Use My Location', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18)),
                 subtitle: Text(
                   _useLocation
                       ? 'Show nearby restaurants based on your location'
@@ -266,7 +259,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             const Divider(),
-            GlassCard(
+            LiquidGlass(
+              blurSigma: 12,
+              opacity: 0.10,
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               padding: EdgeInsets.zero,
               borderRadius: BorderRadius.circular(16),
@@ -276,7 +271,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'Privacy Policy',
                   style: TextStyle(
                     color: colors.textPrimary,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontSize: 18,
                   ),
                 ),
@@ -290,14 +285,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             const Divider(),
-            GlassCard(
+            LiquidGlass(
+              blurSigma: 12,
+              opacity: 0.10,
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               padding: EdgeInsets.zero,
               borderRadius: BorderRadius.circular(16),
               child: const AboutTile(),
             ),
             const Divider(),
-            GlassCard(
+            LiquidGlass(
+              blurSigma: 20,
+              opacity: 0.15,
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -311,20 +310,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             hintText: "Add a new restaurant",
                             hintStyle: TextStyle(color: colors.textMuted),
                             filled: true,
-                            fillColor: colors.primary,
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
+                            fillColor: colors.glassSurface,
+                            border: OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(15),
                               ),
-                              borderSide: BorderSide.none,
+                              borderSide: BorderSide(color: colors.glassEdge),
                             ),
                           ),
                           style: TextStyle(color: colors.textPrimary),
                         ),
                       ),
                       const SizedBox(width: 10),
-                      GradientButton(
-                        isSecondary: true,
+                      LiquidGlassButton(
                         label: 'Add',
                         onPressed: _addRestaurant,
                       ),
@@ -334,8 +332,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      GradientButton(
-                        isSecondary: true,
+                      LiquidGlassButton(
                         label: 'Select All',
                         onPressed: () {
                           setState(() {
@@ -344,8 +341,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
                       const SizedBox(width: 10),
-                      GradientButton(
-                        isSecondary: true,
+                      LiquidGlassButton(
                         label: 'Deselect All',
                         onPressed: () {
                           setState(() {
@@ -368,7 +364,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   controller: _scrollController,
                   padding: const EdgeInsets.all(20),
                   children: _preferences.keys.map((restaurant) {
-                    return GlassCard(
+                    return LiquidGlass(
+                      blurSigma: 12,
+                      opacity: 0.08,
                       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                       padding: EdgeInsets.zero,
                       borderRadius: BorderRadius.circular(16),
@@ -390,7 +388,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             style: TextStyle(
                               color: colors.textPrimary,
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           value: _preferences[restaurant],
@@ -472,7 +470,7 @@ class _DemoModeTileState extends State<DemoModeTile> {
       leading: Icon(Icons.videogame_asset, color: widget.colors.textSecondary),
       title: Text(
         'Demo Mode',
-        style: TextStyle(color: widget.colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(color: widget.colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
       ),
       subtitle: Text(
         'Use fake restaurants for screenshots and testing',
@@ -539,7 +537,7 @@ class _AboutTileState extends State<AboutTile> {
       leading: Icon(Icons.info_outline, color: colors.textSecondary),
       title: Text(
         'About',
-        style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
       ),
       subtitle: info == null
           ? Text('Loading...', style: TextStyle(color: colors.textSecondary, fontSize: 12))

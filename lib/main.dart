@@ -20,10 +20,10 @@ import 'search_screen.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
-import 'widgets/gradient_button.dart';
-import 'widgets/gradient_text.dart';
-import 'widgets/glow_orb.dart';
-import 'widgets/glass_card.dart';
+import 'widgets/liquid_glass.dart';
+import 'widgets/liquid_glass_app_bar.dart';
+import 'widgets/liquid_glass_button.dart';
+import 'widgets/liquid_glass_scaffold.dart';
 
 void main() {
   try {
@@ -404,15 +404,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showHistorySheet() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.of(context).surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      backgroundColor: Colors.transparent,
       builder: (ctx) {
         final entries = _history.entries.toList()
           ..sort((a, b) => b.value.compareTo(a.value));
         return SafeArea(
-          child: GlassCard(
+          child: LiquidGlass(
+            margin: EdgeInsets.zero,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -424,7 +423,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(
                         color: AppColors.of(context).textPrimary,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     TextButton.icon(
@@ -499,46 +498,47 @@ class _MyHomePageState extends State<MyHomePage> {
     final colors = AppColors.of(context);
     showModalBottomSheet(
       context: context,
-      backgroundColor: colors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      backgroundColor: Colors.transparent,
       builder: (ctx) {
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Share',
-                  style: TextStyle(
-                    color: colors.textPrimary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+          child: LiquidGlass(
+            margin: EdgeInsets.zero,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Share',
+                    style: TextStyle(
+                      color: colors.textPrimary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                if (_chosenRestaurant != null)
+                  const SizedBox(height: 16),
+                  if (_chosenRestaurant != null)
+                    ListTile(
+                      leading: Icon(Icons.restaurant, color: colors.primary),
+                      title: Text('Share winner', style: TextStyle(color: colors.textPrimary)),
+                      subtitle: Text(_chosenRestaurant!, style: TextStyle(color: colors.textSecondary)),
+                      onTap: () {
+                        Navigator.pop(ctx);
+                        _handleShareWinner();
+                      },
+                    ),
                   ListTile(
-                    leading: Icon(Icons.restaurant, color: colors.primary),
-                    title: Text('Share winner', style: TextStyle(color: colors.textPrimary)),
-                    subtitle: Text(_chosenRestaurant!, style: TextStyle(color: colors.textSecondary)),
+                    leading: Icon(Icons.link, color: colors.secondary),
+                    title: Text('Invite link', style: TextStyle(color: colors.textPrimary)),
+                    subtitle: Text('Send filters to a friend', style: TextStyle(color: colors.textSecondary)),
                     onTap: () {
                       Navigator.pop(ctx);
-                      _handleShareWinner();
+                      _handleShareInvite();
                     },
                   ),
-                ListTile(
-                  leading: Icon(Icons.link, color: colors.secondary),
-                  title: Text('Invite link', style: TextStyle(color: colors.textPrimary)),
-                  subtitle: Text('Send filters to a friend', style: TextStyle(color: colors.textSecondary)),
-                  onTap: () {
-                    Navigator.pop(ctx);
-                    _handleShareInvite();
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -662,584 +662,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final colors = AppColors.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            "IDK, What do you want?",
-            style: TextStyle(
-              color: colors.appBarText,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              fontFamily: 'Arial',
-            ),
+    return LiquidGlassScaffold(
+      appBar: LiquidGlassAppBar(
+        title: Text(
+          "IDK, What do you want?",
+          style: TextStyle(
+            color: colors.appBarText,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
           ),
         ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: colors.appBarGradient,
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: colors.backgroundGradient,
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
-                ),
-                const GlowOrb(size: 300, alignment: Alignment.topLeft),
-                GlowOrb(
-                  size: 250,
-                  alignment: Alignment.bottomRight,
-                  colors: [colors.accentGlow, Colors.transparent],
-                ),
-                SafeArea(
-                  child: Center(
-                    child:
-                        _helpMeDecideMode
-                            ? _buildHelpMeDecideView()
-                            : _randomChoiceMode
-                            ? _buildRandomChoiceView()
-                            : _buildDefaultView(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SafeArea(
-            child: _buildBottomActionBar(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// The default view with "Choose Random" and "Help Me Decide."
-  Widget _buildDefaultView() {
-    final colors = AppColors.of(context);
-    return Stack(
-      children: [
-        Center(
-          child: GlassCard(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
-            margin: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.restaurant, size: 48, color: colors.primary),
-                const SizedBox(height: 16),
-                GradientText(
-                  text: "Not sure where to eat?",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "Let's decide!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: colors.textSecondary, fontSize: 16),
-                ),
-                const SizedBox(height: 28),
-                Semantics(
-                  button: true,
-                  label: 'Choose a random restaurant',
-                  child: GradientButton(
-                    isSecondary: true,
-                    label: "Choose For Me",
-                    onPressed: _chooseRandom,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Semantics(
-                  button: true,
-                  label: 'Compare two restaurants head to head',
-                  child: GradientButton(
-                    isSecondary: true,
-                    label: "Help Me Decide",
-                    onPressed: _startHeadToHead,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        if (!_hasSeenHowItWorks) HowItWorksOverlay(onDismiss: _dismissHowItWorks),
-      ],
-    );
-  }
-
-  /// The view for a random choice result.
-  Widget _buildRandomChoiceView() {
-    if (_chosenRestaurant != null) {
-      final colors = AppColors.of(context);
-      final details = _getRestaurantDetails(_chosenRestaurant!);
-      final hasCoords = details != null && details['lat'] != null && details['lng'] != null;
-      return GlassCard(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const SizedBox(height: 40),
-            Text(
-              "Random choice:",
-              style: TextStyle(color: colors.textPrimary, fontSize: 20),
-            ),
-            const SizedBox(height: 12),
-            GradientText(
-              text: _chosenRestaurant!,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const Spacer(flex: 3),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: GradientButton(
-                    isSecondary: false,
-                    icon: Icons.info_outline,
-                    label: "View Details",
-                    onPressed: () {
-                      if (details != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => RestaurantDetailScreen(restaurant: details),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Flexible(
-                  child: GradientButton(
-                    isSecondary: true,
-                    icon: Icons.share,
-                    label: "Share Winner",
-                    onPressed: _handleShareWinner,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 80),
-            GradientButton(
-              isSecondary: true,
-              label: "Start Over",
-              onPressed: _resetApp,
-            ),
-            const Spacer(flex: 2),
-            if (details != null)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (hasCoords)
-                    Flexible(
-                      child: GradientButton(
-                        isSecondary: false,
-                        icon: Icons.map,
-                        label: 'Maps',
-                        onPressed: () => _openMaps(details),
-                      ),
-                    ),
-                  if (hasCoords)
-                    const SizedBox(width: 12),
-                  Flexible(
-                    child: GradientButton(
-                      isSecondary: true,
-                      icon: Icons.delivery_dining,
-                      label: 'DoorDash',
-                      onPressed: () => _openDoorDash(details),
-                    ),
-                  ),
-                ],
-              ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      );
-    }
-    final colors = AppColors.of(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.filter_alt_off, color: colors.textSecondary, size: 48),
-        const SizedBox(height: 12),
-        Text(
-          _getEmptyPoolMessage(),
-          style: TextStyle(color: colors.textPrimary, fontSize: 20),
-        ),
-        const SizedBox(height: 20),
-        GradientButton(
-          isSecondary: true,
-          label: "Clear Filters",
-          onPressed: () async {
-            HapticsService.light();
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.remove('filter_cuisines');
-            await prefs.remove('filter_types');
-            await prefs.remove('filter_prices');
-            await _loadFilters();
-            setState(() {
-              _randomChoiceMode = false;
-              _chosenRestaurant = null;
-            });
-          },
-        ),
-        const SizedBox(height: 12),
-        TextButton(
-          onPressed: () => setState(() {
-            _helpMeDecideMode = false;
-            _randomChoiceMode = false;
-          }),
-          child: Text(
-            "Return Home",
-            style: TextStyle(color: colors.textSecondary, fontSize: 16),
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// The head-to-head view: pick between two restaurants, or show the final winner.
-  Widget _buildHelpMeDecideView() {
-    if (_optionA != null && _optionB != null) {
-      final colors = AppColors.of(context);
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Which one do you prefer?",
-            style: TextStyle(color: colors.textPrimary, fontSize: 20),
-          ),
-          const SizedBox(height: 20),
-          GradientButton(
-            isSecondary: true,
-            onPressed: () => _pickWinner(_optionA!, _optionB!),
-            child: SizedBox(
-              width: 320,
-              height: 180,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _optionA!,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      final details = _getRestaurantDetails(_optionA!);
-                      if (details != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => RestaurantDetailScreen(restaurant: details),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('View Details', style: TextStyle(fontSize: 12)),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          GradientButton(
-            isSecondary: true,
-            onPressed: () => _pickWinner(_optionB!, _optionA!),
-            child: SizedBox(
-              width: 320,
-              height: 180,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _optionB!,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      final details = _getRestaurantDetails(_optionB!);
-                      if (details != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => RestaurantDetailScreen(restaurant: details),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('View Details', style: TextStyle(fontSize: 12)),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: _resetApp,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 15,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  backgroundColor: colors.chipDefaultBg,
-                  shadowColor: colors.shadow,
-                  elevation: 5,
-                ),
-                child: Text(
-                  "Start Over",
-                  style: TextStyle(color: colors.textPrimary, fontSize: 20),
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-    }
-
-    if (_chosenRestaurant != null) {
-      final colors = AppColors.of(context);
-      final isFinalWinner = _optionA != null && _optionB == null;
-      final details = _getRestaurantDetails(_chosenRestaurant!);
-      final hasCoords = details != null && details['lat'] != null && details['lng'] != null;
-      return Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const SizedBox(height: 40),
-            Text(
-              isFinalWinner ? "Final Winner!" : "The winner is:",
-              style: TextStyle(color: colors.textPrimary, fontSize: 20),
-            ),
-            const SizedBox(height: 12),
-            GradientText(
-              text: _chosenRestaurant!,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const Spacer(flex: 3),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: GradientButton(
-                    isSecondary: false,
-                    icon: Icons.info_outline,
-                    label: "View Details",
-                    onPressed: () {
-                      if (details != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => RestaurantDetailScreen(restaurant: details),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Flexible(
-                  child: GradientButton(
-                    isSecondary: true,
-                    icon: Icons.share,
-                    label: "Share Winner",
-                    onPressed: _handleShareWinner,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 80),
-            GradientButton(
-              isSecondary: true,
-              label: "Start Over",
-              onPressed: _resetApp,
-            ),
-            const Spacer(flex: 2),
-            if (details != null)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (hasCoords)
-                    Flexible(
-                      child: GradientButton(
-                        isSecondary: false,
-                        icon: Icons.map,
-                        label: 'Maps',
-                        onPressed: () => _openMaps(details),
-                      ),
-                    ),
-                  if (hasCoords)
-                    const SizedBox(width: 12),
-                  Flexible(
-                    child: GradientButton(
-                      isSecondary: true,
-                      icon: Icons.delivery_dining,
-                      label: 'DoorDash',
-                      onPressed: () => _openDoorDash(details),
-                    ),
-                  ),
-                ],
-              ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      );
-    }
-
-    final colors = AppColors.of(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.filter_alt_off, color: colors.textSecondary, size: 48),
-        const SizedBox(height: 12),
-        Text(
-          _getEmptyPoolMessage(),
-          style: TextStyle(color: colors.textPrimary, fontSize: 20),
-        ),
-        const SizedBox(height: 20),
-        GradientButton(
-          isSecondary: true,
-          label: "Clear Filters",
-          onPressed: () async {
-            HapticsService.light();
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.remove('filter_cuisines');
-            await prefs.remove('filter_types');
-            await prefs.remove('filter_prices');
-            await _loadFilters();
-            setState(() {
-              _helpMeDecideMode = false;
-              _chosenRestaurant = null;
-              _optionA = null;
-              _optionB = null;
-              _eliminated.clear();
-            });
-          },
-        ),
-        const SizedBox(height: 12),
-        TextButton(
-          onPressed: () => setState(() {
-            _helpMeDecideMode = false;
-            _randomChoiceMode = false;
-          }),
-          child: Text(
-            "Return Home",
-            style: TextStyle(color: colors.textSecondary, fontSize: 16),
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// Bottom action bar with Filter, History, Share, Search, Favorites, Settings.
-  Widget _buildBottomActionBar() {
-    final colors = AppColors.of(context);
-    return GlassCard(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.filter_alt, size: 22),
-                color: colors.textPrimary,
-                tooltip: 'Filters',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FilterScreen(
-                        restaurants: _restaurantDetails,
-                        activeCuisines: _activeCuisines,
-                        activeTypes: _activeTypes,
-                        activePriceTiers: _activePriceTiers,
-                        maxDistance: _maxDistanceMiles,
-                        useLocation: _useLocation,
-                        onDistanceChanged: (value) {
-                          setState(() {
-                            _maxDistanceMiles = value;
-                          });
-                        },
-                        onSave: () async {
-                          await _loadFilters();
-                          await _loadDistanceFilter();
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-              if (_activeCuisines.isNotEmpty ||
-                  _activeTypes.isNotEmpty ||
-                  _activePriceTiers.isNotEmpty)
-                Positioned(
-                  right: 6,
-                  top: 6,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: colors.secondary,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          IconButton(
-            icon: const Icon(Icons.history, size: 22),
-            color: colors.textPrimary,
-            tooltip: 'History',
-            onPressed: _showHistorySheet,
-          ),
-          IconButton(
-            icon: const Icon(Icons.share, size: 22),
-            color: colors.textPrimary,
-            tooltip: 'Share',
-            onPressed: _showShareSheet,
-          ),
-          IconButton(
-            icon: const Icon(Icons.search, size: 22),
-            color: colors.textPrimary,
-            tooltip: 'Search',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchScreen(
-                    restaurants: _restaurantDetails,
-                    activeCuisines: _activeCuisines,
-                    activeTypes: _activeTypes,
-                    activePriceTiers: _activePriceTiers,
-                    maxDistanceMiles: _maxDistanceMiles,
-                    userPosition: _userPosition,
-                    useLocation: _useLocation,
-                  ),
-                ),
-              );
-            },
-          ),
+        actions: [
           IconButton(
             icon: const Icon(Icons.favorite, size: 22),
             color: colors.textPrimary,
@@ -1297,6 +730,604 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: colors.backgroundGradient,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child:
+                _helpMeDecideMode
+                    ? _buildHelpMeDecideView()
+                    : _randomChoiceMode
+                    ? _buildRandomChoiceView()
+                    : _buildDefaultView(),
+          ),
+        ),
+      ),
+      bottomNavigationBar: _buildBottomActionBar(),
+    );
+  }
+
+  /// The default view with "Choose Random" and "Help Me Decide."
+  Widget _buildDefaultView() {
+    final colors = AppColors.of(context);
+    return Stack(
+      children: [
+        Center(
+          child: LiquidGlass(
+            blurSigma: 25,
+            opacity: 0.18,
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+            margin: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.restaurant, size: 48, color: colors.primary),
+                const SizedBox(height: 16),
+                Text(
+                  "Not sure where to eat?",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: colors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Let's decide!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: colors.textSecondary, fontSize: 16),
+                ),
+                const SizedBox(height: 28),
+                Semantics(
+                  button: true,
+                  label: 'Choose a random restaurant',
+                  child: LiquidGlassButton(
+                    label: "Choose For Me",
+                    onPressed: _chooseRandom,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Semantics(
+                  button: true,
+                  label: 'Compare two restaurants head to head',
+                  child: LiquidGlassButton(
+                    label: "Help Me Decide",
+                    onPressed: _startHeadToHead,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (!_hasSeenHowItWorks) HowItWorksOverlay(onDismiss: _dismissHowItWorks),
+      ],
+    );
+  }
+
+  /// The view for a random choice result.
+  Widget _buildRandomChoiceView() {
+    if (_chosenRestaurant != null) {
+      final colors = AppColors.of(context);
+      final details = _getRestaurantDetails(_chosenRestaurant!);
+      final hasCoords = details != null && details['lat'] != null && details['lng'] != null;
+      return LiquidGlass(
+        blurSigma: 25,
+        opacity: 0.18,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const SizedBox(height: 40),
+            Text(
+              "Random choice:",
+              style: TextStyle(color: colors.textPrimary, fontSize: 20),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              _chosenRestaurant!,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: colors.primary,
+              ),
+            ),
+            const Spacer(flex: 3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: LiquidGlassButton(
+                    icon: Icons.info_outline,
+                    label: "View Details",
+                    onPressed: () {
+                      if (details != null) {
+                        Navigator.push(
+                          context,
+                          _fadeSlideRoute(RestaurantDetailScreen(restaurant: details)),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Flexible(
+                  child: LiquidGlassButton(
+                    icon: Icons.share,
+                    label: "Share Winner",
+                    onPressed: _handleShareWinner,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 80),
+            LiquidGlassButton(
+              label: "Start Over",
+              onPressed: _resetApp,
+            ),
+            const Spacer(flex: 2),
+            if (details != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (hasCoords)
+                    Flexible(
+                      child: LiquidGlassButton(
+                        icon: Icons.map,
+                        label: 'Maps',
+                        onPressed: () => _openMaps(details),
+                      ),
+                    ),
+                  if (hasCoords)
+                    const SizedBox(width: 12),
+                  Flexible(
+                    child: LiquidGlassButton(
+                      icon: Icons.delivery_dining,
+                      label: 'DoorDash',
+                      onPressed: () => _openDoorDash(details),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      );
+    }
+    final colors = AppColors.of(context);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.filter_alt_off, color: colors.textSecondary, size: 48),
+        const SizedBox(height: 12),
+        Text(
+          _getEmptyPoolMessage(),
+          style: TextStyle(color: colors.textPrimary, fontSize: 20),
+        ),
+        const SizedBox(height: 20),
+        LiquidGlassButton(
+          label: "Clear Filters",
+          onPressed: () async {
+            HapticsService.light();
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.remove('filter_cuisines');
+            await prefs.remove('filter_types');
+            await prefs.remove('filter_prices');
+            await _loadFilters();
+            setState(() {
+              _randomChoiceMode = false;
+              _chosenRestaurant = null;
+            });
+          },
+        ),
+        const SizedBox(height: 12),
+        TextButton(
+          onPressed: () => setState(() {
+            _helpMeDecideMode = false;
+            _randomChoiceMode = false;
+          }),
+          child: Text(
+            "Return Home",
+            style: TextStyle(color: colors.textSecondary, fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// The head-to-head view: pick between two restaurants, or show the final winner.
+  Widget _buildHelpMeDecideView() {
+    if (_optionA != null && _optionB != null) {
+      final colors = AppColors.of(context);
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Which one do you prefer?",
+            style: TextStyle(color: colors.textPrimary, fontSize: 20),
+          ),
+          const SizedBox(height: 20),
+          LiquidGlassButton(
+            onPressed: () => _pickWinner(_optionA!, _optionB!),
+            child: SizedBox(
+              width: 320,
+              height: 180,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _optionA!,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      final details = _getRestaurantDetails(_optionA!);
+                      if (details != null) {
+                        Navigator.push(
+                          context,
+                          _fadeSlideRoute(RestaurantDetailScreen(restaurant: details)),
+                        );
+                      }
+                    },
+                    child: const Text('View Details', style: TextStyle(fontSize: 12)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          LiquidGlassButton(
+            onPressed: () => _pickWinner(_optionB!, _optionA!),
+            child: SizedBox(
+              width: 320,
+              height: 180,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _optionB!,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      final details = _getRestaurantDetails(_optionB!);
+                      if (details != null) {
+                        Navigator.push(
+                          context,
+                          _fadeSlideRoute(RestaurantDetailScreen(restaurant: details)),
+                        );
+                      }
+                    },
+                    child: const Text('View Details', style: TextStyle(fontSize: 12)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: _resetApp,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 15,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  backgroundColor: colors.chipDefaultBg,
+                  shadowColor: colors.shadow,
+                  elevation: 5,
+                ),
+                child: Text(
+                  "Start Over",
+                  style: TextStyle(color: colors.textPrimary, fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
+    if (_chosenRestaurant != null) {
+      final colors = AppColors.of(context);
+      final isFinalWinner = _optionA != null && _optionB == null;
+      final details = _getRestaurantDetails(_chosenRestaurant!);
+      final hasCoords = details != null && details['lat'] != null && details['lng'] != null;
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const SizedBox(height: 40),
+            Text(
+              isFinalWinner ? "Final Winner!" : "The winner is:",
+              style: TextStyle(color: colors.textPrimary, fontSize: 20),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              _chosenRestaurant!,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: colors.primary,
+              ),
+            ),
+            const Spacer(flex: 3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: LiquidGlassButton(
+                    icon: Icons.info_outline,
+                    label: "View Details",
+                    onPressed: () {
+                      if (details != null) {
+                        Navigator.push(
+                          context,
+                          _fadeSlideRoute(RestaurantDetailScreen(restaurant: details)),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Flexible(
+                  child: LiquidGlassButton(
+                    icon: Icons.share,
+                    label: "Share Winner",
+                    onPressed: _handleShareWinner,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 80),
+            LiquidGlassButton(
+              label: "Start Over",
+              onPressed: _resetApp,
+            ),
+            const Spacer(flex: 2),
+            if (details != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (hasCoords)
+                    Flexible(
+                      child: LiquidGlassButton(
+                        icon: Icons.map,
+                        label: 'Maps',
+                        onPressed: () => _openMaps(details),
+                      ),
+                    ),
+                  if (hasCoords)
+                    const SizedBox(width: 12),
+                  Flexible(
+                    child: LiquidGlassButton(
+                      icon: Icons.delivery_dining,
+                      label: 'DoorDash',
+                      onPressed: () => _openDoorDash(details),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      );
+    }
+
+    final colors = AppColors.of(context);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.filter_alt_off, color: colors.textSecondary, size: 48),
+        const SizedBox(height: 12),
+        Text(
+          _getEmptyPoolMessage(),
+          style: TextStyle(color: colors.textPrimary, fontSize: 20),
+        ),
+        const SizedBox(height: 20),
+        LiquidGlassButton(
+          label: "Clear Filters",
+          onPressed: () async {
+            HapticsService.light();
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.remove('filter_cuisines');
+            await prefs.remove('filter_types');
+            await prefs.remove('filter_prices');
+            await _loadFilters();
+            setState(() {
+              _helpMeDecideMode = false;
+              _chosenRestaurant = null;
+              _optionA = null;
+              _optionB = null;
+              _eliminated.clear();
+            });
+          },
+        ),
+        const SizedBox(height: 12),
+        TextButton(
+          onPressed: () => setState(() {
+            _helpMeDecideMode = false;
+            _randomChoiceMode = false;
+          }),
+          child: Text(
+            "Return Home",
+            style: TextStyle(color: colors.textSecondary, fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Bottom action bar with Filter, History, Share, Search, Favorites, Settings.
+  Widget _buildBottomActionBar() {
+    final colors = AppColors.of(context);
+    return LiquidGlass(
+      blurSigma: 18,
+      opacity: 0.12,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      borderRadius: BorderRadius.circular(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.filter_alt, size: 22),
+                color: colors.textPrimary,
+                tooltip: 'Filters',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    _fadeSlideRoute(FilterScreen(
+                      restaurants: _restaurantDetails,
+                      activeCuisines: _activeCuisines,
+                      activeTypes: _activeTypes,
+                      activePriceTiers: _activePriceTiers,
+                      maxDistance: _maxDistanceMiles,
+                      useLocation: _useLocation,
+                      onDistanceChanged: (value) {
+                        setState(() {
+                          _maxDistanceMiles = value;
+                        });
+                      },
+                      onSave: () async {
+                        await _loadFilters();
+                        await _loadDistanceFilter();
+                      },
+                    )),
+                  );
+                },
+              ),
+              if (_activeCuisines.isNotEmpty ||
+                  _activeTypes.isNotEmpty ||
+                  _activePriceTiers.isNotEmpty)
+                Positioned(
+                  right: 6,
+                  top: 6,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: colors.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          IconButton(
+            icon: const Icon(Icons.history, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'History',
+            onPressed: _showHistorySheet,
+          ),
+          IconButton(
+            icon: const Icon(Icons.share, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'Share',
+            onPressed: _showShareSheet,
+          ),
+          IconButton(
+            icon: const Icon(Icons.search, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'Search',
+            onPressed: () {
+              Navigator.push(
+                context,
+                _fadeSlideRoute(SearchScreen(
+                  restaurants: _restaurantDetails,
+                  activeCuisines: _activeCuisines,
+                  activeTypes: _activeTypes,
+                  activePriceTiers: _activePriceTiers,
+                  maxDistanceMiles: _maxDistanceMiles,
+                  userPosition: _userPosition,
+                  useLocation: _useLocation,
+                )),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.favorite, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'Favorites',
+            onPressed: () {
+              Navigator.push(
+                context,
+                _fadeSlideRoute(FavoritesListScreen(
+                  restaurants: _restaurantDetails,
+                )),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings, size: 22),
+            color: colors.textPrimary,
+            tooltip: 'Settings',
+            onPressed: () {
+              Navigator.push(
+                context,
+                _fadeSlideRoute(SettingsScreen(
+                  restaurantPreferences: _restaurantPreferences,
+                  themeProvider: widget.themeProvider,
+                  onSave: (newPreferences) {
+                    setState(() {
+                      _restaurantPreferences = newPreferences;
+                    });
+                  },
+                  useLocation: _useLocation,
+                  onLocationChanged: (enabled) async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setBool('use_location', enabled);
+                    setState(() {
+                      _useLocation = enabled;
+                      if (!enabled) {
+                        _userPosition = null;
+                      }
+                    });
+                    if (enabled) {
+                      final pos = await LocationService.determinePosition();
+                      if (pos != null) {
+                        setState(() {
+                          _userPosition = pos;
+                        });
+                      }
+                    }
+                  },
+                )),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Fade + slight slide page transition.
+  Route _fadeSlideRoute(Widget nextScreen) {
+    return PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (_, __, ___) => nextScreen,
+      transitionsBuilder: (_, animation, __, child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+          child: SlideTransition(
+            position: Tween<Offset>(begin: const Offset(0, 0.05), end: Offset.zero)
+                .animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
+            child: child,
+          ),
+        );
+      },
     );
   }
 }

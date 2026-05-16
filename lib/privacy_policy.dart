@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme/app_colors.dart';
-import 'widgets/glass_card.dart';
+import 'widgets/liquid_glass.dart';
 
 /// Privacy Policy screen for App Store compliance.
 ///
@@ -33,7 +33,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   'Privacy Policy',
                   style: TextStyle(
                     color: colors.textPrimary,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontSize: 20,
                   ),
                 ),
@@ -47,7 +47,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                    GlassCard(
+                    LiquidGlass(
+                      blurSigma: 20,
+                      opacity: 0.15,
                       padding: const EdgeInsets.all(20),
                       child: DefaultTextStyle(
                         style: TextStyle(
@@ -62,7 +64,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                               'IDK You Pick — Privacy Policy',
                               style: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w600,
                                 color: colors.primary,
                               ),
                             ),
@@ -145,7 +147,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       title,
       style: TextStyle(
         fontSize: 16,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
         color: colors.textPrimary,
       ),
     );
