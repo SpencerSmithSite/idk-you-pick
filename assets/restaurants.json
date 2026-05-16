@@ -13,7 +13,17 @@
     "lat": 40.6849,
     "lng": -74.0389,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Arby's",
@@ -29,7 +39,17 @@
     "lat": 40.761,
     "lng": -73.9686,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Big Chicken",
@@ -45,7 +65,17 @@
     "lat": 40.7775,
     "lng": -73.9655,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Bojangles",
@@ -62,7 +92,17 @@
     "lat": 40.7961,
     "lng": -74.0589,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Burger King",
@@ -79,7 +119,17 @@
     "lat": 40.8095,
     "lng": -74.0268,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.4,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Cane's",
@@ -95,7 +145,17 @@
     "lat": 40.7588,
     "lng": -73.9053,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.3,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Carl's Jr.",
@@ -112,7 +172,17 @@
     "lat": 40.6956,
     "lng": -74.0495,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Cava",
@@ -129,7 +199,17 @@
     "lat": 40.7878,
     "lng": -73.957,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.3,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Checkers",
@@ -146,7 +226,17 @@
     "lat": 40.715,
     "lng": -73.9535,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.9,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Chick-fil-A",
@@ -164,7 +254,17 @@
     "lat": 40.8219,
     "lng": -73.9435,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Chipotle",
@@ -182,7 +282,17 @@
     "lat": 40.8261,
     "lng": -73.9351,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.5,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Church's Chicken",
@@ -199,7 +309,17 @@
     "lat": 40.7114,
     "lng": -73.9932,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.0,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Culver's",
@@ -216,7 +336,17 @@
     "lat": 40.8168,
     "lng": -73.9937,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Del Taco",
@@ -234,7 +364,17 @@
     "lat": 40.6825,
     "lng": -73.9698,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.5,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Denny's",
@@ -252,7 +392,17 @@
     "lat": 40.6835,
     "lng": -74.0034,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Domino's Pizza",
@@ -269,7 +419,17 @@
     "lat": 40.7129,
     "lng": -74.0494,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.1,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Dunkin'",
@@ -286,7 +446,17 @@
     "lat": 40.7414,
     "lng": -73.9061,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "El Pollo Loco",
@@ -303,7 +473,17 @@
     "lat": 40.6889,
     "lng": -73.9296,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.1,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Firehouse Subs",
@@ -320,7 +500,17 @@
     "lat": 40.7397,
     "lng": -73.9163,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.5,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Five Guys",
@@ -337,7 +527,17 @@
     "lat": 40.7753,
     "lng": -73.962,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Freddy's Frozen Custard & Steakburgers",
@@ -354,7 +554,17 @@
     "lat": 40.6937,
     "lng": -73.9695,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.5,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Hardee's",
@@ -371,7 +581,17 @@
     "lat": 40.8045,
     "lng": -73.976,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.3,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Habit Burger & Grill",
@@ -388,7 +608,17 @@
     "lat": 40.7234,
     "lng": -73.9578,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.7,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "In-N-Out Burger",
@@ -406,7 +636,17 @@
     "lat": 40.8117,
     "lng": -73.9373,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.4,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Jack in the Box",
@@ -424,7 +664,17 @@
     "lat": 40.7095,
     "lng": -74.0103,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.7,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Jersey Mike's",
@@ -441,7 +691,17 @@
     "lat": 40.7652,
     "lng": -73.9778,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.7,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Jimmy John's",
@@ -458,7 +718,17 @@
     "lat": 40.6925,
     "lng": -73.9412,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.3,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "KFC",
@@ -476,7 +746,17 @@
     "lat": 40.8306,
     "lng": -74.0277,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.4,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Little Caesars",
@@ -493,7 +773,17 @@
     "lat": 40.8207,
     "lng": -74.0284,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Marco's Pizza",
@@ -510,7 +800,17 @@
     "lat": 40.7269,
     "lng": -73.9661,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "McAlister's Deli",
@@ -528,7 +828,17 @@
     "lat": 40.7185,
     "lng": -74.0144,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.5,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "McDonald's",
@@ -547,7 +857,17 @@
     "lat": 40.7089,
     "lng": -74.0344,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.4,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Moe's Southwest Grill",
@@ -565,7 +885,17 @@
     "lat": 40.8259,
     "lng": -73.9285,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.1,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Mooyah Burgers, Fries & Shakes",
@@ -583,7 +913,17 @@
     "lat": 40.7156,
     "lng": -73.9069,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.8,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Panda Express",
@@ -601,7 +941,17 @@
     "lat": 40.6803,
     "lng": -73.9969,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.8,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Panera Bread",
@@ -621,7 +971,17 @@
     "lat": 40.7069,
     "lng": -73.959,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.1,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Papa John's",
@@ -638,7 +998,17 @@
     "lat": 40.7237,
     "lng": -73.9538,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.5,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Papa Murphy's",
@@ -655,7 +1025,17 @@
     "lat": 40.7067,
     "lng": -74.0012,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Pizza Hut",
@@ -673,7 +1053,17 @@
     "lat": 40.7923,
     "lng": -73.9909,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Popeyes",
@@ -691,7 +1081,17 @@
     "lat": 40.7264,
     "lng": -74.0357,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.1,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Qdoba",
@@ -709,7 +1109,17 @@
     "lat": 40.6826,
     "lng": -74.0412,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.3,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Raising Cane's",
@@ -726,7 +1136,17 @@
     "lat": 40.8346,
     "lng": -74.0361,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.3,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Shake Shack",
@@ -744,7 +1164,17 @@
     "lat": 40.6816,
     "lng": -73.9676,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Sonic Drive-In",
@@ -763,7 +1193,17 @@
     "lat": 40.7845,
     "lng": -73.9549,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.7,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Starbucks",
@@ -782,7 +1222,17 @@
     "lat": 40.8207,
     "lng": -73.9176,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.3,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Steak 'n Shake",
@@ -800,7 +1250,17 @@
     "lat": 40.8356,
     "lng": -73.9437,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Subway",
@@ -818,7 +1278,17 @@
     "lat": 40.7937,
     "lng": -73.9372,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.4,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Taco Bell",
@@ -837,7 +1307,17 @@
     "lat": 40.7493,
     "lng": -73.9077,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Tropical Smoothie Cafe",
@@ -855,7 +1335,17 @@
     "lat": 40.8275,
     "lng": -73.9221,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.2,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Wendy's",
@@ -874,7 +1364,17 @@
     "lat": 40.7817,
     "lng": -74.0027,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.8,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Whataburger",
@@ -893,7 +1393,17 @@
     "lat": 40.683,
     "lng": -73.9884,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.8,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "White Castle",
@@ -912,7 +1422,17 @@
     "lat": 40.8037,
     "lng": -74.0191,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.5,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Wingstop",
@@ -931,7 +1451,17 @@
     "lat": 40.6852,
     "lng": -73.9224,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 3.6,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   },
   {
     "name": "Zaxby's",
@@ -950,6 +1480,16 @@
     "lat": 40.7139,
     "lng": -73.9288,
     "website": null,
-    "phone": null
+    "phone": null,
+    "rating": 4.7,
+    "hours": {
+      "Monday": "10:00 AM - 10:00 PM",
+      "Tuesday": "10:00 AM - 10:00 PM",
+      "Wednesday": "10:00 AM - 10:00 PM",
+      "Thursday": "10:00 AM - 10:00 PM",
+      "Friday": "10:00 AM - 11:00 PM",
+      "Saturday": "10:00 AM - 11:00 PM",
+      "Sunday": "10:00 AM - 9:00 PM"
+    }
   }
 ]

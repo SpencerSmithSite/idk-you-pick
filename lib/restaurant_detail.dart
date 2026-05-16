@@ -149,6 +149,8 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     final phone = _get('phone');
     final website = _get('website');
     final tags = (widget.restaurant['tags'] as List<dynamic>?)?.cast<String>() ?? [];
+    final rating = widget.restaurant['rating'] as num?;
+    final hours = widget.restaurant['hours'] as Map<String, dynamic>?;
 
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -199,6 +201,30 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Rating
+                  if (rating != null) ...[
+                    Row(
+                      children: [
+                        Icon(Icons.star, color: Colors.amber, size: 20),
+                        const SizedBox(width: 4),
+                        Text(
+                          '$rating',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '/ 5',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+
                   // Meta chips
                   Wrap(
                     spacing: 8,
@@ -258,6 +284,40 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                               color: colors.primary,
                             ),
                             overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+
+                  // Hours
+                  if (hours != null) ...[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.access_time, color: colors.primary, size: 20),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hours',
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              ...hours.entries.map(
+                                (e) => Text(
+                                  '${e.key}: ${e.value}',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: colors.textSecondary,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
