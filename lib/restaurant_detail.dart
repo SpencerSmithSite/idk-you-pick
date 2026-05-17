@@ -5,6 +5,7 @@ import 'widgets/liquid_glass.dart';
 import 'widgets/liquid_glass_button.dart';
 import 'favorites_service.dart';
 import 'services/haptics_service.dart';
+import 'share_service.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
   final Map<String, dynamic> restaurant;
@@ -133,7 +134,9 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
               IconButton(
                 icon: Icon(Icons.share, color: colors.surfaceIcon),
                 onPressed: () {
-                  // placeholder for share action
+                  ShareService.shareRestaurantLink(
+                    ShareService.generateSlug(widget.restaurant['name'] as String),
+                  );
                 },
               ),
             ],

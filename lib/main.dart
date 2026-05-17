@@ -157,9 +157,34 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  /// Handle incoming app links (e.g. invite links).
+  /// Handle incoming app links (e.g. invite links, restaurant deep links).
   void _handleIncomingLink(Uri uri) {
-    if (uri.scheme != 'idkyoupick' || uri.host != 'invite') return;
+    if (uri.scheme != 'idkyoupick') return;
+
+    // Handle restaurant deep links: idkyoupick://restaurant/<slug>
+    if (uri.host == 'restaurant') {
+      final slug = uri.pathSegments.isNotEmpty ? uri.pathSegments[0] : '';
+      final found = _restaurantDetails.where((r) {
+        return ShareService.generateSlug(r['name'] as String) == slug;
+      }).toList();
+      if (found.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => RestaurantDetailScreen(restaurant: found.first),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Restaurant not found. It may have been removed or renamed.'),
+          ),
+        );
+      }
+      return;
+    }
+
+    if (uri.host != 'invite') return;
     final cuisines = uri.queryParameters['cuisines']?.split(',') ?? [];
     final types = uri.queryParameters['types']?.split(',') ?? [];
     final prices = uri.queryParameters['prices']?.split(',') ?? [];
