@@ -38,6 +38,7 @@ dependencies:
 
   # Background task scheduling
   workmanager: ^0.5.2
+  file_picker: ^3.0.4
 
 dependencies_overrides: {}
 
