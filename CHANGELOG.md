@@ -356,4 +356,4 @@
 - **feat:** Widget/unit test for `LunchSuggestionService.pickLunchSuggestion()` in `test/unit/lunch_suggestion_service_test.dart`
 - **QA:** `flutter analyze` clean, `flutter test` 6/6 new tests + existing 64/64 passing, iOS sim build success
 - **CI:** All GitHub Actions checks passing
-- Branch: `data/phase-17-push-notifications`, PR #??
+- Branch: `data/phase-17-push-notifications`, PR #42 (merged)
