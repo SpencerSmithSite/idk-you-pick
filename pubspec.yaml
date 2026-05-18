@@ -6,7 +6,7 @@ description: "A restaurant decision-making app that helps you choose where to ea
 publish_to: 'none'
 
 # Version format is MAJOR.MINOR.PATCH+BUILD_NUMBER
-version: 1.0.1+2
+version: 1.1.0+3
 
 # Dart SDK constraints
 environment:

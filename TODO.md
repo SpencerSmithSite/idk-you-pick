@@ -88,13 +88,8 @@ PRs: #6 (project tracking), #7 (Phase 1), #8 (Phase 2), #9 (Phase 3), #11 (Phase
 
 ---
 
-## Phase 15 — Next Feature 🔄 (Current)
-_To be defined — awaiting Captain's direction. Potential themes:_
-- _Push notifications (lunchtime suggestions, weekly recap)_
-- _Deep linking / shareable restaurant URLs_
-- _Social features (group voting, activity feed)_
-- _Monetization (in-app tips, premium themes, remove-ads)_
-- _New game modes (team picker, price bracket battle)_
+## Phase 15 — Next Feature ✅ (Completed)
+_Placeholder—work superseded by Phase 17 Push Notifications._
 
 ---
 
@@ -106,6 +101,18 @@ _To be defined — awaiting Captain's direction. Potential themes:_
 - [x] Haptic feedback on tier tap and battle start
 - [x] New reusable `GradientButton` widget in `lib/widgets/`
 - [x] Generic `Route<T>` fix for `_fadeSlideRoute`
+
+---
+
+## Phase 17 — Push Notifications: Lunchtime Suggestions 🔄 (In Progress)
+- [x] Add `flutter_local_notifications`, `timezone`, `workmanager` to `pubspec.yaml`
+- [x] Create `lib/services/notification_service.dart` — init, permissions, schedule, cancel, deep-link handling
+- [x] Create `lib/services/lunch_suggestion_service.dart` — selection logic, filters, distance, 7-day history
+- [x] Add toggle + privacy subtitle + permission denied banner to `lib/screens/settings.dart`
+- [x] Wire notification tap handler and cold-start deep-link in `lib/main.dart`
+- [x] Unit/widget test: `test/unit/lunch_suggestion_service_test.dart`
+- [x] `flutter analyze` clean, `flutter test` passing, `flutter build ios --simulator` success
+- [ ] PR created and merged
 
 ---
 
