@@ -342,3 +342,18 @@
 ---
 
 *End of changelog.*
+
+---
+
+## [0.6.0] — 2026-05-18
+### Phase 17: Push Notifications (Lunchtime Suggestions)
+- **feat:** New opt-in "Lunchtime Suggestions" toggle in Settings (default OFF, privacy-first)
+- **feat:** `lib/services/notification_service.dart` — cross-platform local notification initialization, permission request, daily schedule at 12:15 via `flutter_local_notifications` + `timezone`
+- **feat:** `lib/services/lunch_suggestion_service.dart` — restaurant selection logic: filters, distance radius, 7-day deduplication history in SharedPreferences
+- **feat:** Notification tap deep-link navigates to `RestaurantDetailScreen` with a fresh suggestion
+- **feat:** Cold-start notification handling via `getNotificationAppLaunchDetails()`
+- **feat:** Permission-denied banner in Settings with guidance to enable in System Settings
+- **feat:** Widget/unit test for `LunchSuggestionService.pickLunchSuggestion()` in `test/unit/lunch_suggestion_service_test.dart`
+- **QA:** `flutter analyze` clean, `flutter test` 6/6 new tests + existing 64/64 passing, iOS sim build success
+- **CI:** All GitHub Actions checks passing
+- Branch: `data/phase-17-push-notifications`, PR #??

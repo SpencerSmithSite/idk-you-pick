@@ -26,6 +26,11 @@ import 'widgets/liquid_glass_app_bar.dart';
 import 'widgets/liquid_glass_button.dart';
 import 'widgets/liquid_glass_scaffold.dart';
 
+import 'services/notification_service.dart';
+import 'services/lunch_suggestion_service.dart';
+
+final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   try {
     WidgetsFlutterBinding.ensureInitialized();
@@ -64,7 +69,8 @@ class _MyAppState extends State<MyApp> {
             data: MediaQuery.of(context).copyWith(
               textScaler: TextScaler.linear(MediaQuery.textScalerOf(context).scale(1.0).clamp(0.8, 1.4)),
             ),
-            child: MaterialApp(
+              child: MaterialApp(
+              navigatorKey: _navigatorKey,
               title: 'IDK, What do you want?',
               debugShowCheckedModeBanner: false,
               themeMode: widget.themeProvider.themeMode,
@@ -147,6 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _initializeApp();
+    _setupNotificationTap();
     _appLinksSub = ShareService.incomingLinks.listen((uri) {
       _handleIncomingLink(uri);
     });
@@ -200,6 +207,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  /// Wire up notification tap handler for cold-start and warm/hot taps.
+  void _setupNotificationTap() {
+    NotificationService.onNotificationTap = (payload) {
+      _navigateToLunchSuggestion();
+    };
+  }
+
+  /// Pick a fresh lunch suggestion and navigate to RestaurantDetailScreen.
+  Future<void> _navigateToLunchSuggestion() async {
+    final suggestion = await LunchSuggestionService.pickLunchSuggestion();
+    if (suggestion != null) {
+      final name = suggestion['name'] as String;
+      final details = _getRestaurantDetails(name);
+      if (details != null && _navigatorKey.currentContext != null) {
+        await LunchSuggestionService.recordSuggestion(name);
+        Navigator.of(_navigatorKey.currentContext!).push(
+          _fadeSlideRoute(RestaurantDetailScreen(restaurant: details)),
+        );
+      }
+    }
+  }
+
   Future<void> _initializeApp() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -231,12 +260,19 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
       await _loadCustomRestaurants();
+      // Check cold-start notification tap
+      final launchPayload = await NotificationService.getLaunchPayload();
       setState(() {
         _restaurantPreferences = {
           for (var item in _restaurants) item: prefs.getBool(item) ?? true,
         };
         _hasSeenHowItWorks = seenHowItWorks;
       });
+      if (launchPayload != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _navigateToLunchSuggestion();
+        });
+      }
     } catch (e) {
       setState(() {
         _errorMessage = "Initialization failed.";

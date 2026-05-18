@@ -6,7 +6,7 @@ description: "A restaurant decision-making app that helps you choose where to ea
 publish_to: 'none'
 
 # Version format is MAJOR.MINOR.PATCH+BUILD_NUMBER
-version: 1.0.1+2
+version: 1.1.0+3
 
 # Dart SDK constraints
 environment:
@@ -31,6 +31,13 @@ dependencies:
   in_app_review: ^2.0.11
   package_info_plus: ^10.1.0
   clipboard: ^3.0.14
+
+  # Local push notifications for lunchtime suggestions
+  flutter_local_notifications: ^19.0.0
+  timezone: ^0.10.0
+
+  # Background task scheduling
+  workmanager: ^0.5.2
 
 dependencies_overrides: {}
 
