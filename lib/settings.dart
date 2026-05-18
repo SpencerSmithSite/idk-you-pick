@@ -1,8 +1,10 @@
-import 'dart:async';
+import 'dart:convert';
 
 import 'package:clipboard/clipboard.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'demo_service.dart';
 import 'onboarding.dart';
@@ -12,6 +14,8 @@ import 'theme/theme_provider.dart';
 import 'widgets/liquid_glass.dart';
 import 'widgets/liquid_glass_app_bar.dart';
 import 'widgets/liquid_glass_button.dart';
+import 'services/data_export_service.dart';
+import 'services/data_import_service.dart';
 import 'services/notification_service.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -150,6 +154,96 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _customRestaurants.remove(restaurant);
     });
     _savePreferences();
+  }
+
+  Future<void> _handleExport() async {
+    try {
+      final data = await DataExportService.exportUserData();
+      final jsonString = const JsonEncoder.withIndent('  ').convert(data);
+      await SharePlus.instance.share(
+        ShareParams(
+          text: jsonString,
+          subject: 'IDK You Pick Backup',
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Export failed: $e')),
+      );
+    }
+  }
+
+  Future<void> _handleImport() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+        allowMultiple: false,
+        withData: true,
+      );
+      if (result == null || result.files.isEmpty) return;
+      final file = result.files.first;
+      final bytes = file.bytes;
+      if (bytes == null || bytes.isEmpty) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Selected file is empty.')),
+        );
+        return;
+      }
+      final content = utf8.decode(bytes);
+      final decoded = json.decode(content) as Map<String, dynamic>;
+
+      if (!mounted) return;
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Import Data'),
+          content: const Text(
+            'This will overwrite your current favorites, history, filters, location, and notification settings. Are you sure?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: const Text('Import'),
+            ),
+          ],
+        ),
+      );
+      if (confirmed != true) return;
+
+      final summary = await DataImportService.importUserData(decoded);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Import successful: ${summary.favoritesCount} favorites, ${summary.historyCount} history entries.',
+          ),
+        ),
+      );
+      // Refresh local state from prefs
+      await _loadLunchSuggestions();
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        _useLocation = prefs.getBool('use_location') ?? true;
+      });
+      widget.onLocationChanged?.call(_useLocation);
+    } on ImportException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Import failed: $e')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Import failed: $e')),
+      );
+    }
   }
 
   Widget _buildThemeChip(String label, ThemeMode value, ThemeMode current, AppColors colors) {
@@ -359,6 +453,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
+            const Divider(),
+            // Data Management section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Data Management',
+                  style: TextStyle(
+                    color: colors.textSecondary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+            LiquidGlass(
+              blurSigma: 12,
+              opacity: 0.10,
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(16),
+              child: ListTile(
+                leading: Icon(Icons.upload_file, color: colors.textSecondary),
+                title: Text(
+                  'Export Data',
+                  style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
+                ),
+                subtitle: Text(
+                  'Share a backup of your favorites, history, and settings',
+                  style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                ),
+                trailing: Icon(Icons.share, color: colors.textMuted, size: 20),
+                onTap: _handleExport,
+              ),
+            ),
+            LiquidGlass(
+              blurSigma: 12,
+              opacity: 0.10,
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(16),
+              child: ListTile(
+                leading: Icon(Icons.download, color: colors.textSecondary),
+                title: Text(
+                  'Import Data',
+                  style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
+                ),
+                subtitle: Text(
+                  'Restore from a previously exported backup file',
+                  style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios, color: colors.textMuted, size: 16),
+                onTap: _handleImport,
+              ),
+            ),
             const Divider(),
             LiquidGlass(
               blurSigma: 12,
