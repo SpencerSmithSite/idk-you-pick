@@ -12,6 +12,7 @@ import 'theme/theme_provider.dart';
 import 'widgets/liquid_glass.dart';
 import 'widgets/liquid_glass_app_bar.dart';
 import 'widgets/liquid_glass_button.dart';
+import 'services/notification_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   final Map<String, bool> restaurantPreferences;
@@ -37,6 +38,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late Map<String, bool> _preferences;
   late List<String> _customRestaurants = [];
   late bool _useLocation;
+  bool _lunchSuggestions = false;
+  bool _permissionDenied = false;
   final TextEditingController _restaurantController = TextEditingController();
   late ScrollController _scrollController;
 
@@ -47,6 +50,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _preferences = Map.from(widget.restaurantPreferences);
     _useLocation = widget.useLocation;
     _loadCustomRestaurants();
+    _loadLunchSuggestions();
+  }
+
+  Future<void> _loadLunchSuggestions() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
+    setState(() {
+      _lunchSuggestions = prefs.getBool('lunchtime_suggestions') ?? false;
+    });
   }
 
   @override
@@ -88,6 +100,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _useLocation = value;
     });
     widget.onLocationChanged?.call(value);
+  }
+
+  Future<void> _toggleLunchSuggestions(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (value) {
+      final granted = await NotificationService.init();
+      if (granted) {
+        await NotificationService.scheduleDailyNotification(
+          const TimeOfDay(hour: 12, minute: 15),
+          payload: 'lunchtime_suggestion',
+        );
+        await prefs.setBool('lunchtime_suggestions', true);
+        setState(() {
+          _lunchSuggestions = true;
+          _permissionDenied = false;
+        });
+      } else {
+        await prefs.setBool('lunchtime_suggestions', false);
+        setState(() {
+          _lunchSuggestions = false;
+          _permissionDenied = true;
+        });
+      }
+    } else {
+      await NotificationService.cancelAll();
+      await prefs.setBool('lunchtime_suggestions', false);
+      setState(() {
+        _lunchSuggestions = false;
+      });
+    }
   }
 
   void _addRestaurant() {
@@ -258,6 +300,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ),
+            const Divider(),
+            LiquidGlass(
+              blurSigma: 12,
+              opacity: 0.10,
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(16),
+              child: ListTile(
+                leading: Icon(Icons.notifications_active, color: colors.textSecondary),
+                title: Text(
+                  'Lunchtime Suggestions',
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+                subtitle: Text(
+                  'We only use your location to find nearby restaurants. Your location never leaves this device.',
+                  style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                ),
+                trailing: Switch(
+                  value: _lunchSuggestions,
+                  activeTrackColor: colors.secondary,
+                  thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return colors.foregroundOnDark;
+                    }
+                    return colors.switchThumbUnselected;
+                  }),
+                  onChanged: _toggleLunchSuggestions,
+                ),
+              ),
+            ),
+            if (_permissionDenied)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: colors.danger.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: colors.danger.withValues(alpha: 0.3)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.error_outline, color: colors.danger, size: 20),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Notification permission denied. Enable it in Settings > Notifications to receive lunchtime suggestions.',
+                          style: TextStyle(color: colors.danger, fontSize: 13),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             const Divider(),
             LiquidGlass(
               blurSigma: 12,

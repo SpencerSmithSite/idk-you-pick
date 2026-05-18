@@ -32,6 +32,13 @@ dependencies:
   package_info_plus: ^10.1.0
   clipboard: ^3.0.14
 
+  # Local push notifications for lunchtime suggestions
+  flutter_local_notifications: ^19.0.0
+  timezone: ^0.10.0
+
+  # Background task scheduling
+  workmanager: ^0.5.2
+
 dependencies_overrides: {}
 
 # Dependencies only needed during development
