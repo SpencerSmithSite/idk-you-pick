@@ -98,6 +98,17 @@ _To be defined — awaiting Captain's direction. Potential themes:_
 
 ---
 
+## Phase 16 — Price Bracket Battle ✅ (PR #40)
+- [x] New "Price Bracket Battle" option on main screen (third main button)
+- [x] Tier selector screen with `$`, `$$`, `$$$` Aurora Frost themed chips
+- [x] Reuses existing Help Me Decide bracket UI and `_pickWinner` logic
+- [x] Temporarily applies price filter, starts bracket, restores filters after
+- [x] Haptic feedback on tier tap and battle start
+- [x] New reusable `GradientButton` widget in `lib/widgets/`
+- [x] Generic `Route<T>` fix for `_fadeSlideRoute`
+
+---
+
 ## Legend
 - [ ] = Not started  |  [-] = In progress  |  [x] = Done
 

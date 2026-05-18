@@ -1,4 +1,16 @@
-## [0.4.3] — 2026-05-14
+## [0.5.0] — 2026-05-17
+### Phase 16: Price Bracket Battle
+- **feat:** New game mode — "Price Bracket Battle" accessible from main screen as third action button
+- **feat:** Created `lib/price_bracket_screen.dart` — tier selector screen with Aurora Frost themed `$`, `$$`, `$$$` choice chips
+- **feat:** `_startPriceBracketBattle(String tier)` in `main.dart` temporarily applies price filter, reuses existing Help Me Decide bracket UI and `_pickWinner` logic, then restores original filters via `addPostFrameCallback`
+- **feat:** New reusable `GradientButton` widget in `lib/widgets/gradient_button.dart` with press animation and primary/secondary gradient variants
+- **fix:** Generic `Route<T>` parameter for `_fadeSlideRoute` to support typed navigation returns
+- **a11y:** Semantics label on Price Bracket Battle button
+- **QA:** `flutter analyze` clean, `flutter test` 64/64 passing, iOS sim build success
+- **CI:** All GitHub Actions checks passing (test, build-ios, build_and_preview, deploy-preview)
+- Branch: `data/phase-16-price-bracket-battle`, PR #40
+
+---
 ### Phase 14: Post-Launch Polish (Part 4 — Scroll Physics + setState Cleanup)
 - **feat:** Global `_AppScrollBehavior` applied to `MaterialApp`:
   - `BouncingScrollPhysics` with fast deceleration on both iOS and Android
