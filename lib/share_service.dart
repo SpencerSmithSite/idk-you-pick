@@ -54,6 +54,37 @@ class ShareService {
     );
   }
 
+  /// Generate a kebab-case slug from a restaurant name.
+  /// Lowercases, replaces spaces with hyphens, strips non-alphanumeric
+  /// characters except hyphens.  If the generated slug already appears in
+  /// [existingSlugs], appends -2, -3, etc. until a unique suffix is found.
+  static String generateSlug(String name, {Iterable<String> existingSlugs = const []}) {
+    var slug = name
+        .toLowerCase()
+        .replaceAll(RegExp(r'\s+'), '-')
+        .replaceAll(RegExp(r'[^a-z0-9-]'), '')
+        .replaceAll(RegExp(r'-+'), '-')
+        .replaceAll(RegExp(r'^-|-$'), '');
+
+    if (slug.isEmpty) slug = 'restaurant';
+
+    final base = slug;
+    var counter = 2;
+    while (existingSlugs.contains(slug)) {
+      slug = '$base-$counter';
+      counter++;
+    }
+
+    return slug;
+  }
+
+  /// Share a deep-link URL pointing to a specific restaurant.
+  static Future<void> shareRestaurantLink(String slug) async {
+    await SharePlus.instance.share(
+      ShareParams(text: 'Check out this restaurant! idkyoupick://restaurant/$slug'),
+    );
+  }
+
   /// Listen for incoming app links (invite links, etc).
   static Stream<Uri> get incomingLinks => _appLinks.uriLinkStream;
 }
