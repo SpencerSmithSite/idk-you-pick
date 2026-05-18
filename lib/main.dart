@@ -17,6 +17,7 @@ import 'demo_service.dart';
 import 'restaurant_detail.dart';
 import 'favorites_list_screen.dart';
 import 'search_screen.dart';
+import 'price_bracket_screen.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
@@ -615,6 +616,23 @@ class _MyHomePageState extends State<MyHomePage> {
     ReviewPrompt.maybeShow();
   }
 
+  /// Start a bracket battle limited to a single price tier.
+  /// Temporarily applies the tier as a filter, starts head-to-head, then restores filters.
+  void _startPriceBracketBattle(String tier) {
+    final previousPriceTiers = Set<String>.from(_activePriceTiers);
+    setState(() {
+      _activePriceTiers = {tier};
+    });
+    _startHeadToHead();
+    // Schedule restoration so the next build cycle uses the temporary filter,
+    // then reverts it behind the scenes.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _activePriceTiers = previousPriceTiers;
+      });
+    });
+  }
+
   /// Sets the screen to show head-to-head mode (two restaurants to compare).
   void _startHeadToHead() {
     final pool = List<String>.from(_filteredPool);
@@ -824,6 +842,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: LiquidGlassButton(
                     label: "Help Me Decide",
                     onPressed: _startHeadToHead,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Semantics(
+                  button: true,
+                  label: 'Battle by price bracket',
+                  child: LiquidGlassButton(
+                    label: "Price Bracket Battle",
+                    onPressed: () async {
+                      final tier = await Navigator.push<String>(
+                        context,
+                        _fadeSlideRoute(const PriceBracketScreen()),
+                      );
+                      if (tier != null && mounted) {
+                        _startPriceBracketBattle(tier);
+                      }
+                    },
                   ),
                 ),
               ],
@@ -1339,8 +1374,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Fade + slight slide page transition.
-  Route _fadeSlideRoute(Widget nextScreen) {
-    return PageRouteBuilder(
+  Route<T> _fadeSlideRoute<T>(Widget nextScreen) {
+    return PageRouteBuilder<T>(
       transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (_, __, ___) => nextScreen,
       transitionsBuilder: (_, animation, __, child) {
