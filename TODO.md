@@ -104,7 +104,7 @@ _Placeholder—work superseded by Phase 17 Push Notifications._
 
 ---
 
-## Phase 17 — Push Notifications: Lunchtime Suggestions 🔄 (In Progress)
+## Phase 17 — Push Notifications: Lunchtime Suggestions ✅ (PR #42)
 - [x] Add `flutter_local_notifications`, `timezone`, `workmanager` to `pubspec.yaml`
 - [x] Create `lib/services/notification_service.dart` — init, permissions, schedule, cancel, deep-link handling
 - [x] Create `lib/services/lunch_suggestion_service.dart` — selection logic, filters, distance, 7-day history
@@ -112,7 +112,7 @@ _Placeholder—work superseded by Phase 17 Push Notifications._
 - [x] Wire notification tap handler and cold-start deep-link in `lib/main.dart`
 - [x] Unit/widget test: `test/unit/lunch_suggestion_service_test.dart`
 - [x] `flutter analyze` clean, `flutter test` passing, `flutter build ios --simulator` success
-- [ ] PR created and merged
+- [x] PR created and merged
 
 ---
 
