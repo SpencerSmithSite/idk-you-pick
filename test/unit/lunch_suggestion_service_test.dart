@@ -64,6 +64,9 @@ void main() {
         headingAccuracy: 0,
       );
 
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setDouble('filter_max_distance', 1.0);
+
       final result = await LunchSuggestionService.pickLunchSuggestion(
         testRestaurants: testRestaurants,
         testUserPosition: pos,
