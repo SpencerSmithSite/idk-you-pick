@@ -52,6 +52,11 @@ Restaurant decision app overhaul: modern UI, location-aware recommendations, and
 | Date | Phase | Done | Blockers |
 |------|-------|------|----------|
 | 2026-05-08 | Initial | Cloned repo, analyzed codebase, approved plan | None |
+| 2026-05-08 | Phase 1 | Data Overhaul — restaurants.json enriched, parser updated | None |
+| 2026-05-08 | Phase 2 | Modern UI — Aurora Frost theme, glassmorphism cards | None |
+| 2026-05-09 | Phase 3 | Location Mode — geolocator, distance filter, lat/lng data | None |
+| 2026-05-10 | Phase 4 | Dual-Filter System — global + session filters, quick filters | None |
+| 2026-05-11 | Phase 5 | Restaurant Detail + Action Links — maps, call, website, favorites | None |
 
 ## Notes
 - Each phase gets a branch: `phase/1-data`, `phase/2-ui`, etc.

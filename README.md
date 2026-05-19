@@ -20,6 +20,22 @@ A restaurant decision-making app that helps you choose where to eat when you (or
 - View key details like ratings, price range, and cuisine type
 - Make an informed decision with all the facts
 
+### Price Bracket Battle
+- Pick a price tier ($, $$, $$$) and battle through bracket rounds
+- Fun way to narrow down choices by budget
+
+### Search & Sort
+- Live text search across name, cuisine, type, and tags
+- Sort by name, distance, price, cuisine, or random
+
+### Lunchtime Suggestions
+- Scheduled local push notifications with a daily restaurant suggestion
+- Respects your filters and 7-day history to avoid repeats
+
+### Data Export / Import
+- Export your favorites, history, and settings to a JSON file
+- Import back from a file to restore or migrate devices
+
 ### Customizable Restaurant List
 - Create and manage multiple restaurant lists
 - Organize restaurants by categories or preferences
@@ -35,15 +51,19 @@ A restaurant decision-making app that helps you choose where to eat when you (or
 - Dark and light mode support
 - Smooth animations and transitions
 - Responsive design for all screen sizes
+- Aurora Frost glassmorphism theme
 
 ## Technology Stack
 
 - **Frontend Framework**: Flutter
-- **State Management**: Provider/Bloc
-- **Database**: SQLite (local storage)
-- **API Integration**: Google Places API
+- **State Management**: StatefulWidget + SharedPreferences (local persistence)
+- **Data Storage**: JSON assets + SharedPreferences (favorites, history, settings)
+- **Location**: Geolocator + Geocoding
+- **Push Notifications**: flutter_local_notifications + timezone
+- **Background Tasks**: workmanager
 - **Version Control**: Git
 - **Build System**: Gradle (Android), CocoaPods (iOS)
+- **CI/CD**: GitHub Actions (test, build, deploy preview)
 
 ## Getting Started
 
