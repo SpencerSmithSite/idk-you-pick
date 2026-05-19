@@ -136,6 +136,17 @@ _Placeholder—work superseded by Phase 17 Push Notifications._
 
 ---
 
+---
+
+## Phase 20 — Next Up (Proactive Backlog)
+- [ ] **Update README** — correct tech stack, add Phase 1–19 feature list, accurate description
+- [ ] **Prune stale branches** — archive or delete merged branches from `data/phase-*` and `z-archive/*`
+- [ ] **Update PROJECT.md** — mark Phase 1–5 complete, remove Phase 3 Google Places API scope (not implemented)
+- [ ] **Dependency bumps** (batch) — `in_app_review`, `flutter_launcher_icons`, `flutter_native_splash`, `shared_preferences`
+- [ ] **Investigate OpenCode** — intermittent hangs during `flutter pub get`; logs show idle for minutes despite unchanged tree. Need reproduction and config audit.
+
+---
+
 ## Legend
 - [ ] = Not started  |  [-] = In progress  |  [x] = Done
 
