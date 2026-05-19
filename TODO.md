@@ -127,6 +127,15 @@ _Placeholder—work superseded by Phase 17 Push Notifications._
 
 ---
 
+## Phase 19 — Complete Restaurant Deep Links ✅
+- [x] Android deep-link intent-filter for `idkyoupick` scheme
+- [x] Cold-start link handling via `ShareService.getInitialLink()` in `_initializeApp()`
+- [x] `addPostFrameCallback` guard in `_handleIncomingLink` for safe `BuildContext` usage during init
+- [x] Unit tests: `test/unit/deep_link_test.dart` (`getInitialLink`, slug parsing, query params, unknown scheme)
+- [x] `flutter analyze` clean, `flutter test` passing
+
+---
+
 ## Legend
 - [ ] = Not started  |  [-] = In progress  |  [x] = Done
 

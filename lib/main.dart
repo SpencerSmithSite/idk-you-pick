@@ -175,20 +175,24 @@ class _MyHomePageState extends State<MyHomePage> {
       final found = _restaurantDetails.where((r) {
         return ShareService.generateSlug(r['name'] as String) == slug;
       }).toList();
-      if (found.isNotEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => RestaurantDetailScreen(restaurant: found.first),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Restaurant not found. It may have been removed or renamed.'),
-          ),
-        );
-      }
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (found.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => RestaurantDetailScreen(restaurant: found.first),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Restaurant not found. It may have been removed or renamed.'),
+            ),
+          );
+        }
+      });
+    }
       return;
     }
 
@@ -273,6 +277,8 @@ class _MyHomePageState extends State<MyHomePage> {
           _navigateToLunchSuggestion();
         });
       }
+      final initialLink = await ShareService.getInitialLink();
+      if (initialLink != null) _handleIncomingLink(initialLink);
     } catch (e) {
       setState(() {
         _errorMessage = "Initialization failed.";

@@ -78,6 +78,9 @@ class ShareService {
     return slug;
   }
 
+  /// Get the initial app link from a cold start.
+  static Future<Uri?> getInitialLink() => _appLinks.getInitialLink();
+
   /// Share a deep-link URL pointing to a specific restaurant.
   static Future<void> shareRestaurantLink(String slug) async {
     await SharePlus.instance.share(

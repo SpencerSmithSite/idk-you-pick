@@ -357,3 +357,14 @@
 - **QA:** `flutter analyze` clean, `flutter test` 6/6 new tests + existing 64/64 passing, iOS sim build success
 - **CI:** All GitHub Actions checks passing
 - Branch: `data/phase-17-push-notifications`, PR #42 (merged)
+
+---
+
+## [0.6.1] — 2026-05-18
+### Phase 19: Complete Restaurant Deep Links
+- **feat:** Android deep-link intent-filter for `idkyoupick` scheme already present in `AndroidManifest.xml`
+- **feat:** Cold-start link support in `lib/main.dart` — `_initializeApp()` now calls `ShareService.getInitialLink()` after restaurant data is loaded and handles incoming restaurant and invite links
+- **feat:** Wrapped `Navigator.push` / `SnackBar` calls in `_handleIncomingLink` with `addPostFrameCallback` to ensure safe context usage during init
+- **test:** Added `test/unit/deep_link_test.dart` — tests for `getInitialLink` return type, restaurant slug parsing, invite query param splitting, and unknown scheme rejection
+- **QA:** `flutter analyze` clean, `flutter test` passing
+
