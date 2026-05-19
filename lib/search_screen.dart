@@ -188,12 +188,15 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _sortTile(BuildContext ctx, SortMode mode, String label, IconData icon) {
     final isActive = _sortMode == mode;
     final colors = AppColors.of(ctx);
-    return ListTile(
-      leading: Icon(icon, color: isActive ? colors.primary : colors.textSecondary),
-      title: Text(label, style: TextStyle(color: isActive ? colors.primary : colors.textPrimary, fontWeight: isActive ? FontWeight.w600 : FontWeight.normal)),
-      trailing: isActive ? Icon(Icons.check_circle, color: colors.primary) : null,
-      onTap: () => _onSortSelected(mode),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    return Material(
+      type: MaterialType.transparency,
+      child: ListTile(
+        leading: Icon(icon, color: isActive ? colors.primary : colors.textSecondary),
+        title: Text(label, style: TextStyle(color: isActive ? colors.primary : colors.textPrimary, fontWeight: isActive ? FontWeight.w600 : FontWeight.normal)),
+        trailing: isActive ? Icon(Icons.check_circle, color: colors.primary) : null,
+        onTap: () => _onSortSelected(mode),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
     );
   }
 
@@ -261,53 +264,56 @@ class _SearchScreenState extends State<SearchScreen> {
           opacity: 0.15,
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: image != null
-                ? Hero(
-                    tag: 'restaurant_image_$name',
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        image,
-                        width: 48,
-                        height: 48,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Icon(Icons.restaurant, color: colors.primary),
+          child: Material(
+            type: MaterialType.transparency,
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: image != null
+                  ? Hero(
+                      tag: 'restaurant_image_$name',
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          image,
+                          width: 48,
+                          height: 48,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Icon(Icons.restaurant, color: colors.primary),
+                        ),
                       ),
-                    ),
-                  )
-                : Icon(Icons.restaurant, color: colors.primary),
-            title: Text(name, style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600)),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Wrap(
-                spacing: 6,
-                runSpacing: 4,
-                children: [
-                  if (cuisine != null)
-                    _miniChip(cuisine, colors.primary),
-                  if (type != null)
-                    _miniChip(type, colors.secondary),
-                  if (price != null)
-                    _miniChip(price, colors.success),
-                  if (distance != null)
-                    _miniChip('$distance mi', colors.info),
-                  ...tags.take(3).map((t) => _miniChip(t, colors.textMuted)),
-                ],
+                    )
+                  : Icon(Icons.restaurant, color: colors.primary),
+              title: Text(name, style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600)),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Wrap(
+                  spacing: 6,
+                  runSpacing: 4,
+                  children: [
+                    if (cuisine != null)
+                      _miniChip(cuisine, colors.primary),
+                    if (type != null)
+                      _miniChip(type, colors.secondary),
+                    if (price != null)
+                      _miniChip(price, colors.success),
+                    if (distance != null)
+                      _miniChip('$distance mi', colors.info),
+                    ...tags.take(3).map((t) => _miniChip(t, colors.textMuted)),
+                  ],
+                ),
               ),
+              trailing: Icon(
+                isFav ? Icons.favorite : Icons.chevron_right,
+                color: isFav ? colors.favorite : colors.textMuted,
+                size: 20,
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => RestaurantDetailScreen(restaurant: r)),
+                );
+              },
             ),
-            trailing: Icon(
-              isFav ? Icons.favorite : Icons.chevron_right,
-              color: isFav ? colors.favorite : colors.textMuted,
-              size: 20,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => RestaurantDetailScreen(restaurant: r)),
-              );
-            },
           ),
         );
       },

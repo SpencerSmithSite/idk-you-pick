@@ -116,6 +116,26 @@ _Placeholder—work superseded by Phase 17 Push Notifications._
 
 ---
 
+## Phase 18 — Data Export / Import ✅ (PR #45)
+- [x] Add `file_picker` dependency to `pubspec.yaml`
+- [x] Create `lib/services/data_export_service.dart` — `DataExportService.exportUserData()` with schemaVersion 1
+- [x] Create `lib/services/data_import_service.dart` — `DataImportService.importUserData()` with validation, `ImportSummary`, `ImportException`
+- [x] Add Data Management section to Settings with Export (share_plus) and Import (file picker + confirmation dialog + snackbar error) tiles
+- [x] Unit tests: `test/unit/data_export_service_test.dart` (3 tests), `test/unit/data_import_service_test.dart` (5 tests)
+- [x] `flutter analyze` clean, `flutter test` 86/86 passing, `flutter build ios --simulator` success
+- [x] PR created and merged
+
+---
+
+## Phase 19 — Complete Restaurant Deep Links ✅
+- [x] Android deep-link intent-filter for `idkyoupick` scheme
+- [x] Cold-start link handling via `ShareService.getInitialLink()` in `_initializeApp()`
+- [x] `addPostFrameCallback` guard in `_handleIncomingLink` for safe `BuildContext` usage during init
+- [x] Unit tests: `test/unit/deep_link_test.dart` (`getInitialLink`, slug parsing, query params, unknown scheme)
+- [x] `flutter analyze` clean, `flutter test` passing
+
+---
+
 ## Legend
 - [ ] = Not started  |  [-] = In progress  |  [x] = Done
 
