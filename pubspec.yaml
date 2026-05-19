@@ -17,18 +17,18 @@ dependencies:
   flutter:
     sdk: flutter
   # Used for persisting filter preferences and restaurant data across app sessions
-  shared_preferences: ^2.5.3
+  shared_preferences: ^2.5.5
   # Location services for distance-based filtering
   geolocator: ^13.0.0
   # Address-to-coordinates (used only for geocoding display if needed)
   geocoding: ^3.0.0
 
   # iOS-style icons for the app
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^1.0.9
   url_launcher: ^6.3.0
   share_plus: ^13.1.0
   app_links: ^7.0.0
-  in_app_review: ^2.0.11
+  in_app_review: ^2.0.12
   package_info_plus: ^10.1.0
   clipboard: ^3.0.14
 
@@ -50,9 +50,9 @@ dev_dependencies:
   # Recommended lints for good coding practices
   flutter_lints: ^5.0.0
   # Tools for generating app icons across platforms
-  flutter_launcher_icons: ^0.14.3
+  flutter_launcher_icons: ^0.14.4
   # Tool for creating native splash screens
-  flutter_native_splash: ^2.3.13
+  flutter_native_splash: ^2.4.7
 
 # Flutter-specific configurations
 flutter:
