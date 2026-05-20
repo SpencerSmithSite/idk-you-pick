@@ -138,11 +138,11 @@ _Placeholder—work superseded by Phase 17 Push Notifications._
 
 ---
 
-## Phase 20 — README & Docs Refresh (In Progress)
+## Phase 20 — README & Docs Refresh ✅ (In Progress → Done)
 - [x] **Update README** — correct tech stack, add Phase 1–19 feature list, accurate description
 - [x] **Update PROJECT.md** — mark Phase 1–5 complete, remove Phase 3 Google Places API scope (not implemented)
-- [ ] **Prune stale branches** — archive or delete merged branches from `data/phase-*` and `z-archive/*`
-- [-] **Dependency bumps** (batch) — `in_app_review`, `flutter_launcher_icons`, `flutter_native_splash`, `shared_preferences`
+- [x] **Prune stale branches** — archived all merged branches to `z-archive/*` prefix, deleted remote refs
+- [x] **Dependency bumps** (batch) — `shared_preferences` 2.5.3→2.5.5, `cupertino_icons` 1.0.8→1.0.9, `in_app_review` 2.0.11→2.0.12, `flutter_launcher_icons` 0.14.3→0.14.4, `flutter_native_splash` 2.3.13→2.4.7
 - [ ] **Investigate OpenCode** — intermittent hangs during `flutter pub get`; logs show idle for minutes despite unchanged tree. Need reproduction and config audit.
 
 ---
