@@ -44,7 +44,7 @@ class NotificationService {
     );
 
     await _plugin.initialize(
-      settings,
+      settings: settings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
         onNotificationTap?.call(response.payload);
       },
@@ -117,11 +117,11 @@ class NotificationService {
     final tzDateTime = tz.TZDateTime.from(scheduled, tz.local);
 
     await _plugin.zonedSchedule(
-      0,
-      'Lunchtime Suggestion',
-      "Got lunch plans? Tap to see what's nearby.",
-      tzDateTime,
-      NotificationDetails(
+      id: 0,
+      title: 'Lunchtime Suggestion',
+      body: "Got lunch plans? Tap to see what's nearby.",
+      scheduledDate: tzDateTime,
+      notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           _channel.id,
           _channel.name,
