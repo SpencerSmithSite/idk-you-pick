@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
 
+/// Theme extension that carries whether high-contrast mode is enabled.
+class HighContrastTheme extends ThemeExtension<HighContrastTheme> {
+  final bool enabled;
+
+  const HighContrastTheme({this.enabled = false});
+
+  @override
+  HighContrastTheme copyWith({bool? enabled}) =>
+      HighContrastTheme(enabled: enabled ?? this.enabled);
+
+  @override
+  HighContrastTheme lerp(HighContrastTheme? other, double t) =>
+      HighContrastTheme(
+        enabled: t > 0.5 ? (other?.enabled ?? false) : enabled,
+      );
+}
+
 /// Aurora Frost color tokens for light and dark modes.
 ///
 /// Access via AppColors.of(context) which resolves the correct
 /// palette based on Theme.of(context).brightness.
 class AppColors {
   final Brightness brightness;
+  final bool highContrast;
 
-  AppColors(this.brightness);
+  AppColors(this.brightness, {this.highContrast = false});
 
   bool get isDark => brightness == Brightness.dark;
 
@@ -17,10 +35,10 @@ class AppColors {
           ? [const Color(0xFF0A0F14), const Color(0xFF141E26)]
           : [const Color(0xFFF8FBFC), const Color(0xFFEEF4F6)];
 
-// NEW (Liquid Glass - CORRECT)
+  // NEW (Liquid Glass - CORRECT)
   // Glass surface (very transparent)
-  Color get glassSurface => isDark 
-      ? Colors.white.withValues(alpha: 0.06) 
+  Color get glassSurface => isDark
+      ? Colors.white.withValues(alpha: 0.06)
       : Colors.black.withValues(alpha: 0.04);
 
   // Glass edge highlight (refraction)
@@ -29,19 +47,20 @@ class AppColors {
       : Colors.white.withValues(alpha: 0.35);
 
   // Blur levels
-  double get glassBlurLight => 12.0;   // Small elements
-  double get glassBlurMedium => 25.0;  // Cards, panels
-  double get glassBlurHeavy => 45.0;   // Background, overlays
+  double get glassBlurLight => 12.0; // Small elements
+  double get glassBlurMedium => 25.0; // Cards, panels
+  double get glassBlurHeavy => 45.0; // Background, overlays
 
   // Overlay (nearly transparent with heavy blur)
   Color get glassOverlay => isDark
       ? Colors.black.withValues(alpha: 0.12)
       : Colors.white.withValues(alpha: 0.08);
 
-
   /// Primary teal.
   Color get primary =>
-      isDark ? const Color(0xFF2DD4BF) : const Color(0xFF0D9488);
+      highContrast
+          ? const Color(0xFF0A7C6E)
+          : (isDark ? const Color(0xFF2DD4BF) : const Color(0xFF0D9488));
 
   /// Primary gradient (for buttons, accents).
   List<Color> get primaryGradient =>
@@ -51,7 +70,9 @@ class AppColors {
 
   /// Secondary coral/orange.
   Color get secondary =>
-      isDark ? const Color(0xFFFB923C) : const Color(0xFFF97316);
+      highContrast
+          ? const Color(0xFFD97706)
+          : (isDark ? const Color(0xFFFB923C) : const Color(0xFFF97316));
 
   /// Secondary gradient.
   List<Color> get secondaryGradient =>
@@ -61,7 +82,9 @@ class AppColors {
 
   /// Primary text color.
   Color get textPrimary =>
-      isDark ? const Color(0xFFFFFFFF) : const Color(0xFF1A1A2E);
+      highContrast
+          ? (isDark ? const Color(0xFFFFFFFF) : const Color(0xFF000000))
+          : (isDark ? const Color(0xFFFFFFFF) : const Color(0xFF1A1A2E));
 
   /// Secondary/body text color (semi-transparent, for subtle contexts).
   Color get textSecondary =>
@@ -176,6 +199,8 @@ class AppColors {
 
   static AppColors of(BuildContext context) {
     final brightness = Theme.of(context).brightness;
-    return AppColors(brightness);
+    final extension = Theme.of(context).extension<HighContrastTheme>();
+    final highContrast = extension?.enabled ?? false;
+    return AppColors(brightness, highContrast: highContrast);
   }
 }
