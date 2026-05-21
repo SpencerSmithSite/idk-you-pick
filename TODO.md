@@ -143,7 +143,15 @@ _Placeholder—work superseded by Phase 17 Push Notifications._
 - [x] **Update PROJECT.md** — mark Phase 1–5 complete, remove Phase 3 Google Places API scope (not implemented)
 - [x] **Prune stale branches** — archived all merged branches to `z-archive/*` prefix, deleted remote refs
 - [x] **Dependency bumps** (batch) — `shared_preferences` 2.5.3→2.5.5, `cupertino_icons` 1.0.8→1.0.9, `in_app_review` 2.0.11→2.0.12, `flutter_launcher_icons` 0.14.3→0.14.4, `flutter_native_splash` 2.3.13→2.4.7
-- [ ] **Investigate OpenCode** — intermittent hangs during `flutter pub get`; logs show idle for minutes despite unchanged tree. Need reproduction and config audit.
+- [x] **Investigate OpenCode** — hang pattern documented in internal DATA skills (see `opencode-hang-pattern.md`, `opencode-timeout-and-manual-fallback.md`). Mitigation: break large tasks into 1–3 file prompts; delegate QA (`flutter analyze`, build) to orchestrator, not prompt.
+
+---
+
+## Phase 21 — Widget Test Coverage ✅ (PR #51)
+- [x] `test/widget/price_bracket_test.dart` — PriceBracketScreen renders title and tier chips; tap selects tier
+- [x] `test/widget/restaurant_detail_test.dart` — RestaurantDetailScreen shows name, chips, address, phone, website; favorite icon tappable; back nav and action buttons present
+- [x] `flutter analyze` clean, `flutter test` 90/90 passing, iOS sim build success
+- [x] PR created and merged
 
 ---
 
