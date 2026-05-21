@@ -123,13 +123,17 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
               onPressed: () => Navigator.pop(context),
             ),
             actions: [
-              IconButton(
-                icon: Icon(
-                  _isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: _isFavorite ? colors.favorite : colors.surfaceIcon,
+              Semantics(
+                button: true,
+                label: _isFavorite ? 'Remove from favorites' : 'Add to favorites',
+                child: IconButton(
+                  icon: Icon(
+                    _isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: _isFavorite ? colors.favorite : colors.surfaceIcon,
+                  ),
+                  onPressed: _toggleFavorite,
+                  tooltip: _isFavorite ? 'Remove from favorites' : 'Add to favorites',
                 ),
-                onPressed: _toggleFavorite,
-                tooltip: _isFavorite ? 'Remove from favorites' : 'Add to favorites',
               ),
               IconButton(
                 icon: Icon(Icons.share, color: colors.surfaceIcon),
@@ -141,9 +145,12 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                name,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+              title: Semantics(
+                header: true,
+                child: Text(
+                  name,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
               ),
               background: Container(
                 decoration: BoxDecoration(
@@ -212,67 +219,79 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   ],
 
                   // Meta chips
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      if (cuisine != null)
-                        _buildChip(cuisine, Icons.local_dining, colors.primary),
-                      if (type != null)
-                        _buildChip(type, Icons.fastfood, colors.secondary),
-                      if (price != null)
-                        _buildChip(price, Icons.attach_money, colors.success),
-                      if (distance != null)
-                        _buildChip('$distance mi', Icons.location_on, colors.info),
-                    ],
+                  Semantics(
+                    label: 'Restaurant details',
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        if (cuisine != null)
+                          _buildChip(cuisine, Icons.local_dining, colors.primary),
+                        if (type != null)
+                          _buildChip(type, Icons.fastfood, colors.secondary),
+                        if (price != null)
+                          _buildChip(price, Icons.attach_money, colors.success),
+                        if (distance != null)
+                          _buildChip('$distance mi', Icons.location_on, colors.info),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 16),
 
                   // Address
                   if (address != null) ...[
-                    Row(
-                      children: [
-                        Icon(Icons.place, color: colors.primary, size: 20),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            address,
-                            style: theme.textTheme.bodyMedium,
+                    Semantics(
+                      label: 'Address',
+                      child: Row(
+                        children: [
+                          Icon(Icons.place, color: colors.primary, size: 20),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              address,
+                              style: theme.textTheme.bodyMedium,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 12),
                   ],
 
                   // Phone
                   if (phone != null) ...[
-                    Row(
-                      children: [
-                        Icon(Icons.phone, color: colors.primary, size: 20),
-                        const SizedBox(width: 8),
-                        Text(phone, style: theme.textTheme.bodyMedium),
-                      ],
+                    Semantics(
+                      label: 'Phone',
+                      child: Row(
+                        children: [
+                          Icon(Icons.phone, color: colors.primary, size: 20),
+                          const SizedBox(width: 8),
+                          Text(phone, style: theme.textTheme.bodyMedium),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 12),
                   ],
 
                   // Website
                   if (website != null) ...[
-                    Row(
-                      children: [
-                        Icon(Icons.language, color: colors.primary, size: 20),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            website,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: colors.primary,
+                    Semantics(
+                      label: 'Website',
+                      child: Row(
+                        children: [
+                          Icon(Icons.language, color: colors.primary, size: 20),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              website,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: colors.primary,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 16),
                   ],
@@ -344,30 +363,42 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  LiquidGlassButton(
-                    icon: Icons.map,
+                  Semantics(
                     label: 'Open in Maps',
-                    onPressed: _openMaps,
+                    child: LiquidGlassButton(
+                      icon: Icons.map,
+                      label: 'Open in Maps',
+                      onPressed: _openMaps,
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  LiquidGlassButton(
-                    icon: Icons.delivery_dining,
+                  Semantics(
                     label: 'Order on DoorDash',
-                    onPressed: _openDoorDash,
+                    child: LiquidGlassButton(
+                      icon: Icons.delivery_dining,
+                      label: 'Order on DoorDash',
+                      onPressed: _openDoorDash,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   if (phone != null)
-                    LiquidGlassButton(
-                      icon: Icons.phone,
+                    Semantics(
                       label: 'Call Restaurant',
-                      onPressed: _callRestaurant,
+                      child: LiquidGlassButton(
+                        icon: Icons.phone,
+                        label: 'Call Restaurant',
+                        onPressed: _callRestaurant,
+                      ),
                     ),
                   if (phone != null) const SizedBox(height: 8),
                   if (website != null)
-                    LiquidGlassButton(
-                      icon: Icons.language,
+                    Semantics(
                       label: 'Visit Website',
-                      onPressed: _openWebsite,
+                      child: LiquidGlassButton(
+                        icon: Icons.language,
+                        label: 'Visit Website',
+                        onPressed: _openWebsite,
+                      ),
                     ),
                 ],
               ),

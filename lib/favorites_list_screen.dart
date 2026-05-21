@@ -74,7 +74,7 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
 
     return Scaffold(
       appBar: LiquidGlassAppBar(
-        title: const Text('Favorites'),
+        title: Semantics(header: true, child: const Text('Favorites')),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -94,32 +94,35 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
               )
             : _favorites.isEmpty
                 ? Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.favorite_border,
-                          size: 64,
-                          color: colors.textSecondary.withValues(alpha: 0.5),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'No favorites yet',
-                          style: TextStyle(
-                            color: colors.textSecondary,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                    child: Semantics(
+                      label: 'No favorites yet',
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.favorite_border,
+                            size: 64,
+                            color: colors.textSecondary.withValues(alpha: 0.5),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Tap the heart on a restaurant to save it here.',
-                          style: TextStyle(
-                            color: colors.textSecondary.withValues(alpha: 0.7),
-                            fontSize: 14,
+                          const SizedBox(height: 16),
+                          Text(
+                            'No favorites yet',
+                            style: TextStyle(
+                              color: colors.textSecondary,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 8),
+                          Text(
+                            'Tap the heart on a restaurant to save it here.',
+                            style: TextStyle(
+                              color: colors.textSecondary.withValues(alpha: 0.7),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 : ListView.builder(
@@ -161,14 +164,16 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                               ),
                             );
                           },
-                          child: LiquidGlass(
-                            blurSigma: 20,
-                            opacity: 0.15,
-                            margin: const EdgeInsets.only(bottom: 12),
-                            padding: const EdgeInsets.all(14),
-                            borderRadius: BorderRadius.circular(16),
-                            child: Row(
-                              children: [
+                          child: Semantics(
+                            label: '$name favorite',
+                            child: LiquidGlass(
+                              blurSigma: 20,
+                              opacity: 0.15,
+                              margin: const EdgeInsets.only(bottom: 12),
+                              padding: const EdgeInsets.all(14),
+                              borderRadius: BorderRadius.circular(16),
+                              child: Row(
+                                children: [
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,20 +218,25 @@ class _FavoritesListScreenState extends State<FavoritesListScreen> {
                                     ],
                                   ),
                                 ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.favorite,
-                                    color: colors.favorite,
+                                Semantics(
+                                  button: true,
+                                  label: 'Remove from favorites',
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.favorite,
+                                      color: colors.favorite,
+                                    ),
+                                    onPressed: () => _removeFavorite(name),
+                                    tooltip: 'Remove from favorites',
                                   ),
-                                  onPressed: () => _removeFavorite(name),
-                                  tooltip: 'Remove from favorites',
                                 ),
                               ],
                             ),
                           ),
                         ),
-                      );
-                    },
+                      ),
+                    );
+                  },
                   ),
       ),
     );

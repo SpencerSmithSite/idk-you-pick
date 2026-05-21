@@ -212,33 +212,40 @@ class _SearchScreenState extends State<SearchScreen> {
           Icon(Icons.search, color: colors.textMuted),
           const SizedBox(width: 8),
           Expanded(
-            child: TextField(
-              controller: _controller,
-              focusNode: _focusNode,
-              style: TextStyle(color: colors.textPrimary),
-              decoration: InputDecoration(
-                hintText: 'Search restaurants, cuisines, tags...',
-                hintStyle: TextStyle(color: colors.textMuted),
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(vertical: 14),
+            child: Semantics(
+              label: 'Search restaurants',
+              child: TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                style: TextStyle(color: colors.textPrimary),
+                decoration: InputDecoration(
+                  hintText: 'Search restaurants, cuisines, tags...',
+                  hintStyle: TextStyle(color: colors.textMuted),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                onChanged: (v) {
+                  _debounceTimer?.cancel();
+                  _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+                    if (mounted) setState(() => _query = v);
+                  });
+                },
               ),
-              onChanged: (v) {
-                _debounceTimer?.cancel();
-                _debounceTimer = Timer(const Duration(milliseconds: 300), () {
-                  if (mounted) setState(() => _query = v);
-                });
-              },
             ),
           ),
           if (_query.isNotEmpty)
-            IconButton(
-              icon: Icon(Icons.clear, color: colors.textMuted),
-              tooltip: 'Clear search',
-              onPressed: () {
-                _controller.clear();
-                setState(() => _query = '');
-                _focusNode.requestFocus();
-              },
+            Semantics(
+              button: true,
+              label: 'Clear search',
+              child: IconButton(
+                icon: Icon(Icons.clear, color: colors.textMuted),
+                tooltip: 'Clear search',
+                onPressed: () {
+                  _controller.clear();
+                  setState(() => _query = '');
+                  _focusNode.requestFocus();
+                },
+              ),
             ),
         ],
       ),
@@ -264,55 +271,58 @@ class _SearchScreenState extends State<SearchScreen> {
           opacity: 0.15,
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Material(
-            type: MaterialType.transparency,
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: image != null
-                  ? Hero(
-                      tag: 'restaurant_image_$name',
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          image,
-                          width: 48,
-                          height: 48,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Icon(Icons.restaurant, color: colors.primary),
+          child: Semantics(
+            label: '$name restaurant',
+            child: Material(
+              type: MaterialType.transparency,
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: image != null
+                    ? Hero(
+                        tag: 'restaurant_image_$name',
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            image,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Icon(Icons.restaurant, color: colors.primary),
+                          ),
                         ),
-                      ),
-                    )
-                  : Icon(Icons.restaurant, color: colors.primary),
-              title: Text(name, style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600)),
-              subtitle: Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Wrap(
-                  spacing: 6,
-                  runSpacing: 4,
-                  children: [
-                    if (cuisine != null)
-                      _miniChip(cuisine, colors.primary),
-                    if (type != null)
-                      _miniChip(type, colors.secondary),
-                    if (price != null)
-                      _miniChip(price, colors.success),
-                    if (distance != null)
-                      _miniChip('$distance mi', colors.info),
-                    ...tags.take(3).map((t) => _miniChip(t, colors.textMuted)),
-                  ],
+                      )
+                    : Icon(Icons.restaurant, color: colors.primary),
+                title: Text(name, style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600)),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Wrap(
+                    spacing: 6,
+                    runSpacing: 4,
+                    children: [
+                      if (cuisine != null)
+                        _miniChip(cuisine, colors.primary),
+                      if (type != null)
+                        _miniChip(type, colors.secondary),
+                      if (price != null)
+                        _miniChip(price, colors.success),
+                      if (distance != null)
+                        _miniChip('$distance mi', colors.info),
+                      ...tags.take(3).map((t) => _miniChip(t, colors.textMuted)),
+                    ],
+                  ),
                 ),
+                trailing: Icon(
+                  isFav ? Icons.favorite : Icons.chevron_right,
+                  color: isFav ? colors.favorite : colors.textMuted,
+                  size: 20,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => RestaurantDetailScreen(restaurant: r)),
+                  );
+                },
               ),
-              trailing: Icon(
-                isFav ? Icons.favorite : Icons.chevron_right,
-                color: isFav ? colors.favorite : colors.textMuted,
-                size: 20,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => RestaurantDetailScreen(restaurant: r)),
-                );
-              },
             ),
           ),
         );
@@ -349,12 +359,16 @@ class _SearchScreenState extends State<SearchScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          TextButton.icon(
-            onPressed: _showSortSheet,
-            icon: Icon(Icons.sort, color: colors.primary),
-            label: Text(
-              'Sort',
-              style: TextStyle(color: colors.primary, fontWeight: FontWeight.w600),
+          Semantics(
+            button: true,
+            label: 'Sort results',
+            child: TextButton.icon(
+              onPressed: _showSortSheet,
+              icon: Icon(Icons.sort, color: colors.primary),
+              label: Text(
+                'Sort',
+                style: TextStyle(color: colors.primary, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],
