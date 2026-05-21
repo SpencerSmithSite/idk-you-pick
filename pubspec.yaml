@@ -21,7 +21,7 @@ dependencies:
   # Location services for distance-based filtering
   geolocator: ^13.0.0
   # Address-to-coordinates (used only for geocoding display if needed)
-  geocoding: ^3.0.0
+  geocoding: ^4.0.0
 
   # iOS-style icons for the app
   cupertino_icons: ^1.0.9
@@ -33,8 +33,8 @@ dependencies:
   clipboard: ^3.0.14
 
   # Local push notifications for lunchtime suggestions
-  flutter_local_notifications: ^19.0.0
-  timezone: ^0.10.0
+  flutter_local_notifications: ^21.0.0
+  timezone: ^0.11.0
 
   # Background task scheduling
   workmanager: ^0.5.2
