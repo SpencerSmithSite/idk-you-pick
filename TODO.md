@@ -147,6 +147,20 @@ _Placeholder—work superseded by Phase 17 Push Notifications._
 
 ---
 
+## Phase 22 — Accessibility Deep-Dive ✅ (PR #53 foundational, PR #54 follow-up)
+- [x] Semantics(header: true) on app bar titles in main.dart and filter_screen.dart
+- [x] HighContrastTheme extension + AppColors high-contrast overrides
+- [x] ThemeProvider.setHighContrast() / highContrast getter wired to MaterialApp
+- [x] Semantics wrappers across restaurant_detail.dart (chips, address, phone, website, action buttons, favorite toggle)
+- [x] Semantics wrappers across search_screen.dart (search field, clear button, sort trigger, result tiles)
+- [x] Semantics wrappers across favorites_list_screen.dart (app bar header, tiles, remove button, empty state)
+- [x] Semantics wrappers across settings.dart (all tiles, Data Management header, restaurant checkboxes)
+- [x] High Contrast Mode toggle in SettingsScreen (lib/settings.dart) wired to ThemeProvider
+- [x] `flutter analyze` clean, `flutter test` 90/90 passing, `flutter build ios --simulator` success
+- [x] PRs #53 and #54 created and merged
+
+---
+
 ## Phase 21 — Widget Test Coverage ✅ (PR #51)
 - [x] `test/widget/price_bracket_test.dart` — PriceBracketScreen renders title and tier chips; tap selects tier
 - [x] `test/widget/restaurant_detail_test.dart` — RestaurantDetailScreen shows name, chips, address, phone, website; favorite icon tappable; back nav and action buttons present
