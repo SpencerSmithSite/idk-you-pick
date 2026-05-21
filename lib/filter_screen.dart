@@ -123,7 +123,10 @@ class _FilterScreenState extends State<FilterScreen> {
     final colors = AppColors.of(context);
     return Scaffold(
       appBar: LiquidGlassAppBar(
-        title: const Text('Filters'),
+        title: Semantics(
+          header: true,
+          child: const Text('Filters'),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),

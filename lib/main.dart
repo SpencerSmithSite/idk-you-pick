@@ -74,8 +74,8 @@ class _MyAppState extends State<MyApp> {
               title: 'IDK, What do you want?',
               debugShowCheckedModeBanner: false,
               themeMode: widget.themeProvider.themeMode,
-              theme: AppTheme.lightTheme(),
-              darkTheme: AppTheme.darkTheme(),
+              theme: widget.themeProvider.lightThemeWithExtension(AppTheme.lightTheme()),
+              darkTheme: widget.themeProvider.darkThemeWithExtension(AppTheme.darkTheme()),
               scrollBehavior: const _AppScrollBehavior(),
               home: FutureBuilder<bool>(
                 future: _onboardingFuture,
@@ -749,12 +749,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return LiquidGlassScaffold(
       appBar: LiquidGlassAppBar(
-        title: Text(
-          "IDK, What do you want?",
-          style: TextStyle(
-            color: colors.appBarText,
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
+        title: Semantics(
+          header: true,
+          child: Text(
+            "IDK, What do you want?",
+            style: TextStyle(
+              color: colors.appBarText,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
           ),
         ),
         actions: [
