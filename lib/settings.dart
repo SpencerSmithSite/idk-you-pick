@@ -304,245 +304,316 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         child: Column(
           children: [
-            ListenableBuilder(
-              listenable: widget.themeProvider,
-              builder: (context, child) {
-                final mode = widget.themeProvider.themeMode;
-                return LiquidGlass(
-                  blurSigma: 12,
-                  opacity: 0.10,
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  padding: EdgeInsets.zero,
-                  borderRadius: BorderRadius.circular(16),
-                  child: ListTile(
-                    leading: Icon(Icons.palette, color: colors.textSecondary),
-                    title: Text(
-                      'Appearance',
-                      style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildThemeChip('System', ThemeMode.system, mode, colors),
-                        const SizedBox(width: 8),
-                        _buildThemeChip('Light', ThemeMode.light, mode, colors),
-                        const SizedBox(width: 8),
-                        _buildThemeChip('Dark', ThemeMode.dark, mode, colors),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-            const Divider(),
-            LiquidGlass(
-              blurSigma: 12,
-              opacity: 0.10,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(16),
-              child: ListTile(
-                leading: Icon(Icons.tour, color: colors.textSecondary),
-                title: Text('Restart Onboarding', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18)),
-                trailing: TextButton(
-                  onPressed: () async {
-                    await OnboardingService.resetOnboarding();
-                    if (!context.mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Onboarding will restart on next launch.')),
-                    );
-                  },
-                  child: Text('Reset', style: TextStyle(color: colors.secondary)),
-                ),
-              ),
-            ),
-            const Divider(),
-            LiquidGlass(
-              blurSigma: 12,
-              opacity: 0.10,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(16),
-              child: DemoModeTile(colors: colors),
-            ),
-            const Divider(),
-            LiquidGlass(
-              blurSigma: 12,
-              opacity: 0.10,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(16),
-              child: ListTile(
-                leading: Icon(Icons.location_on, color: colors.textSecondary),
-                title: Text('Use My Location', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18)),
-                subtitle: Text(
-                  _useLocation
-                      ? 'Show nearby restaurants based on your location'
-                      : 'Location is off. All restaurants will be shown.',
-                  style: TextStyle(color: colors.textSecondary, fontSize: 12),
-                ),
-                trailing: Switch(
-                  value: _useLocation,
-                  activeTrackColor: colors.secondary,
-                  thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
-                    if (states.contains(WidgetState.selected)) {
-                      return colors.foregroundOnDark;
-                    }
-                    return colors.switchThumbUnselected;
-                  }),
-                  onChanged: _toggleLocation,
-                ),
-              ),
-            ),
-            const Divider(),
-            LiquidGlass(
-              blurSigma: 12,
-              opacity: 0.10,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(16),
-              child: ListTile(
-                leading: Icon(Icons.notifications_active, color: colors.textSecondary),
-                title: Text(
-                  'Lunchtime Suggestions',
-                  style: TextStyle(
-                    color: colors.textPrimary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                ),
-                subtitle: Text(
-                  'We only use your location to find nearby restaurants. Your location never leaves this device.',
-                  style: TextStyle(color: colors.textSecondary, fontSize: 12),
-                ),
-                trailing: Switch(
-                  value: _lunchSuggestions,
-                  activeTrackColor: colors.secondary,
-                  thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
-                    if (states.contains(WidgetState.selected)) {
-                      return colors.foregroundOnDark;
-                    }
-                    return colors.switchThumbUnselected;
-                  }),
-                  onChanged: _toggleLunchSuggestions,
-                ),
-              ),
-            ),
-            if (_permissionDenied)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: colors.danger.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: colors.danger.withValues(alpha: 0.3)),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.error_outline, color: colors.danger, size: 20),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Notification permission denied. Enable it in Settings > Notifications to receive lunchtime suggestions.',
-                          style: TextStyle(color: colors.danger, fontSize: 13),
-                        ),
+            Semantics(
+              label: 'Theme settings, choose system light or dark appearance',
+              child: ListenableBuilder(
+                listenable: widget.themeProvider,
+                builder: (context, child) {
+                  final mode = widget.themeProvider.themeMode;
+                  return LiquidGlass(
+                    blurSigma: 12,
+                    opacity: 0.10,
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    padding: EdgeInsets.zero,
+                    borderRadius: BorderRadius.circular(16),
+                    child: ListTile(
+                      leading: Icon(Icons.palette, color: colors.textSecondary),
+                      title: Text(
+                        'Appearance',
+                        style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            const Divider(),
-            // Data Management section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Data Management',
-                  style: TextStyle(
-                    color: colors.textSecondary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-            LiquidGlass(
-              blurSigma: 12,
-              opacity: 0.10,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(16),
-              child: ListTile(
-                leading: Icon(Icons.upload_file, color: colors.textSecondary),
-                title: Text(
-                  'Export Data',
-                  style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
-                ),
-                subtitle: Text(
-                  'Share a backup of your favorites, history, and settings',
-                  style: TextStyle(color: colors.textSecondary, fontSize: 12),
-                ),
-                trailing: Icon(Icons.share, color: colors.textMuted, size: 20),
-                onTap: _handleExport,
-              ),
-            ),
-            LiquidGlass(
-              blurSigma: 12,
-              opacity: 0.10,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(16),
-              child: ListTile(
-                leading: Icon(Icons.download, color: colors.textSecondary),
-                title: Text(
-                  'Import Data',
-                  style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
-                ),
-                subtitle: Text(
-                  'Restore from a previously exported backup file',
-                  style: TextStyle(color: colors.textSecondary, fontSize: 12),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios, color: colors.textMuted, size: 16),
-                onTap: _handleImport,
-              ),
-            ),
-            const Divider(),
-            LiquidGlass(
-              blurSigma: 12,
-              opacity: 0.10,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(16),
-              child: ListTile(
-                leading: Icon(Icons.privacy_tip, color: colors.textSecondary),
-                title: Text(
-                  'Privacy Policy',
-                  style: TextStyle(
-                    color: colors.textPrimary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios, color: colors.textMuted, size: 16),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildThemeChip('System', ThemeMode.system, mode, colors),
+                          const SizedBox(width: 8),
+                          _buildThemeChip('Light', ThemeMode.light, mode, colors),
+                          const SizedBox(width: 8),
+                          _buildThemeChip('Dark', ThemeMode.dark, mode, colors),
+                        ],
+                      ),
+                    ),
                   );
                 },
               ),
             ),
             const Divider(),
-            LiquidGlass(
-              blurSigma: 12,
-              opacity: 0.10,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(16),
-              child: const AboutTile(),
+            Semantics(
+              label: 'High Contrast Mode, toggle for increased visual contrast',
+              child: ListenableBuilder(
+                listenable: widget.themeProvider,
+                builder: (context, child) {
+                  return LiquidGlass(
+                    blurSigma: 12,
+                    opacity: 0.10,
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    padding: EdgeInsets.zero,
+                    borderRadius: BorderRadius.circular(16),
+                    child: ListTile(
+                      leading: Icon(Icons.contrast, color: colors.textSecondary),
+                      title: Text(
+                        'High Contrast Mode',
+                        style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
+                      ),
+                      subtitle: Text(
+                        'Increases contrast between text and backgrounds',
+                        style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                      ),
+                      trailing: Switch(
+                        value: widget.themeProvider.highContrast,
+                        activeTrackColor: colors.secondary,
+                        thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+                          if (states.contains(WidgetState.selected)) {
+                            return colors.foregroundOnDark;
+                          }
+                          return colors.switchThumbUnselected;
+                        }),
+                        onChanged: (value) => widget.themeProvider.setHighContrast(value),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const Divider(),
+            Semantics(
+              label: 'Restart Onboarding, reset and show onboarding on next launch',
+              child: LiquidGlass(
+                blurSigma: 12,
+                opacity: 0.10,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.circular(16),
+                child: ListTile(
+                  leading: Icon(Icons.tour, color: colors.textSecondary),
+                  title: Text('Restart Onboarding', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18)),
+                  trailing: TextButton(
+                    onPressed: () async {
+                      await OnboardingService.resetOnboarding();
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Onboarding will restart on next launch.')),
+                      );
+                    },
+                    child: Text('Reset', style: TextStyle(color: colors.secondary)),
+                  ),
+                ),
+              ),
+            ),
+            const Divider(),
+            Semantics(
+              label: 'Demo Mode, toggle fake restaurant data for screenshots and testing',
+              child: LiquidGlass(
+                blurSigma: 12,
+                opacity: 0.10,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.circular(16),
+                child: DemoModeTile(colors: colors),
+              ),
+            ),
+            const Divider(),
+            Semantics(
+              label: 'Use My Location, toggle location-based restaurant filtering',
+              child: LiquidGlass(
+                blurSigma: 12,
+                opacity: 0.10,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.circular(16),
+                child: ListTile(
+                  leading: Icon(Icons.location_on, color: colors.textSecondary),
+                  title: Text('Use My Location', style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18)),
+                  subtitle: Text(
+                    _useLocation
+                        ? 'Show nearby restaurants based on your location'
+                        : 'Location is off. All restaurants will be shown.',
+                    style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                  ),
+                  trailing: Switch(
+                    value: _useLocation,
+                    activeTrackColor: colors.secondary,
+                    thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+                      if (states.contains(WidgetState.selected)) {
+                        return colors.foregroundOnDark;
+                      }
+                      return colors.switchThumbUnselected;
+                    }),
+                    onChanged: _toggleLocation,
+                  ),
+                ),
+              ),
+            ),
+            const Divider(),
+            Semantics(
+              label: 'Lunchtime Suggestions, toggle daily notification for lunch ideas',
+              child: LiquidGlass(
+                blurSigma: 12,
+                opacity: 0.10,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.circular(16),
+                child: ListTile(
+                  leading: Icon(Icons.notifications_active, color: colors.textSecondary),
+                  title: Text(
+                    'Lunchtime Suggestions',
+                    style: TextStyle(
+                      color: colors.textPrimary,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'We only use your location to find nearby restaurants. Your location never leaves this device.',
+                    style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                  ),
+                  trailing: Switch(
+                    value: _lunchSuggestions,
+                    activeTrackColor: colors.secondary,
+                    thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+                      if (states.contains(WidgetState.selected)) {
+                        return colors.foregroundOnDark;
+                      }
+                      return colors.switchThumbUnselected;
+                    }),
+                    onChanged: _toggleLunchSuggestions,
+                  ),
+                ),
+              ),
+            ),
+            if (_permissionDenied)
+              Semantics(
+                label: 'Notification permission denied, enable in system settings',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: colors.danger.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: colors.danger.withValues(alpha: 0.3)),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.error_outline, color: colors.danger, size: 20),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Notification permission denied. Enable it in Settings > Notifications to receive lunchtime suggestions.',
+                            style: TextStyle(color: colors.danger, fontSize: 13),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            const Divider(),
+            Semantics(
+              header: true,
+              label: 'Data Management',
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Data Management',
+                    style: TextStyle(
+                      color: colors.textSecondary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Semantics(
+              label: 'Export Data, share a backup of your favorites and settings',
+              child: LiquidGlass(
+                blurSigma: 12,
+                opacity: 0.10,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.circular(16),
+                child: ListTile(
+                  leading: Icon(Icons.upload_file, color: colors.textSecondary),
+                  title: Text(
+                    'Export Data',
+                    style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  subtitle: Text(
+                    'Share a backup of your favorites, history, and settings',
+                    style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                  ),
+                  trailing: Icon(Icons.share, color: colors.textMuted, size: 20),
+                  onTap: _handleExport,
+                ),
+              ),
+            ),
+            Semantics(
+              label: 'Import Data, restore from a previously exported backup',
+              child: LiquidGlass(
+                blurSigma: 12,
+                opacity: 0.10,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.circular(16),
+                child: ListTile(
+                  leading: Icon(Icons.download, color: colors.textSecondary),
+                  title: Text(
+                    'Import Data',
+                    style: TextStyle(color: colors.textPrimary, fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  subtitle: Text(
+                    'Restore from a previously exported backup file',
+                    style: TextStyle(color: colors.textSecondary, fontSize: 12),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios, color: colors.textMuted, size: 16),
+                  onTap: _handleImport,
+                ),
+              ),
+            ),
+            const Divider(),
+            Semantics(
+              label: 'Privacy Policy, view our privacy policy',
+              child: LiquidGlass(
+                blurSigma: 12,
+                opacity: 0.10,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.circular(16),
+                child: ListTile(
+                  leading: Icon(Icons.privacy_tip, color: colors.textSecondary),
+                  title: Text(
+                    'Privacy Policy',
+                    style: TextStyle(
+                      color: colors.textPrimary,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios, color: colors.textMuted, size: 16),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const Divider(),
+            Semantics(
+              label: 'About, view app version and copy support info',
+              child: LiquidGlass(
+                blurSigma: 12,
+                opacity: 0.10,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.circular(16),
+                child: const AboutTile(),
+              ),
             ),
             const Divider(),
             LiquidGlass(
@@ -552,55 +623,61 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _restaurantController,
-                          decoration: InputDecoration(
-                            hintText: "Add a new restaurant",
-                            hintStyle: TextStyle(color: colors.textMuted),
-                            filled: true,
-                            fillColor: colors.glassSurface,
-                            border: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(15),
+                  Semantics(
+                    label: 'Add a new restaurant, type name and tap add',
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _restaurantController,
+                            decoration: InputDecoration(
+                              hintText: "Add a new restaurant",
+                              hintStyle: TextStyle(color: colors.textMuted),
+                              filled: true,
+                              fillColor: colors.glassSurface,
+                              border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(15),
+                                ),
+                                borderSide: BorderSide(color: colors.glassEdge),
                               ),
-                              borderSide: BorderSide(color: colors.glassEdge),
                             ),
+                            style: TextStyle(color: colors.textPrimary),
                           ),
-                          style: TextStyle(color: colors.textPrimary),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      LiquidGlassButton(
-                        label: 'Add',
-                        onPressed: _addRestaurant,
-                      ),
-                    ],
+                        const SizedBox(width: 10),
+                        LiquidGlassButton(
+                          label: 'Add',
+                          onPressed: _addRestaurant,
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      LiquidGlassButton(
-                        label: 'Select All',
-                        onPressed: () {
-                          setState(() {
-                            _preferences.updateAll((key, value) => true);
-                          });
-                        },
-                      ),
-                      const SizedBox(width: 10),
-                      LiquidGlassButton(
-                        label: 'Deselect All',
-                        onPressed: () {
-                          setState(() {
-                            _preferences.updateAll((key, value) => false);
-                          });
-                        },
-                      ),
-                    ],
+                  Semantics(
+                    label: 'Restaurant selection controls, select or deselect all',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        LiquidGlassButton(
+                          label: 'Select All',
+                          onPressed: () {
+                            setState(() {
+                              _preferences.updateAll((key, value) => true);
+                            });
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        LiquidGlassButton(
+                          label: 'Deselect All',
+                          onPressed: () {
+                            setState(() {
+                              _preferences.updateAll((key, value) => false);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -615,58 +692,61 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   controller: _scrollController,
                   padding: const EdgeInsets.all(20),
                   children: _preferences.keys.map((restaurant) {
-                    return LiquidGlass(
-                      blurSigma: 12,
-                      opacity: 0.08,
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                      padding: EdgeInsets.zero,
-                      borderRadius: BorderRadius.circular(16),
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          checkboxTheme: CheckboxThemeData(
-                            side: BorderSide(
-                              color: colors.chipDefaultBorder,
-                              width: 2,
+                    return Semantics(
+                      label: 'Restaurant: $restaurant, toggle to include or exclude from picks',
+                      child: LiquidGlass(
+                        blurSigma: 12,
+                        opacity: 0.08,
+                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                        padding: EdgeInsets.zero,
+                        borderRadius: BorderRadius.circular(16),
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            checkboxTheme: CheckboxThemeData(
+                              side: BorderSide(
+                                color: colors.chipDefaultBorder,
+                                width: 2,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          ),
+                          child: CheckboxListTile(
+                            title: Text(
+                              restaurant,
+                              style: TextStyle(
+                                color: colors.textPrimary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            value: _preferences[restaurant],
+                            activeColor: colors.secondary,
+                            checkColor: colors.chipTextDark,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _preferences[restaurant] = value ?? false;
+                              });
+                            },
+                            tileColor: colors.primary.withValues(
+                              alpha: 0.04,
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(15),
                             ),
+                            secondary: _customRestaurants.contains(restaurant)
+                                ? IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: colors.danger,
+                                    ),
+                                    tooltip: 'Delete restaurant',
+                                    onPressed: () => _deleteRestaurant(restaurant),
+                                  )
+                                : null,
+                            controlAffinity: ListTileControlAffinity.leading,
                           ),
-                        ),
-                        child: CheckboxListTile(
-                          title: Text(
-                            restaurant,
-                            style: TextStyle(
-                              color: colors.textPrimary,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          value: _preferences[restaurant],
-                          activeColor: colors.secondary,
-                          checkColor: colors.chipTextDark,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _preferences[restaurant] = value ?? false;
-                            });
-                          },
-                          tileColor: colors.primary.withValues(
-                            alpha: 0.04,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          secondary: _customRestaurants.contains(restaurant)
-                              ? IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: colors.danger,
-                                  ),
-                                  tooltip: 'Delete restaurant',
-                                  onPressed: () => _deleteRestaurant(restaurant),
-                                )
-                              : null,
-                          controlAffinity: ListTileControlAffinity.leading,
                         ),
                       ),
                     );
