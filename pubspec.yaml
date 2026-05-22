@@ -37,7 +37,7 @@ dependencies:
   timezone: ^0.11.0
 
   # Background task scheduling
-  workmanager: ^0.5.2
+  workmanager: ^0.9.0+3
   file_picker: ^3.0.4
 
 dependencies_overrides: {}
