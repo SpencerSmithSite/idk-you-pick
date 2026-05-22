@@ -1,3 +1,12 @@
+## [1.1.1] — 2026-05-22
+### Dependency & Build Maintenance Batch (PRs #56, #57, #58)
+- **chore(deps):** Bump `flutter_local_notifications` to v21 and adapt `NotificationService` to new named-parameter API shapes (#56)
+- **chore(deps):** Bump `geolocator` ^13→^14, `flutter_lints` ^5→^6; fix new lint violations (`unnecessary_underscores`) across `main.dart`, `restaurant_detail.dart`, `search_screen.dart` (#57)
+- **chore(deps):** Bump `workmanager` ^0.5.2→^0.9.0+3; raise iOS minimum deployment from 13.0→14.0 in `ios/Podfile` (#58)
+- **qa:** `flutter analyze` clean, `flutter test` 90/90 passing, `flutter build ios --simulator` success
+
+---
+
 ## [0.5.0] — 2026-05-17
 ### Phase 16: Price Bracket Battle
 - **feat:** New game mode — "Price Bracket Battle" accessible from main screen as third action button
