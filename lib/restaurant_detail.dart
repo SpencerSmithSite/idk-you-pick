@@ -170,7 +170,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                               width: 120,
                               height: 120,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Icon(
+                              errorBuilder: (_, _, _) => Icon(
                                 Icons.restaurant,
                                 size: 64,
                                 color: colors.surfaceIcon,

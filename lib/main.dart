@@ -1422,8 +1422,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Route<T> _fadeSlideRoute<T>(Widget nextScreen) {
     return PageRouteBuilder<T>(
       transitionDuration: const Duration(milliseconds: 300),
-      pageBuilder: (_, __, ___) => nextScreen,
-      transitionsBuilder: (_, animation, __, child) {
+      pageBuilder: (_, _, _) => nextScreen,
+      transitionsBuilder: (_, animation, _, child) {
         return FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
           child: SlideTransition(

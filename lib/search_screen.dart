@@ -287,7 +287,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             width: 48,
                             height: 48,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => Icon(Icons.restaurant, color: colors.primary),
+                            errorBuilder: (_, _, _) => Icon(Icons.restaurant, color: colors.primary),
                           ),
                         ),
                       )

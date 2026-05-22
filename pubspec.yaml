@@ -19,7 +19,7 @@ dependencies:
   # Used for persisting filter preferences and restaurant data across app sessions
   shared_preferences: ^2.5.5
   # Location services for distance-based filtering
-  geolocator: ^13.0.0
+  geolocator: ^14.0.1
   # Address-to-coordinates (used only for geocoding display if needed)
   geocoding: ^4.0.0
 
@@ -48,7 +48,7 @@ dev_dependencies:
     sdk: flutter
 
   # Recommended lints for good coding practices
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   # Tools for generating app icons across platforms
   flutter_launcher_icons: ^0.14.4
   # Tool for creating native splash screens
