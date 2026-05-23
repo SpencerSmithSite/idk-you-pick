@@ -58,10 +58,11 @@ Restaurant decision app overhaul: modern UI, location-aware recommendations, and
 | 2026-05-10 | Phase 4 | Dual-Filter System — global + session filters, quick filters | None |
 | 2026-05-10 | Phase 5 | Restaurant Detail + Action Links — maps, call, website, favorites | None |
 | 2026-05-10 | Phase 6–19 | Features continued through Phase 19 (see CHANGELOG.md / TODO.md) | None |
+| 2026-05-22 | Phase 20–22 | README refresh, widget tests, accessibility deep-dive, dependency maintenance | None |
 
 ## Notes
 - Each phase gets a branch: `data/phase-{N}-{description}`
 - PRs merged to `main` after review
 - Main branch is protected — changes must go through PRs
 - Apple Reminders sync via autonomous heartbeat
-- Current version: **1.1.0+3**
+- Current version: **1.1.1+4**
